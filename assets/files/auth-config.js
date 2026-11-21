@@ -120,7 +120,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     state.closedAt = Date.now();
     writeSession(state);
     try { await auth.signOut(); } catch (_) {}
-    ["is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
+    ["is_user_uid","is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
     sessionEnding = false;
     if (location.pathname.indexOf("/auth/") !== 0) {
       const target = appUrl("/auth/" + accountType + "/login/") + "?reason=" + encodeURIComponent(reason || "session-ended");
@@ -515,7 +515,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     async signOut() {
       sessionEnding = true;
       await auth.signOut();
-      ["is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
+      ["is_user_uid","is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
       localStorage.removeItem("interactive_studio_session");
       localStorage.removeItem(SESSION_KEY);
       sessionStorage.removeItem(TAB_KEY);
@@ -576,7 +576,9 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       "auth/popup-closed-by-user": "The sign-in window was closed before sign-in finished. Please try again.",
       "auth/popup-blocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
       "auth/network-request-failed": "A network error interrupted sign-in. Check your connection and try again.",
-      "auth/account-exists-with-different-credential": "An account already exists with this email using another sign-in method. Sign in with that method first."
+      "auth/account-exists-with-different-credential": "An account already exists with this email using another sign-in method. Sign in with that method first.",
+      "permission-denied": "Project could not save or read your account type. Check the Firestore userProfiles rules and try again.",
+      "unavailable": "The account database is temporarily unavailable. Check your connection and try again."
     };
     const detail = messages[error && error.code] || (error && error.message) || "Something went wrong. Please try again.";
     const message = document.querySelector("[data-auth-message]");
