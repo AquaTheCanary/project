@@ -13,7 +13,7 @@
   const authCheck = Promise.resolve(window.studioAuth && studioAuth.currentUser());
   const fallback = new Promise(resolve => setTimeout(() => resolve("__auth_timeout__"), 10000));
   Promise.race([authCheck, fallback])
-    .then(user => {
+    .then(async user => {
       if (user === "__auth_timeout__") {
         console.error("Workspace auth check timed out. Showing recovery UI instead of leaving the page blank.");
         document.documentElement.style.visibility = "";
