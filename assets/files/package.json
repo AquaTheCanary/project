@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "wrangler deploy",
-    "predeploy": "npm install --include=dev"
+    "deploy": "npx --yes wrangler@4 deploy"
   },
   "repository": {
     "type": "git",
