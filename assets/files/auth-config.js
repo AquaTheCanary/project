@@ -321,10 +321,14 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       await authReady;
       try {
         const credential = await auth.getRedirectResult();
-        if (!credential || !credential.user) return false;
+        // Some mobile browsers restore Firebase's persisted user before the
+        // redirect credential object becomes available. Accept that restored
+        // session as the redirect result instead of sending the user back to login.
+        const redirectUser = (credential && credential.user) || auth.currentUser;
+        if (!redirectUser) return false;
         const organisation = sessionStorage.getItem("studio_sso_organisation") === "true";
         sessionStorage.removeItem("studio_sso_organisation");
-        await studioAuth.finishSignIn(credential.user, organisation);
+        await studioAuth.finishSignIn(redirectUser, organisation);
         return true;
       } catch (error) {
         sessionStorage.removeItem("studio_sso_organisation");
