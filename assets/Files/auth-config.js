@@ -435,7 +435,16 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   window.loginWithGoogle = organisation => studioAuth.signInGoogle(!!organisation).catch(showAuthError);
   window.loginWithGithub = organisation => studioAuth.signInGithub(!!organisation).catch(showAuthError);
   window.loginWithMicrosoft = organisation => studioAuth.signInMicrosoft(!!organisation).catch(showAuthError);
-  window.loginWithTwitter = organisation => studioAuth.signInTwitter(!!organisation).catch(showAuthError);
+  window.loginWithTwitter = organisation => {
+    const message = document.querySelector("[data-auth-message]");
+    if (message) {
+      message.textContent = "Connecting to X…";
+      message.className = "auth-message success";
+    }
+    return studioAuth.signInTwitter(!!organisation).catch(error => {
+      showAuthError(error);
+    });
+  };
   window.showAuthError = showAuthError;
   function showAuthError(error) {
     const messages = {
