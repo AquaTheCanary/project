@@ -319,26 +319,31 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     },
     async completeRedirectSignIn() {
       await authReady;
-      // Only handle a callback when this browser tab explicitly started an
-      // SSO redirect. A normal signed-in page must not re-run finishSignIn(),
-      // otherwise it can continually navigate back to the dashboard.
+      // Always consume Firebase's redirect result. On mobile browsers and
+      // cross-domain auth handlers, sessionStorage can be unavailable or the
+      // pending marker can be lost even though Firebase has a valid callback.
+      // getRedirectResult() is safe on ordinary page loads and returns null
+      // when this page was not reached through an OAuth redirect.
       const pendingOrganisation = sessionStorage.getItem("studio_sso_organisation");
-      if (pendingOrganisation === null) return false;
       try {
         const credential = await auth.getRedirectResult();
-        // On some mobile browsers Firebase restores currentUser before the
-        // redirect credential object is available.
-        const redirectUser = (credential && credential.user) || auth.currentUser;
-        if (!redirectUser) {
-          sessionStorage.removeItem("studio_sso_organisation");
+        const redirectUser = (credential && credential.user) || null;
+        // A real redirect credential is authoritative, even if the
+        // sessionStorage marker did not survive the provider round-trip.
+        // If Firebase only restored an existing session, do not re-run
+        // finishSignIn() on every page load.
+        const user = redirectUser || (pendingOrganisation !== null ? auth.currentUser : null);
+        if (!user) {
+          if (pendingOrganisation !== null) sessionStorage.removeItem("studio_sso_organisation");
           return false;
         }
         sessionStorage.removeItem("studio_sso_organisation");
-        await studioAuth.finishSignIn(redirectUser, pendingOrganisation === "true");
+        await studioAuth.finishSignIn(user, pendingOrganisation === "true");
         return true;
       } catch (error) {
         sessionStorage.removeItem("studio_sso_organisation");
         showAuthError(error);
+        console.error("Firebase OAuth redirect completion failed:", error);
         return false;
       }
     },
