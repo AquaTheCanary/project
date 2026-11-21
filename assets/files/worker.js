@@ -125,7 +125,7 @@ async function proxyStudioApp(request) {
   const requestHost = String(request.headers.get("X-IS-Original-Host") || incoming.hostname).toLowerCase();
   let pathname = incoming.pathname;
   // Keep legacy HTML working after consolidating the public asset folder to lowercase.
-  pathname = pathname.replace(/\/assets\/Files\//g, "/assets/files/");
+  pathname = pathname.replaceAll("assets/Files/", "assets/files/");
   pathname = pathname.replace(/\/assets\/images\/(?:interactive-studio-icon|project-mark)\.svg$/i, "/assets/images/newp.png");
   pathname = pathname.replace(/\/assets\/images\/project-logo\.svg$/i, "/assets/images/newp-nobg.png");
   const params = new URLSearchParams(incoming.search);
