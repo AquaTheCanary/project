@@ -43,10 +43,11 @@ const firebaseProduct = firebaseHost.includes("cloudbase") ? "cloudbase"
   : firebaseHost.includes("siteify") ? "siteify"
   : firebaseHost.includes("presentr") ? "presentr" : null;
 const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
-  // Use the Project origin for Firebase Auth redirects. The Cloudflare Worker
-  // transparently proxies /__/ Firebase helper requests to Firebase Hosting.
+  // Keep Firebase Auth's helper iframe and redirect handler on the Project origin.
+  // The Cloudflare Worker proxies /__/ requests to Firebase Hosting so browser
+  // storage remains first-party throughout the OAuth redirect.
   apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-  authDomain: "convexllc-project.firebaseapp.com",
+  authDomain: "www.convex-project.abrdns.com",
   projectId: "convexllc-project",
   storageBucket: "convexllc-project.firebasestorage.app",
   messagingSenderId: "82355515745",
