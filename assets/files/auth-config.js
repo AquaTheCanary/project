@@ -353,8 +353,12 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       beginFreshSession();
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.setCustomParameters({ prompt: "select_account" });
-      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
-      await auth.signInWithRedirect(provider);
+      // Complete Google authentication in the current tab. This avoids the
+      // cross-domain redirect hand-off that can silently lose the Firebase
+      // credential on mobile browsers when third-party storage is restricted.
+      const credential = await auth.signInWithPopup(provider);
+      if (!credential || !credential.user) throw new Error("Google sign-in completed without returning an account. Please try again.");
+      await studioAuth.finishSignIn(credential.user, organisation);
     },
     async signInGithub(organisation = false) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
