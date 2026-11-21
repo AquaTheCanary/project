@@ -127,7 +127,7 @@ async function proxyStudioApp(request) {
   // Firebase Auth redirect helpers must be served from the app's own origin.
   // Proxy the complete reserved Firebase helper namespace to the project's
   // Firebase Hosting auth handler, preserving method, query, body and headers.
-  if (requestHost === "interactivestudio.abrdns.com" && pathname.startsWith("/__/")) {
+  if (requestHost === "convex-project.abrdns.com" && pathname.startsWith("/__/")) {
     const firebaseTarget = new URL("https://convexllc-project.firebaseapp.com" + pathname + incoming.search);
     const firebaseResponse = await fetch(new Request(firebaseTarget.toString(), request));
     const firebaseHeaders = new Headers(firebaseResponse.headers);
