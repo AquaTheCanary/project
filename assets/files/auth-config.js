@@ -469,7 +469,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   function showAuthError(error) {
     const messages = {
       "auth/api-key-not-valid": "This app is using an invalid Firebase API key. Refresh the page after the Firebase configuration has been updated, and check the Browser key in Google Cloud Console if the error continues.",
-      "auth/unauthorized-domain": "This website domain is not authorised in Firebase. Add interactivestudio.abrdns.com and aquathecanary.github.io under Firebase Authentication → Settings → Authorised domains.",
+      "auth/unauthorized-domain": "This website domain is not authorised in Firebase. Add convex-project.abrdns.com under Firebase Authentication → Settings → Authorised domains.",
       "auth/operation-not-allowed": "This sign-in provider is not enabled yet. Enable X (Twitter) in Firebase Authentication → Sign-in providers, then add your X API Key and API Key Secret.",
       "auth/invalid-oauth-client-id": "The social sign-in provider is not configured correctly. Check its App/Client ID in Firebase Authentication → Sign-in providers.",
       "auth/invalid-oauth-provider": "The social sign-in provider is not enabled in Firebase Authentication. Enable the provider and save its credentials.",
