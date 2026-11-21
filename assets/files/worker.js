@@ -153,10 +153,10 @@ async function proxyStudioApp(request) {
   const contentType = upstream.headers.get("Content-Type") || "";
   if (!contentType.toLowerCase().includes("text/html")) return upstream;
   const html = (await upstream.text())
-    .replace(/assets\\/Files\\//g, "assets/files/")
-    .replace(/\\/assets\\/Files\\//g, "/assets/files/")
-    .replace(/assets\\/images\\/(?:interactive-studio-icon|project-mark)\\.svg/gi, "assets/images/newp.png")
-    .replace(/assets\\/images\\/project-logo\\.svg/gi, "assets/images/newp-nobg.png");
+    .replaceAll("assets/Files/", "assets/files/")
+    .replaceAll("interactive-studio-icon.svg", "newp.png")
+    .replaceAll("project-mark.svg", "newp.png")
+    .replaceAll("project-logo.svg", "newp-nobg.png");
   const headers = new Headers(upstream.headers);
   headers.delete("Content-Length");
   headers.set("Cache-Control", "no-store");
