@@ -124,11 +124,10 @@ async function proxyStudioApp(request) {
   const incoming = new URL(request.url);
   const requestHost = String(request.headers.get("X-IS-Original-Host") || incoming.hostname).toLowerCase();
   let pathname = incoming.pathname;
+  pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
   // Keep legacy HTML working after consolidating the public asset folder to lowercase.
-  pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
-  pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
-  pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
-  const params = new URLSearchParams(incoming.search);
+pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
+const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST) pathname = "/help/index.html";
   else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
   let match;
@@ -148,12 +147,12 @@ async function proxyStudioApp(request) {
     pathname = "/websites/";
   }
   const query = params.toString();
-  const target = new URL("https://aquathecanary.github.io/interactivestudio" + pathname + (query ? "?" + query : ""));
+  const target = new URL("https://aquathecanary.github.io/project" + pathname + (query ? "?" + query : ""));
   const upstream = await fetch(new Request(target.toString(), request));
   const contentType = upstream.headers.get("Content-Type") || "";
   if (!contentType.toLowerCase().includes("text/html")) return upstream;
   const html = (await upstream.text())
-    .replaceAll("assets/Files/", "assets/files/")
+    .replace(/assets\/Files\//gi, "assets/files/")
     .replaceAll("interactive-studio-icon.svg", "newp.png")
     .replaceAll("project-mark.svg", "newp-nobg.png")
     .replaceAll("project-logo.svg", "newp-nobg.png");
