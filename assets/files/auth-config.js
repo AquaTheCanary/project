@@ -337,14 +337,16 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       beginFreshSession();
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.setCustomParameters({ prompt: "select_account" });
-      return studioAuth.runSSO(provider, organisation);
+      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+      await auth.signInWithRedirect(provider);
     },
     async signInGithub(organisation = false) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       beginFreshSession();
       const provider = new firebase.auth.GithubAuthProvider();
       provider.addScope("user:email");
-      return studioAuth.runSSO(provider, organisation);
+      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+      await auth.signInWithRedirect(provider);
     },
     async signInTwitter(organisation = false) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
@@ -362,7 +364,8 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       provider.setCustomParameters({ prompt: "select_account" });
       provider.addScope("email");
       provider.addScope("profile");
-      return studioAuth.runSSO(provider, organisation);
+      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+      await auth.signInWithRedirect(provider);
     },
     async runSSO(provider, organisation) {
       try {
@@ -431,19 +434,37 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   auth.onAuthStateChanged(user => { if (user) startSessionLifecycle(user); else { if (sessionTimer) clearInterval(sessionTimer); sessionTimer = null; } });
 
   window.studioAuth = studioAuth;
-  window.loginWithGoogle = organisation => studioAuth.signInGoogle(!!organisation).catch(showAuthError);
-  window.loginWithGithub = organisation => studioAuth.signInGithub(!!organisation).catch(showAuthError);
-  window.loginWithMicrosoft = organisation => studioAuth.signInMicrosoft(!!organisation).catch(showAuthError);
-  window.loginWithTwitter = organisation => {
-    const message = document.querySelector("[data-auth-message]");
-    if (message) {
-      message.textContent = "Connecting to X…";
-      message.className = "auth-message success";
+  let ssoInProgress = false;
+  function runLoginSSO(method, organisation, button) {
+    if (ssoInProgress) return Promise.resolve();
+    ssoInProgress = true;
+    const buttons = Array.from(document.querySelectorAll(".btn-sso"));
+    const emailButton = document.querySelector(".auth-form .btn-submit");
+    const originals = new Map(buttons.map(item => [item, item.innerHTML]));
+    buttons.forEach(item => { item.disabled = true; item.classList.add("sso-disabled"); });
+    if (emailButton) emailButton.disabled = true;
+    if (button) {
+      button.classList.remove("sso-disabled");
+      button.classList.add("sso-active");
+      button.innerHTML = '<span class="sso-spinner" aria-hidden="true"></span><span>Connecting…</span>';
     }
-    return studioAuth.signInTwitter(!!organisation).catch(error => {
+    if (!document.getElementById("sso-loading-styles")) {
+      const style = document.createElement("style");
+      style.id = "sso-loading-styles";
+      style.textContent = '.btn-sso.sso-disabled{opacity:.42;filter:grayscale(1);cursor:not-allowed}.btn-sso.sso-active{opacity:1;filter:none;cursor:wait}.sso-spinner{width:15px;height:15px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;display:inline-block;animation:ssoSpin .7s linear infinite;vertical-align:middle}@keyframes ssoSpin{to{transform:rotate(360deg)}}';
+      document.head.appendChild(style);
+    }
+    return Promise.resolve().then(() => method(!!organisation)).catch(error => {
+      ssoInProgress = false;
+      buttons.forEach(item => { item.disabled = false; item.classList.remove("sso-disabled","sso-active"); item.innerHTML = originals.get(item); });
+      if (emailButton) emailButton.disabled = false;
       showAuthError(error);
     });
-  };
+  }
+  window.loginWithGoogle = (organisation, button) => runLoginSSO(studioAuth.signInGoogle, organisation, button);
+  window.loginWithGithub = (organisation, button) => runLoginSSO(studioAuth.signInGithub, organisation, button);
+  window.loginWithMicrosoft = (organisation, button) => runLoginSSO(studioAuth.signInMicrosoft, organisation, button);
+  window.loginWithTwitter = (organisation, button) => runLoginSSO(studioAuth.signInTwitter, organisation, button);
   window.showAuthError = showAuthError;
   function showAuthError(error) {
     const messages = {
