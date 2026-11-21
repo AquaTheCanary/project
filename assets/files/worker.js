@@ -153,7 +153,7 @@ async function proxyStudioApp(request) {
   const contentType = upstream.headers.get("Content-Type") || "";
   if (!contentType.toLowerCase().includes("text/html")) return upstream;
   const html = (await upstream.text())
-    .replaceAll("assets/Files/", "assets/files/")
+    .replace(/assets\\/files\\//gi, "assets/files/")
     .replaceAll("interactive-studio-icon.svg", "newp.png")
     .replaceAll("project-mark.svg", "newp-nobg.png")
     .replaceAll("project-logo.svg", "newp-nobg.png");
