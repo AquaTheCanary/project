@@ -155,7 +155,7 @@ async function proxyStudioApp(request) {
   const html = (await upstream.text())
     .replaceAll("assets/Files/", "assets/files/")
     .replaceAll("interactive-studio-icon.svg", "newp.png")
-    .replaceAll("project-mark.svg", "newp.png")
+    .replaceAll("project-mark.svg", "newp-nobg.png")
     .replaceAll("project-logo.svg", "newp-nobg.png");
   const headers = new Headers(upstream.headers);
   headers.delete("Content-Length");
