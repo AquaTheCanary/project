@@ -347,6 +347,12 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       provider.addScope("user:email");
       return studioAuth.runSSO(provider, organisation);
     },
+    async signInTwitter(organisation = false) {
+      await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      beginFreshSession();
+      const provider = new firebase.auth.TwitterAuthProvider();
+      return studioAuth.runSSO(provider, organisation);
+    },
     async signInMicrosoft(organisation = false) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       beginFreshSession();
@@ -426,6 +432,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   window.loginWithGoogle = organisation => studioAuth.signInGoogle(!!organisation).catch(showAuthError);
   window.loginWithGithub = organisation => studioAuth.signInGithub(!!organisation).catch(showAuthError);
   window.loginWithMicrosoft = organisation => studioAuth.signInMicrosoft(!!organisation).catch(showAuthError);
+  window.loginWithTwitter = organisation => studioAuth.signInTwitter(!!organisation).catch(showAuthError);
   window.showAuthError = showAuthError;
   function showAuthError(error) {
     const messages = {
