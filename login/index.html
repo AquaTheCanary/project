@@ -7,6 +7,10 @@
 <link rel="icon" href="../assets/images/newp.png">
 <link rel="stylesheet" href="../assets/files/style.css">
 <script src="../assets/files/router.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="../assets/files/auth-config.js?v=20261121-8"></script>
 <link rel="stylesheet" href="../assets/files/design-system.css">
 <style>
 .login-choice-page{min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#f0efff 0,transparent 48%),#fafaff;display:flex;flex-direction:column}
@@ -46,4 +50,4 @@
 <div class="choice-bottom">New to Project? <a data-route="/auth/personal/register/">Create a free personal account</a></div>
 </main>
 <footer class="choice-footer">© 2026 Project. All rights reserved.<br><a class="admin-link" data-route="/admin/console/">Administrator sign in →</a></footer>
-</body></html>
+<script>(async()=>{try{await studioAuth.redirectReady;const user=await studioAuth.currentUser();if(!user)return;await studioAuth.refreshEmailVerification(user);const live=firebase.auth().currentUser||user;if(!live.emailVerified)return;const type=await studioAuth.getAccountType(live);if(type==="personal"||type==="organisation")location.replace(window.getAppUrl("/dashboard/"));}catch(error){console.warn("Account detection on sign-in chooser failed:",error);}})();</script></body></html>
