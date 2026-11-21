@@ -319,16 +319,22 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     },
     async completeRedirectSignIn() {
       await authReady;
+      // Only handle a callback when this browser tab explicitly started an
+      // SSO redirect. A normal signed-in page must not re-run finishSignIn(),
+      // otherwise it can continually navigate back to the dashboard.
+      const pendingOrganisation = sessionStorage.getItem("studio_sso_organisation");
+      if (pendingOrganisation === null) return false;
       try {
         const credential = await auth.getRedirectResult();
-        // Some mobile browsers restore Firebase's persisted user before the
-        // redirect credential object becomes available. Accept that restored
-        // session as the redirect result instead of sending the user back to login.
+        // On some mobile browsers Firebase restores currentUser before the
+        // redirect credential object is available.
         const redirectUser = (credential && credential.user) || auth.currentUser;
-        if (!redirectUser) return false;
-        const organisation = sessionStorage.getItem("studio_sso_organisation") === "true";
+        if (!redirectUser) {
+          sessionStorage.removeItem("studio_sso_organisation");
+          return false;
+        }
         sessionStorage.removeItem("studio_sso_organisation");
-        await studioAuth.finishSignIn(redirectUser, organisation);
+        await studioAuth.finishSignIn(redirectUser, pendingOrganisation === "true");
         return true;
       } catch (error) {
         sessionStorage.removeItem("studio_sso_organisation");
