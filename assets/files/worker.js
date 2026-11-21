@@ -124,9 +124,8 @@ async function proxyStudioApp(request) {
   const incoming = new URL(request.url);
   const requestHost = String(request.headers.get("X-IS-Original-Host") || incoming.hostname).toLowerCase();
   let pathname = incoming.pathname;
+  // Normalize legacy uppercase asset paths after the folder consolidation.
   pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
-  // Keep legacy HTML working after consolidating the public asset folder to lowercase.
-pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
 const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST) pathname = "/help/index.html";
   else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
