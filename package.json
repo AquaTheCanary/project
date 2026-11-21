@@ -1,0 +1,7 @@
+{
+  "name": "project-worker-deploy",
+  "private": true,
+  "scripts": {
+    "deploy": "cd assets/files && npm run deploy"
+  }
+}
