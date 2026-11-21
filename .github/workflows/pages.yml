@@ -1,4 +1,4 @@
-name: Deploy Interactive Studio to GitHub Pages
+name: Deploy Project to GitHub Pages
 
 on:
   push:
@@ -26,9 +26,18 @@ jobs:
         run: |
           mkdir -p _site
           rsync -a --exclude='.git' --exclude='.github' --exclude='_site' ./ _site/
-          # The canonical homepage source lives in /home/index.html.
-          # Rewrite its relative asset paths for the site root.
-          sed 's#../assets/#assets/#g' home/index.html > _site/index.html
+
+          # index.html at the repository root is the real Project homepage.
+          # Keep it intact: it contains the complete page markup and layout.
+          test -s _site/index.html
+          grep -q 'class="page-body marketing"' _site/index.html
+
+          # Confirm that the stylesheets referenced by the homepage are included.
+          test -s _site/assets/files/style.css
+          test -s _site/assets/files/design-system.css
+          grep -q '/assets/files/style.css' _site/index.html
+          grep -q '/assets/files/design-system.css' _site/index.html
+
           # /home remains a compatibility URL and redirects to the root homepage.
           mkdir -p _site/home
           cat > _site/home/index.html <<'EOF'
@@ -39,10 +48,10 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta http-equiv="refresh" content="0;url=../">
             <link rel="canonical" href="../">
-            <title>Redirecting to Interactive Studio</title>
-            <script>window.location.replace("../");</script>
+            <title>Redirecting to Project</title>
+            <script>window.location.replace("../" + location.search + location.hash);</script>
           </head>
-          <body><p>Redirecting to <a href="../">Interactive Studio</a>…</p></body>
+          <body><p>Redirecting to <a href="../">Project</a>…</p></body>
           </html>
           EOF
 
