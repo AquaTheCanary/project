@@ -21,8 +21,15 @@
         return;
       }
       if (!user) { goToLogin(); return; }
+      const accountType = window.studioAuth && studioAuth.getAccountType
+        ? await studioAuth.getAccountType(user) : null;
+      if (accountType !== "personal" && accountType !== "organisation") {
+        goToLogin();
+        return;
+      }
       document.documentElement.style.visibility = "";
       document.documentElement.dataset.authenticated = "true";
+      document.documentElement.dataset.accountType = accountType;
     })
     .catch(error => {
       console.error("Workspace authentication check failed:", error);
