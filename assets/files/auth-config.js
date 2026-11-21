@@ -47,7 +47,7 @@ const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
   // The Cloudflare Worker proxies /__/ requests to Firebase Hosting so browser
   // storage remains first-party throughout the OAuth redirect.
   apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-  authDomain: "www.convex-project.abrdns.com",
+  authDomain: "convexllc-project.firebaseapp.com",
   projectId: "convexllc-project",
   storageBucket: "convexllc-project.firebasestorage.app",
   messagingSenderId: "82355515745",
