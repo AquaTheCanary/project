@@ -149,7 +149,18 @@ async function proxyStudioApp(request) {
   }
   const query = params.toString();
   const target = new URL("https://aquathecanary.github.io/interactivestudio" + pathname + (query ? "?" + query : ""));
-  return fetch(new Request(target.toString(), request));
+  const upstream = await fetch(new Request(target.toString(), request));
+  const contentType = upstream.headers.get("Content-Type") || "";
+  if (!contentType.toLowerCase().includes("text/html")) return upstream;
+  const html = (await upstream.text())
+    .replace(/assets\\/Files\\//g, "assets/files/")
+    .replace(/\\/assets\\/Files\\//g, "/assets/files/")
+    .replace(/assets\\/images\\/(?:interactive-studio-icon|project-mark)\\.svg/gi, "assets/images/newp.png")
+    .replace(/assets\\/images\\/project-logo\\.svg/gi, "assets/images/newp-nobg.png");
+  const headers = new Headers(upstream.headers);
+  headers.delete("Content-Length");
+  headers.set("Cache-Control", "no-store");
+  return new Response(html, {status:upstream.status,statusText:upstream.statusText,headers});
 }
 function normaliseHostname(value) {
   const input = String(value || "").trim().toLowerCase();
@@ -482,7 +493,7 @@ export default {
       if (!customerHost) return new Response("Forbidden: invalid Apexly proxy signature.", {status:403,headers:{"Cache-Control":"no-store"}});
       return serveWebsite(request, env, customerHost);
     }
-    if (hostname === PLATFORM_HOST || hostname === HELP_HOST) return proxyStudioApp(request);
+    if (hostname === PLATFORM_HOST || hostname === HELP_HOST || hostname === "interactivestudio.abrdns.com" || hostname === "www.interactivestudio.abrdns.com") return proxyStudioApp(request);
     if (hostname !== API_HOST) return serveWebsite(request, env);
     // Pathflo forwards the www platform hostname to this Worker as its workers.dev
     // upstream. Serve the Studio app for browser page/navigation requests; API
