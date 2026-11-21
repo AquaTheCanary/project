@@ -43,11 +43,10 @@ const firebaseProduct = firebaseHost.includes("cloudbase") ? "cloudbase"
   : firebaseHost.includes("siteify") ? "siteify"
   : firebaseHost.includes("presentr") ? "presentr" : null;
 const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
-  // The main Project platform has not yet been registered as a separate Web App.
-  // Firebase Auth and Firestore can use the shared project's valid web config
-  // while retaining the product-specific app registrations above.
+  // Use the Project origin for Firebase Auth redirects. The Cloudflare Worker
+  // transparently proxies /__/ Firebase helper requests to Firebase Hosting.
   apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-  authDomain: "convexllc-project.firebaseapp.com",
+  authDomain: "interactivestudio.abrdns.com",
   projectId: "convexllc-project",
   storageBucket: "convexllc-project.firebasestorage.app",
   messagingSenderId: "82355515745",
