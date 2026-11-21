@@ -505,7 +505,7 @@ export default {
       if (!customerHost) return new Response("Forbidden: invalid Apexly proxy signature.", {status:403,headers:{"Cache-Control":"no-store"}});
       return serveWebsite(request, env, customerHost);
     }
-    if (hostname === PLATFORM_HOST || hostname === HELP_HOST || hostname === "interactivestudio.abrdns.com" || hostname === "www.interactivestudio.abrdns.com") return proxyStudioApp(request);
+    if (hostname === PLATFORM_HOST || hostname === HELP_HOST || hostname === "interactivestudio.abrdns.com" || hostname === "www.interactivestudio.abrdns.com" || hostname === "convex-project.abrdns.com" || hostname === "www.convex-project.abrdns.com") return proxyStudioApp(request);
     if (hostname !== API_HOST) return serveWebsite(request, env);
     // Pathflo forwards the www platform hostname to this Worker as its workers.dev
     // upstream. Serve the Studio app for browser page/navigation requests; API
