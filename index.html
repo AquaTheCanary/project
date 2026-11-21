@@ -2,11 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#ffffff"><meta name="description" content="Create interactive presentations, design responsive websites and share your ideas with Project. Free to use.">
+<meta name="theme-color" content="#ffffff">
+<script>
+/* Always open the marketing homepage at the top; avoid animated browser scroll restoration. */
+try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (_) {}
+document.documentElement.style.scrollBehavior = "auto";
+window.addEventListener("pageshow", function (event) {
+  if (location.pathname === "/" || location.pathname === "/index.html") {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }
+});
+</script><meta name="description" content="Create interactive presentations, design responsive websites and share your ideas with Project. Free to use.">
 <meta name="description" content="Create presentations, build websites and bring ideas to life with Project.">
 <title>Project — Make ideas interactive</title>
 <link rel="icon" href="assets/images/newp.png">
-<link rel="stylesheet" href="assets/files/style.css">
+<link rel="stylesheet" href="/assets/files/style.css?v=20261121-2">
 <script src="assets/files/router.js" defer></script><script src="assets/files/app.js" defer></script>
 <style>
 /* Marketing site */
@@ -84,6 +94,17 @@
 @media(max-width:900px){.marketing-nav{padding:0 22px}.marketing-navlinks{gap:17px}.marketing-hero{grid-template-columns:1fr;padding:76px 24px 58px;gap:30px}.hero-copy{max-width:720px}.hero-art{min-height:420px}.product-window{max-width:620px}.marketing-section,.workflow-inner{padding:76px 24px}.workflow-inner{grid-template-columns:1fr;gap:35px}}
 @media(max-width:650px){.marketing-nav{height:66px;padding:0 16px}.marketing-navlinks{display:none}.marketing-actions{gap:12px}.marketing-signin{display:none}.marketing-cta{min-height:40px;padding:0 14px}.marketing-brand{font-size:14px}.marketing-hero{padding:65px 20px 44px}.hero-copy h1{font-size:clamp(48px,13vw,68px)}.hero-copy>p{font-size:15px}.hero-art{min-height:300px;margin:0 -8px}.window-body{grid-template-columns:78px minmax(0,1fr)}.window-side.right{display:none}.window-side{padding:13px 7px}.window-canvas{padding:14px}.float-note{right:0;bottom:16px}.marketing-proof{padding:22px 20px}.marketing-section,.workflow-inner{padding:68px 20px}.product-grid{grid-template-columns:1fr}.product-card{min-height:0}.marketing-bottom{padding:70px 20px}.marketing-footer{padding:24px 20px;align-items:flex-start;flex-direction:column}}
 
+/* Homepage layout and scroll stability repairs. */
+html,body.marketing{scroll-behavior:auto!important;overflow-anchor:none!important}
+body.marketing{display:block!important;min-height:100vh!important;width:100%!important}
+body.marketing>header.marketing-nav{flex:0 0 auto!important}
+body.marketing>main{display:block!important;width:100%!important}
+body.marketing .marketing-hero{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(420px,.92fr)!important;align-items:center!important}
+body.marketing .product-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.marketing .workflow-inner{display:grid!important;grid-template-columns:.8fr 1.2fr!important}
+@media(max-width:900px){body.marketing .marketing-hero{grid-template-columns:1fr!important}body.marketing .workflow-inner{grid-template-columns:1fr!important}}
+@media(max-width:650px){body.marketing .product-grid{grid-template-columns:1fr!important}}
+
 /* Homepage full-bleed header: keep the bar attached to the viewport, not a centred content column. */
 html,body.marketing{width:100%!important;max-width:none!important;margin:0!important;padding-left:0!important;padding-right:0!important;box-sizing:border-box!important}
 body.marketing{overflow-x:hidden!important}
@@ -96,7 +117,7 @@ body.marketing>.marketing-nav{
 }
 
 </style>
-<link rel="stylesheet" href="assets/files/design-system.css"><script>
+<link rel="stylesheet" href="/assets/files/design-system.css?v=20261121-2"><script>
 /* Route dedicated product hostnames into their existing Project application areas. */
 (function () {
   var productRoutes = {
