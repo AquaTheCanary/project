@@ -350,8 +350,11 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     async signInTwitter(organisation = false) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       beginFreshSession();
+      // Use redirect for X on mobile browsers: popup windows are commonly
+      // blocked after Firebase persistence has completed asynchronously.
       const provider = new firebase.auth.TwitterAuthProvider();
-      return studioAuth.runSSO(provider, organisation);
+      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+      await auth.signInWithRedirect(provider);
     },
     async signInMicrosoft(organisation = false) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
@@ -438,9 +441,9 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const messages = {
       "auth/api-key-not-valid": "This app is using an invalid Firebase API key. Refresh the page after the Firebase configuration has been updated, and check the Browser key in Google Cloud Console if the error continues.",
       "auth/unauthorized-domain": "This website domain is not authorised in Firebase. Add interactivestudio.abrdns.com and aquathecanary.github.io under Firebase Authentication → Settings → Authorised domains.",
-      "auth/operation-not-allowed": "This sign-in provider is not enabled yet. Enable Google or GitHub in Firebase Authentication → Sign-in providers.",
-      "auth/invalid-oauth-client-id": "GitHub sign-in is not configured correctly. Check the GitHub Client ID in Firebase Authentication → Sign-in providers → GitHub.",
-      "auth/invalid-oauth-provider": "GitHub sign-in is not enabled in Firebase Authentication. Enable the GitHub provider and save its credentials.",
+      "auth/operation-not-allowed": "This sign-in provider is not enabled yet. Enable X (Twitter) in Firebase Authentication → Sign-in providers, then add your X API Key and API Key Secret.",
+      "auth/invalid-oauth-client-id": "The social sign-in provider is not configured correctly. Check its App/Client ID in Firebase Authentication → Sign-in providers.",
+      "auth/invalid-oauth-provider": "The social sign-in provider is not enabled in Firebase Authentication. Enable the provider and save its credentials.",
       "auth/missing-email": "GitHub did not share an email address. Make your email visible to the GitHub OAuth app, then try again.",
       "auth/popup-closed-by-user": "The sign-in window was closed before sign-in finished. Please try again.",
       "auth/popup-blocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
