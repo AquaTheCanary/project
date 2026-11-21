@@ -229,26 +229,89 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       const tokenResult = await liveUser.getIdTokenResult(true);
       return tokenResult.claims.email_verified === true || !!liveUser.emailVerified;
     },
+    async getAccountRecord(user) {
+      const activeUser = user || await studioAuth.currentUser();
+      if (!activeUser) return null;
+      if (!firebase.firestore) throw new Error("The account database could not be loaded. Refresh and try again.");
+      const snapshot = await firebase.firestore().collection("userProfiles").doc(activeUser.uid).get();
+      return snapshot.exists ? snapshot.data() : null;
+    },
+    async getAccountType(user) {
+      const activeUser = user || await studioAuth.currentUser();
+      if (!activeUser) return null;
+      const record = await studioAuth.getAccountRecord(activeUser);
+      if (record && (record.accountType === "personal" || record.accountType === "organisation")) return record.accountType;
+      // Compatibility for sessions created before account type was stored in Firestore.
+      if (localStorage.getItem("is_user_uid") === activeUser.uid) {
+        const cached = localStorage.getItem("is_user_account_type");
+        if (cached === "personal" || cached === "organisation") return cached;
+      }
+      return null;
+    },
+    async resolveAccountType(user, requestedType) {
+      const activeUser = user || await studioAuth.currentUser();
+      if (!activeUser) throw new Error("Sign in before checking your account.");
+      const type = requestedType === true || requestedType === "organisation" ? "organisation" : "personal";
+      const ref = firebase.firestore().collection("userProfiles").doc(activeUser.uid);
+      const snapshot = await ref.get();
+      const record = snapshot.exists ? snapshot.data() : {};
+      const existing = record.accountType;
+      if (existing && existing !== type) {
+        throw new Error(existing === "organisation"
+          ? "This email belongs to an organisation account. Please use Organisation sign in."
+          : "This email belongs to a personal account. Please use Personal sign in.");
+      }
+      if (type === "organisation") await studioAuth.validateOrganisation(activeUser);
+      if (!existing) {
+        await ref.set({
+          uid: activeUser.uid,
+          email: activeUser.email || "",
+          displayName: activeUser.displayName || "",
+          accountType: type,
+          accountTypeCreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      } else {
+        await ref.set({
+          email: activeUser.email || "",
+          displayName: activeUser.displayName || "",
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      }
+      return type;
+    },
     async getProfile(user) {
       const activeUser = user || await studioAuth.currentUser();
       if (!activeUser) return null;
-      // Firebase keeps emailVerified cached until the account is reloaded.
-      // Refresh the live Auth user and ID token before reporting verification.
       try { await studioAuth.refreshEmailVerification(activeUser); } catch (error) { console.warn("Could not refresh Firebase account status:", error); }
       const refreshedUser = auth.currentUser || activeUser;
       let claims = {};
       try { claims = (await refreshedUser.getIdTokenResult(true)).claims || {}; } catch (_) {}
-      const verifiedPlan = "Free";
+      let record = {};
+      try { record = await studioAuth.getAccountRecord(refreshedUser) || {}; } catch (error) { console.warn("Account profile lookup failed:", error); }
       return {
         uid: refreshedUser.uid,
         email: refreshedUser.email || "",
-        name: refreshedUser.displayName || refreshedUser.email || "Creator",
-        photoURL: refreshedUser.photoURL || "",
+        name: refreshedUser.displayName || record.displayName || refreshedUser.email || "Creator",
+        photoURL: refreshedUser.photoURL || record.photoURL || "",
         emailVerified: claims.email_verified === true || !!refreshedUser.emailVerified,
         provider: refreshedUser.providerData?.[0]?.providerId || "password",
-        plan: verifiedPlan,
-        organisationId: claims.organisationId || null
+        plan: "Free",
+        accountType: record.accountType || (localStorage.getItem("is_user_uid") === refreshedUser.uid ? localStorage.getItem("is_user_account_type") : null),
+        organisationId: claims.organisationId || record.organisationId || null
       };
+    },
+    async routeAuthenticatedUser(expectedType) {
+      await studioAuth.currentUser();
+      const user = auth.currentUser;
+      if (!user) return false;
+      await studioAuth.refreshEmailVerification(user);
+      const live = auth.currentUser || user;
+      if (!live.emailVerified) return false;
+      const accountType = await studioAuth.getAccountType(live);
+      if (accountType !== expectedType) return false;
+      window.location.replace(appUrl("/dashboard/"));
+      return true;
     },
     async requireUser(redirect = "/auth/personal/login/") {
       const user = await studioAuth.currentUser();
@@ -276,7 +339,9 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       return true;
     },
     async finishSignIn(user, organisation = false) {
-      if (organisation) { try { await studioAuth.validateOrganisation(user); } catch (error) { await auth.signOut(); throw error; } }
+      let accountType;
+      try { accountType = await studioAuth.resolveAccountType(user, organisation ? "organisation" : "personal"); }
+      catch (error) { await auth.signOut(); throw error; }
       const session = readSession();
       session.lastActivity = Date.now();
       session.lastSeen = Date.now();
@@ -284,12 +349,13 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       session.tabs = sessionTabs(session, Date.now());
       writeSession(session);
       const profile = await studioAuth.getProfile(user);
+      localStorage.setItem("is_user_uid", profile.uid);
       localStorage.setItem("is_user_email", profile.email);
       localStorage.setItem("is_user_name", profile.name);
       localStorage.setItem("is_user_photo", profile.photoURL);
       localStorage.setItem("is_user_plan", profile.plan);
       localStorage.setItem("is_user_provider", profile.provider);
-      localStorage.setItem("is_user_account_type", organisation ? "organisation" : "personal");
+      localStorage.setItem("is_user_account_type", accountType);
       const requested = sessionStorage.getItem("studio_return_to") || "";
       sessionStorage.removeItem("studio_return_to");
       const basePath = window.APP_BASE_PATH || "";
@@ -325,7 +391,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       // pending marker can be lost even though Firebase has a valid callback.
       // getRedirectResult() is safe on ordinary page loads and returns null
       // when this page was not reached through an OAuth redirect.
-      const pendingOrganisation = sessionStorage.getItem("studio_sso_organisation");
+      const pendingOrganisation = localStorage.getItem("studio_sso_account_type");
       try {
         const credential = await auth.getRedirectResult();
         const redirectUser = (credential && credential.user) || null;
@@ -335,14 +401,14 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         // finishSignIn() on every page load.
         const user = redirectUser || (pendingOrganisation !== null ? auth.currentUser : null);
         if (!user) {
-          if (pendingOrganisation !== null) sessionStorage.removeItem("studio_sso_organisation");
+          if (pendingOrganisation !== null) localStorage.removeItem("studio_sso_account_type");
           return false;
         }
-        sessionStorage.removeItem("studio_sso_organisation");
-        await studioAuth.finishSignIn(user, pendingOrganisation === "true");
+        localStorage.removeItem("studio_sso_account_type");
+        await studioAuth.finishSignIn(user, pendingOrganisation === "organisation");
         return true;
       } catch (error) {
-        sessionStorage.removeItem("studio_sso_organisation");
+        localStorage.removeItem("studio_sso_account_type");
         showAuthError(error);
         console.error("Firebase OAuth redirect completion failed:", error);
         return false;
@@ -367,7 +433,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       beginFreshSession();
       const provider = new firebase.auth.GithubAuthProvider();
       provider.addScope("user:email");
-      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+      localStorage.setItem("studio_sso_account_type", organisation ? "organisation" : "personal");
       await auth.signInWithRedirect(provider);
     },
     async signInTwitter(organisation = false) {
@@ -376,7 +442,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       // Use redirect for X on mobile browsers: popup windows are commonly
       // blocked after Firebase persistence has completed asynchronously.
       const provider = new firebase.auth.TwitterAuthProvider();
-      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+      localStorage.setItem("studio_sso_account_type", organisation ? "organisation" : "personal");
       await auth.signInWithRedirect(provider);
     },
     async signInMicrosoft(organisation = false) {
@@ -386,7 +452,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       provider.setCustomParameters({ prompt: "select_account" });
       provider.addScope("email");
       provider.addScope("profile");
-      sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+      localStorage.setItem("studio_sso_account_type", organisation ? "organisation" : "personal");
       await auth.signInWithRedirect(provider);
     },
     async runSSO(provider, organisation) {
@@ -396,7 +462,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       } catch (error) {
         const redirectCodes = ["auth/popup-blocked", "auth/operation-not-supported-in-this-environment", "auth/web-storage-unsupported"];
         if (redirectCodes.includes(error.code)) {
-          sessionStorage.setItem("studio_sso_organisation", organisation ? "true" : "false");
+          localStorage.setItem("studio_sso_account_type", organisation ? "organisation" : "personal");
           await auth.signInWithRedirect(provider);
           return;
         }
@@ -422,18 +488,26 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     async registerOrganisation({ name, email, password }) {
       if (!studioAuth.isOrganisationEmail(email)) throw new Error("Use a corporate email address to register an organisation account.");
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      beginFreshSession();
       const credential = await auth.createUserWithEmailAndPassword(email.trim(), password);
       await credential.user.updateProfile({ displayName: name.trim() });
+      await firebase.firestore().collection("userProfiles").doc(credential.user.uid).set({
+        uid: credential.user.uid, email: credential.user.email || email.trim(), displayName: name.trim(),
+        accountType: "organisation", createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
       try { await studioAuth.sendVerificationEmail(credential.user); }
       finally { await auth.signOut(); }
       return true;
     },
     async registerPersonal({ name, email, password }) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      beginFreshSession();
       const credential = await auth.createUserWithEmailAndPassword(email.trim(), password);
       await credential.user.updateProfile({ displayName: name.trim() });
+      await firebase.firestore().collection("userProfiles").doc(credential.user.uid).set({
+        uid: credential.user.uid, email: credential.user.email || email.trim(), displayName: name.trim(),
+        accountType: "personal", createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
       try { await studioAuth.sendVerificationEmail(credential.user); }
       finally { await auth.signOut(); }
       return true;
@@ -476,7 +550,10 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       style.textContent = '.btn-sso.sso-disabled{opacity:.42;filter:grayscale(1);cursor:not-allowed}.btn-sso.sso-active{opacity:1;filter:none;cursor:wait}.sso-spinner{width:15px;height:15px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;display:inline-block;animation:ssoSpin .7s linear infinite;vertical-align:middle}@keyframes ssoSpin{to{transform:rotate(360deg)}}';
       document.head.appendChild(style);
     }
-    return Promise.resolve().then(() => method(!!organisation)).catch(error => {
+    let attempt;
+    try { attempt = method(!!organisation); }
+    catch (error) { attempt = Promise.reject(error); }
+    return Promise.resolve(attempt).catch(error => {
       ssoInProgress = false;
       buttons.forEach(item => { item.disabled = false; item.classList.remove("sso-disabled","sso-active"); item.innerHTML = originals.get(item); });
       if (emailButton) emailButton.disabled = false;
