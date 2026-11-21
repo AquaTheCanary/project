@@ -46,7 +46,7 @@ const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
   // Use the Project origin for Firebase Auth redirects. The Cloudflare Worker
   // transparently proxies /__/ Firebase helper requests to Firebase Hosting.
   apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-  authDomain: "interactivestudio.abrdns.com",
+  authDomain: "convexllc-project.firebaseapp.com",
   projectId: "convexllc-project",
   storageBucket: "convexllc-project.firebasestorage.app",
   messagingSenderId: "82355515745",
