@@ -7,7 +7,7 @@
     if (safeReturn) {
       try { sessionStorage.setItem("studio_return_to", current); } catch (_) {}
     }
-    const login = (window.getAppUrl ? window.getAppUrl("/auth/personal/login/") : "/auth/personal/login/");
+    const login = (window.getAppUrl ? window.getAppUrl("/login/") : "/login/");
     location.replace(login);
   };
   const authCheck = Promise.resolve(window.studioAuth && studioAuth.currentUser());
