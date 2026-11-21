@@ -6,7 +6,7 @@
 const firebaseApps = {
   cloudbase: {
     apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-    authDomain: "convex-project.abrdns.com",
+    authDomain: "www.convex-project.abrdns.com",
     projectId: "convexllc-project",
     storageBucket: "convexllc-project.firebasestorage.app",
     messagingSenderId: "82355515745",
@@ -14,7 +14,7 @@ const firebaseApps = {
   },
   formr: {
     apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-    authDomain: "convex-project.abrdns.com",
+    authDomain: "www.convex-project.abrdns.com",
     projectId: "convexllc-project",
     storageBucket: "convexllc-project.firebasestorage.app",
     messagingSenderId: "82355515745",
@@ -22,7 +22,7 @@ const firebaseApps = {
   },
   siteify: {
     apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-    authDomain: "convex-project.abrdns.com",
+    authDomain: "www.convex-project.abrdns.com",
     projectId: "convexllc-project",
     storageBucket: "convexllc-project.firebasestorage.app",
     messagingSenderId: "82355515745",
@@ -30,7 +30,7 @@ const firebaseApps = {
   },
   presentr: {
     apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-    authDomain: "convex-project.abrdns.com",
+    authDomain: "www.convex-project.abrdns.com",
     projectId: "convexllc-project",
     storageBucket: "convexllc-project.firebasestorage.app",
     messagingSenderId: "82355515745",
@@ -46,7 +46,7 @@ const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
   // Use the Project origin for Firebase Auth redirects. The Cloudflare Worker
   // transparently proxies /__/ Firebase helper requests to Firebase Hosting.
   apiKey: "AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0",
-  authDomain: "convex-project.abrdns.com",
+  authDomain: "www.convex-project.abrdns.com",
   projectId: "convexllc-project",
   storageBucket: "convexllc-project.firebasestorage.app",
   messagingSenderId: "82355515745",
