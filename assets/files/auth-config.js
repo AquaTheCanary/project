@@ -489,27 +489,29 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       if (!studioAuth.isOrganisationEmail(email)) throw new Error("Use a corporate email address to register an organisation account.");
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       const credential = await auth.createUserWithEmailAndPassword(email.trim(), password);
-      await credential.user.updateProfile({ displayName: name.trim() });
-      await firebase.firestore().collection("userProfiles").doc(credential.user.uid).set({
-        uid: credential.user.uid, email: credential.user.email || email.trim(), displayName: name.trim(),
-        accountType: "organisation", createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-      try { await studioAuth.sendVerificationEmail(credential.user); }
-      finally { await auth.signOut(); }
+      try {
+        await credential.user.updateProfile({ displayName: name.trim() });
+        await firebase.firestore().collection("userProfiles").doc(credential.user.uid).set({
+          uid: credential.user.uid, email: credential.user.email || email.trim(), displayName: name.trim(),
+          accountType: "organisation", createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        await studioAuth.sendVerificationEmail(credential.user);
+      } finally { await auth.signOut(); }
       return true;
     },
     async registerPersonal({ name, email, password }) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       const credential = await auth.createUserWithEmailAndPassword(email.trim(), password);
-      await credential.user.updateProfile({ displayName: name.trim() });
-      await firebase.firestore().collection("userProfiles").doc(credential.user.uid).set({
-        uid: credential.user.uid, email: credential.user.email || email.trim(), displayName: name.trim(),
-        accountType: "personal", createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-      try { await studioAuth.sendVerificationEmail(credential.user); }
-      finally { await auth.signOut(); }
+      try {
+        await credential.user.updateProfile({ displayName: name.trim() });
+        await firebase.firestore().collection("userProfiles").doc(credential.user.uid).set({
+          uid: credential.user.uid, email: credential.user.email || email.trim(), displayName: name.trim(),
+          accountType: "personal", createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        await studioAuth.sendVerificationEmail(credential.user);
+      } finally { await auth.signOut(); }
       return true;
     },
     async signOut() {
