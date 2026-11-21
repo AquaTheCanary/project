@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Sign in | Project</title>
+<link rel="icon" href="../assets/images/newp.png">
+<link rel="stylesheet" href="../assets/files/style.css">
+<script src="../assets/files/router.js"></script>
+<link rel="stylesheet" href="../assets/files/design-system.css">
+<style>
+.login-choice-page{min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#f0efff 0,transparent 48%),#fafaff;display:flex;flex-direction:column}
+.choice-nav{height:76px;padding:0 clamp(20px,5vw,72px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e9e8f1;background:#ffffffb8}
+.choice-brand{display:flex;align-items:center;gap:11px;color:#20202a;text-decoration:none;font-weight:750;font-size:18px;letter-spacing:-.04em}
+.choice-brand img{width:34px;height:34px;object-fit:contain}
+.choice-main{width:min(960px,calc(100% - 40px));margin:auto;padding:72px 0 58px}
+.choice-heading{text-align:center;margin-bottom:38px}
+.choice-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#655cf2;font-weight:750}
+.choice-heading h1{font-size:clamp(36px,6vw,54px);letter-spacing:-.065em;line-height:1.04;margin:13px 0 12px;color:#20202a}
+.choice-heading p{font-size:15px;line-height:1.7;color:#737383;margin:0}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.choice-card{position:relative;display:flex;flex-direction:column;min-height:280px;padding:29px;border:1px solid #e5e4ef;border-radius:17px;background:#fff;box-shadow:0 12px 38px #25204b0a;text-decoration:none;color:#22222c;transition:transform .2s,border-color .2s,box-shadow .2s}
+.choice-card:hover{transform:translateY(-4px);border-color:#bcb7ff;box-shadow:0 20px 48px #25204b14}
+.choice-icon{width:48px;height:48px;border-radius:13px;background:#f0efff;color:#5d55df;display:grid;place-items:center;font-size:23px;margin-bottom:23px}
+.choice-card.org .choice-icon{background:#edf5ff;color:#3471c8}
+.choice-card h2{font-size:23px;letter-spacing:-.045em;margin:0 0 9px}
+.choice-card p{font-size:13px;line-height:1.7;color:#737383;margin:0 0 24px;max-width:350px}
+.choice-action{margin-top:auto;color:#5c54df;font-size:13px;font-weight:750}
+.choice-action span{margin-left:5px}
+.choice-bottom{text-align:center;margin-top:30px;color:#81808e;font-size:12px}
+.choice-bottom a{color:#5c54df;text-decoration:none;font-weight:700}
+.choice-footer{margin-top:auto;padding:22px 20px 27px;text-align:center;border-top:1px solid #e9e8f1;color:#92919d;font-size:11px}
+.choice-footer a{color:#6d6a7b;text-decoration:none}
+.choice-footer .admin-link{display:inline-block;margin-top:12px;color:#5d55df;font-weight:700}
+@media(max-width:620px){.choice-nav{height:66px}.choice-main{padding:54px 0 42px}.choice-grid{grid-template-columns:1fr}.choice-card{min-height:230px;padding:24px}.choice-heading{margin-bottom:27px}}
+</style>
+</head>
+<body class="login-choice-page">
+<header class="choice-nav"><a class="choice-brand" data-route="/"><img src="../assets/images/newp-nobg.png" alt=""><span>Project</span></a><a data-route="/" style="font-size:12px;color:#777584;text-decoration:none">← Back to home</a></header>
+<main class="choice-main">
+<section class="choice-heading"><div class="choice-eyebrow">Welcome back</div><h1>How would you like to sign in?</h1><p>Choose the account type you use to access Project.</p></section>
+<section class="choice-grid" aria-label="Choose an account type">
+<a class="choice-card" data-route="/auth/personal/login/"><div class="choice-icon" aria-hidden="true">◉</div><h2>Personal account</h2><p>Sign in to your own workspace and access your presentations, websites, forms and files.</p><span class="choice-action">Personal sign in <span>→</span></span></a>
+<a class="choice-card org" data-route="/auth/organisation/login/"><div class="choice-icon" aria-hidden="true">▦</div><h2>Organisation account</h2><p>Sign in with your work account to access your organisation's shared workspace.</p><span class="choice-action">Organisation sign in <span>→</span></span></a>
+</section>
+<div class="choice-bottom">New to Project? <a data-route="/auth/personal/register/">Create a free personal account</a></div>
+</main>
+<footer class="choice-footer">© 2026 Project. All rights reserved.<br><a class="admin-link" data-route="/admin/console/">Administrator sign in →</a></footer>
+</body></html>
