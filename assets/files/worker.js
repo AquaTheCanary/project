@@ -125,9 +125,9 @@ async function proxyStudioApp(request) {
   const requestHost = String(request.headers.get("X-IS-Original-Host") || incoming.hostname).toLowerCase();
   let pathname = incoming.pathname;
   // Keep legacy HTML working after consolidating the public asset folder to lowercase.
-  pathname = pathname.replaceAll("assets/Files/", "assets/files/");
-  pathname = pathname.replace(/\/assets\/images\/(?:interactive-studio-icon|project-mark)\.svg$/i, "/assets/images/newp.png");
-  pathname = pathname.replace(/\/assets\/images\/project-logo\.svg$/i, "/assets/images/newp-nobg.png");
+  pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
+  pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
+  pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
   const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST) pathname = "/help/index.html";
   else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
@@ -153,7 +153,7 @@ async function proxyStudioApp(request) {
   const contentType = upstream.headers.get("Content-Type") || "";
   if (!contentType.toLowerCase().includes("text/html")) return upstream;
   const html = (await upstream.text())
-    .replace(/assets\\/files\\//gi, "assets/files/")
+    .replaceAll("assets/Files/", "assets/files/")
     .replaceAll("interactive-studio-icon.svg", "newp.png")
     .replaceAll("project-mark.svg", "newp-nobg.png")
     .replaceAll("project-logo.svg", "newp-nobg.png");
