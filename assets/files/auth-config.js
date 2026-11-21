@@ -349,7 +349,9 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       }
     },
     async signInGoogle(organisation = false) {
-      await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      // LOCAL persistence is configured during shared auth initialisation.
+      // Do not await another persistence write here: preserve the click's
+      // transient user activation so mobile browsers allow the popup.
       beginFreshSession();
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.setCustomParameters({ prompt: "select_account" });
