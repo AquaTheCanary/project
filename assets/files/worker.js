@@ -437,8 +437,8 @@ async function firebaseAdminRequest(path, options, env) {
   return data;
 }
 async function adminRequest(request, user, env) {
-  if (!user.emailVerified || user.email.toLowerCase() !== "admin@interactivestudio.abrdns.com") {
-    return json({error:"Admin access requires the verified admin@interactivestudio.abrdns.com account."},403,request.headers.get("Origin")||"");
+  if (!user.emailVerified || user.email.toLowerCase() !== "admin@convex-project.abrdns.com") {
+    return json({error:"Admin access requires the verified admin@convex-project.abrdns.com account."},403,request.headers.get("Origin")||"");
   }
   const url = new URL(request.url), body = await request.json().catch(()=>({}));
   if (url.pathname === "/admin/users/list") {
