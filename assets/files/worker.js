@@ -124,6 +124,20 @@ async function proxyStudioApp(request) {
   const incoming = new URL(request.url);
   const requestHost = String(request.headers.get("X-IS-Original-Host") || incoming.hostname).toLowerCase();
   let pathname = incoming.pathname;
+  // Firebase Auth redirect helpers must be served from the app's own origin.
+  // Proxy the complete reserved Firebase helper namespace to the project's
+  // Firebase Hosting auth handler, preserving method, query, body and headers.
+  if (requestHost === "interactivestudio.abrdns.com" && pathname.startsWith("/__/")) {
+    const firebaseTarget = new URL("https://convexllc-project.firebaseapp.com" + pathname + incoming.search);
+    const firebaseResponse = await fetch(new Request(firebaseTarget.toString(), request));
+    const firebaseHeaders = new Headers(firebaseResponse.headers);
+    firebaseHeaders.set("Cache-Control", "no-store");
+    return new Response(firebaseResponse.body, {
+      status: firebaseResponse.status,
+      statusText: firebaseResponse.statusText,
+      headers: firebaseHeaders
+    });
+  }
   // Normalize legacy uppercase asset paths after the folder consolidation.
   pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
 const params = new URLSearchParams(incoming.search);
