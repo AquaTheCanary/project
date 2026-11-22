@@ -87,9 +87,7 @@ jobs:
           cat > _site/presentation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/present/"+location.search+location.hash)</script><a href="/present/">Open Project Present</a>
           EOF
-          cat > _site/present/new/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/presentations/new/"+location.search+location.hash)</script><a href="/presentations/new/">Create a presentation</a>
-          EOF
+          cp _site/presentations/new/index.html _site/present/new/index.html
           mkdir -p _site/legal/policies
           cp _site/legal/terms-of-service/index.html _site/legal/policies/terms-of-service/index.html
           cp _site/legal/privacy-policy/index.html _site/legal/policies/privacy/index.html
