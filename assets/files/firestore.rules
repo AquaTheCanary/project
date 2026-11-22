@@ -170,6 +170,36 @@ service cloud.firestore {
           .hasOnly(['status', 'checkedAt', 'updatedAt']);
       allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
     }
+    function isProjectAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Admin membership is provisioned manually with Firebase Console/Admin SDK.
+    // Clients cannot grant themselves administrator access.
+    match /admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, create, update, delete: if false;
+    }
+
+    // A single public-readable document drives the announcement ticker.
+    match /siteConfig/{configId} {
+      allow get: if configId == 'announcements' || isProjectAdmin();
+      allow list: if false;
+      allow create, update, delete: if isProjectAdmin();
+    }
+
+    match /publicProfiles/{uid} {
+      allow get: if (resource.data.visibility == 'public')
+        || (signedIn() && request.auth.uid == uid);
+      allow list: if false;
+      allow create, update: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.handle is string
+        && request.resource.data.visibility in ['public', 'private'];
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+
     match /userProfiles/{uid} {
       allow read, create, update, delete: if signedIn() && request.auth.uid == uid;
     }
