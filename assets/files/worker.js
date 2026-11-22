@@ -200,6 +200,14 @@ const params = new URLSearchParams(incoming.search);
     return Response.redirect(new URL("/present/" + incoming.search, incoming.origin), 301);
   } else if (pathname === "/presentation/new" || pathname === "/presentation/new/") {
     return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/host\/?$/i))) {
+    return Response.redirect(new URL("/present/" + match[1] + "/host/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/audience\/?$/i))) {
+    return Response.redirect(new URL("/present/" + match[1] + "/audience/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/?$/i))) {
+    return Response.redirect(new URL("/present/" + match[1] + "/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentations\/(?:new|editor)\/?$/i))) {
+    return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
   } else if (pathname === "/present" || pathname === "/present/") {
     return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/present/new" || pathname === "/present/new/") {
