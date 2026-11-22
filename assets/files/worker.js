@@ -125,26 +125,22 @@ async function serveMainDomainPath(request, env) {
   const url = new URL(request.url);
   const host = String(request.headers.get("X-IS-Original-Host") || url.hostname).toLowerCase();
   if (host !== "convex-project.abrdns.com" && host !== "www.convex-project.abrdns.com") return null;
-  // Published Project Sites always live under /sites/view/<public-name-or-id>.
-  const match = url.pathname.match(/^\/sites\/view\/([^/]+)\/?$/i);
+  const match = url.pathname.match(/^\\/sites\\/view\\/([^/]+)\\/?$/i);
   if (!match) return null;
   let path;
-  try { path = decodeURIComponent(match[1]).toLowerCase(); } catch (_) { return null; }
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(path)) return null;
-  // Six-digit IDs are stable aliases which permanently redirect to the public name.
-  if (/^\d{6}$/.test(path)) {
+  try { path = decodeURIComponent(match[1]).toLowerCase(); } catch (_) { return notPublished("invalid address"); }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(path)) return notPublished(path);
+  if (/^\\d{6}$/.test(path)) {
     const site = await readPublicDocument("websites", path, env);
-    if (!site) return null;
-    if (site.status !== "published") return null;
+    if (!site || site.status !== "published") return notPublished(path);
     const publicSlug = String(site.publicSlug || "").toLowerCase();
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(publicSlug)) return notPublished(path);
     return Response.redirect(new URL("https://convex-project.abrdns.com/sites/view/" + publicSlug + url.search), 301);
   }
   const mapping = await readPublicDocument("websitePaths", path, env);
-  if (!mapping) return null;
-  if (mapping === false || mapping.status !== "published" || !mapping.websiteSlug) return notPublished(path);
+  if (!mapping || mapping === false || mapping.status !== "published" || !mapping.websiteSlug) return notPublished(path);
   const site = await readPublicDocument("websites", String(mapping.websiteSlug), env);
-  if (!site || site.status !== "published" || site.publicSlug !== path) return notPublished(path);
+  if (!site || site.status !== "published" || String(site.publicSlug || "").toLowerCase() !== path) return notPublished(path);
   const response = renderPublishedSite(site, host);
   if (request.method === "HEAD") return new Response(null, {status:response.status,headers:response.headers});
   return response;
@@ -247,42 +243,33 @@ async function proxyStudioApp(request) {
     }
     pathname = "/websites/";
     params.set("create", "1");
-  } else if ((match = pathname.match(/^\/sites\/view\/(\d{6})\/?$/i))) {
-    const site = await readPublicDocument("websites", match[1], env);
-    if (site && site.status === "published" && site.publishedHostname) {
-      const hostname = String(site.publishedHostname).toLowerCase();
-      if (/^(?=.{1,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/.test(hostname)) return Response.redirect("https://" + hostname + "/", 302);
-    }
-    pathname = "/assets/files/published-sites-static/";
-    params.set("preview", match[1]);
   } else if ((match = pathname.match(/^\/sites\/(\d{6})\/?$/i))) {
-    pathname = "/websites/";
-    params.set("id", match[1]);
+    return Response.redirect(new URL("/sites/view/" + match[1] + incoming.search, incoming.origin), 301);
   } else if (pathname === "/presentation" || pathname === "/presentation/") {
-    return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 302);
-  } else if (pathname === "/presentation/new" || pathname === "/presentation/new/") {
-    pathname = "/presentations/new/";
+    return Response.redirect(new URL("/present/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentation\/new\/?$/i))) {
+    return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
   } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/host\/?$/i))) {
+    return Response.redirect(new URL("/present/" + match[1] + "/host/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/audience\/?$/i))) {
+    return Response.redirect(new URL("/present/" + match[1] + "/audience/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/?$/i))) {
+    return Response.redirect(new URL("/present/" + match[1] + "/" + incoming.search, incoming.origin), 301);
+  } else if (pathname === "/present" || pathname === "/present/") {
+    pathname = "/presentations/new/";
+  } else if (pathname === "/present/new" || pathname === "/present/new/") {
+    pathname = "/presentations/new/";
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/host\/?$/i))) {
     pathname = "/presentations/view/host/";
     params.set("id", match[1]);
-  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/audience\/?$/i))) {
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/audience\/?$/i))) {
     pathname = "/presentations/view/audience/";
     params.set("id", match[1]);
-  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/?$/i))) {
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/?$/i))) {
     pathname = "/presentations/editor/";
     params.set("id", match[1]);
-  } else if (pathname === "/present" || pathname === "/present/") {
-    return Response.redirect(new URL("/presentation/" + incoming.search, incoming.origin), 301);
-  } else if (pathname === "/present/new" || pathname === "/present/new/") {
-    return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 301);
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/host\/?$/i))) {
-    return Response.redirect(new URL("/presentation/" + match[1] + "/present/host/" + incoming.search, incoming.origin), 301);
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/audience\/?$/i))) {
-    return Response.redirect(new URL("/presentation/" + match[1] + "/present/audience/" + incoming.search, incoming.origin), 301);
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/?$/i))) {
-    return Response.redirect(new URL("/presentation/" + match[1] + "/" + incoming.search, incoming.origin), 301);
   } else if ((match = pathname.match(/^\/presentations\/(?:new|editor)\/?$/i))) {
-    return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 301);
+    return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
   } else if (pathname === "/forms" || pathname === "/forms/") {
     return Response.redirect(new URL("/forms/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/forms/new" || pathname === "/forms/new/") {
