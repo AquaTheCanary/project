@@ -25,7 +25,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
-          rsync -a --exclude='.git' --exclude='.github' --exclude='_site' --exclude='presentations' --exclude='auth' --exclude='websites' --exclude='published-sites' --exclude='published-sites-static' --exclude='render-proxy' --exclude='functions' --exclude='backend' --exclude='forms/respond' --exclude='forms/submitted' ./ _site/
+          rsync -a --exclude='.git' --exclude='.github' --exclude='_site' --exclude='presentations' --exclude='auth' --exclude='websites' --exclude='published-sites' --exclude='published-sites-static' --exclude='render-proxy' --exclude='functions' --exclude='backend' --exclude='forms/respond' --exclude='forms/submitted' --exclude='legal/privacy-policy' --exclude='legal/terms-of-service' ./ _site/
 
           # The homepage source lives in /home in the repository, but is published at /.
           test -s home/index.html
@@ -84,8 +84,8 @@ jobs:
           test -s _site/presentation/index.html
           test -s _site/presentation/new/index.html
           mkdir -p _site/legal/policies
-          cp _site/legal/terms-of-service/index.html _site/legal/policies/terms-of-service/index.html
-          cp _site/legal/privacy-policy/index.html _site/legal/policies/privacy/index.html
+          cp legal/terms-of-service/index.html _site/legal/policies/terms-of-service/index.html
+          cp legal/privacy-policy/index.html _site/legal/policies/privacy/index.html
           for alias in privacy privacy-policy; do mkdir -p "_site/$alias"; cat > "_site/$alias/index.html" <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/legal/policies/privacy/"+location.search+location.hash)</script><a href="/legal/policies/privacy/">Privacy</a>
           EOF
