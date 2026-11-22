@@ -122,8 +122,8 @@ async function serveWebsite(request, env, hostnameOverride) {
 }
 function legacyProductPath(host, pathname) {
   const hostMap = {
-    "presentr.convex-project.abrdns.com": "/present/",
-    "www.presentr.convex-project.abrdns.com": "/present/",
+    "presentr.convex-project.abrdns.com": "/presentation/",
+    "www.presentr.convex-project.abrdns.com": "/presentation/",
     "siteify.convex-project.abrdns.com": "/sites/",
     "www.siteify.convex-project.abrdns.com": "/sites/",
     "formr.convex-project.abrdns.com": "/forms/",
@@ -135,12 +135,12 @@ function legacyProductPath(host, pathname) {
   if (!base) return null;
   if (/^\/(?:assets|images|fonts|favicon|robots\.txt|sitemap\.xml|__\/)/i.test(pathname)) return pathname;
   const legacyRoutes = [
-    [/^\/presentations\/editor\/?$/i, "/present/"],
-    [/^\/presentations\/new\/?$/i, "/present/new/"],
-    [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
-    [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
-    [/^\/presentations\/view\/([a-z0-9_-]+)\/(audience|presenter)\/?$/i, "/present/$1/$2/"],
-    [/^\/view\/(\d{6})\/?$/i, "/present/view/$1/"],
+    [/^\/presentations\/editor\/?$/i, "/presentation/"],
+    [/^\/presentations\/new\/?$/i, "/presentation/new/"],
+    [/^\/presentations\/view\/audience\/?$/i, "/presentation/"],
+    [/^\/presentations\/view\/presenter\/?$/i, "/presentation/"],
+    [/^\/presentations\/view\/([a-z0-9_-]+)\/(audience|presenter)\/?$/i, "/presentation/$1/present/$2/"],
+    [/^\/view\/(\d{6})\/?$/i, "/presentation/$1/present/audience/"],
     [/^\/websites\/?$/i, "/sites/"],
     [/^\/websites\/(.*)$/i, "/sites/$1"],
     [/^\/forms\/?$/i, "/forms/"]
@@ -149,7 +149,7 @@ function legacyProductPath(host, pathname) {
     if (pattern.test(pathname)) return pathname.replace(pattern, target);
   }
   if (pathname === "/" || pathname === "/index.html") return base;
-  if (pathname.startsWith("/present/") || pathname.startsWith("/sites/") || pathname.startsWith("/forms/")) return pathname;
+  if (pathname.startsWith("/presentation/") || pathname.startsWith("/sites/") || pathname.startsWith("/forms/")) return pathname;
   return pathname;
 }
 
@@ -197,31 +197,31 @@ const params = new URLSearchParams(incoming.search);
     pathname = "/websites/";
     params.set("id", match[1]);
   } else if (pathname === "/presentation" || pathname === "/presentation/") {
-    return Response.redirect(new URL("/present/" + incoming.search, incoming.origin), 301);
+    return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/presentation/new" || pathname === "/presentation/new/") {
-    return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
-  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/host\/?$/i))) {
-    return Response.redirect(new URL("/present/" + match[1] + "/host/" + incoming.search, incoming.origin), 301);
-  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/audience\/?$/i))) {
-    return Response.redirect(new URL("/present/" + match[1] + "/audience/" + incoming.search, incoming.origin), 301);
-  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/?$/i))) {
-    return Response.redirect(new URL("/present/" + match[1] + "/" + incoming.search, incoming.origin), 301);
-  } else if ((match = pathname.match(/^\/presentations\/(?:new|editor)\/?$/i))) {
-    return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
-  } else if (pathname === "/present" || pathname === "/present/") {
-    return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 302);
-  } else if (pathname === "/present/new" || pathname === "/present/new/") {
     pathname = "/presentations/new/";
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/host\/?$/i))) {
-    pathname = "/presenter/";
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/host\/?$/i))) {
+    pathname = "/presentations/view/presenter/";
     params.set("id", match[1]);
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/audience\/?$/i))) {
-    pathname = "/audience/";
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/audience\/?$/i))) {
+    pathname = "/presentations/view/audience/";
     params.set("id", match[1]);
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/?$/i))) {
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/?$/i))) {
     pathname = "/presentations/editor/";
     params.set("id", match[1]);
-  } else if (pathname === "/forms" || pathname === "/forms/") {
+  } else if (pathname === "/present" || pathname === "/present/") {
+    return Response.redirect(new URL("/presentation/" + incoming.search, incoming.origin), 301);
+  } else if (pathname === "/present/new" || pathname === "/present/new/") {
+    return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/host\/?$/i))) {
+    return Response.redirect(new URL("/presentation/" + match[1] + "/present/host/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/audience\/?$/i))) {
+    return Response.redirect(new URL("/presentation/" + match[1] + "/present/audience/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/?$/i))) {
+    return Response.redirect(new URL("/presentation/" + match[1] + "/" + incoming.search, incoming.origin), 301);
+  } else if ((match = pathname.match(/^\/presentations\/(?:new|editor)\/?$/i))) {
+    return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 301);
+  }  } else if (pathname === "/forms" || pathname === "/forms/") {
     return Response.redirect(new URL("/forms/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/forms/new" || pathname === "/forms/new/") {
     pathname = "/forms/";
