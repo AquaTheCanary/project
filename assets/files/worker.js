@@ -507,6 +507,36 @@ export default {
     }
     if (hostname === PLATFORM_HOST || hostname === HELP_HOST || hostname === "interactivestudio.abrdns.com" || hostname === "www.interactivestudio.abrdns.com" || hostname === "convex-project.abrdns.com" || hostname === "www.convex-project.abrdns.com") return proxyStudioApp(request);
     if (hostname !== API_HOST) return serveWebsite(request, env);
+    // Public, read-only platform health endpoint used by the live status page.
+    if (url.pathname === "/health" && (request.method === "GET" || request.method === "HEAD")) {
+      const checks = [
+        {id:"project",name:"Project",url:"https://www.convex-project.abrdns.com/"},
+        {id:"presentr",name:"Presentr",url:"https://www.presentr.convex-project.abrdns.com/"},
+        {id:"siteify",name:"Siteify",url:"https://www.siteify.convex-project.abrdns.com/"},
+        {id:"formr",name:"Formr",url:"https://www.formr.convex-project.abrdns.com/"},
+        {id:"cloudbase",name:"Cloudbase",url:"https://www.cloudbase.convex-project.abrdns.com/"},
+        {id:"firebase-auth",name:"Firebase Authentication",url:"https://identitytoolkit.googleapis.com/"},
+        {id:"firestore",name:"Cloud Firestore",url:"https://firestore.googleapis.com/"},
+        {id:"firebase-storage",name:"Firebase Storage",url:"https://firebasestorage.googleapis.com/"},
+        {id:"worker-api",name:"Project API",url:"https://interactive-studio.convexllc.workers.dev/"}
+      ];
+      const results = await Promise.all(checks.map(async service => {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 8000);
+        const started = Date.now();
+        try {
+          const response = await fetch(service.url, {method:"GET",redirect:"follow",signal:controller.signal,headers:{"User-Agent":"Project-Status-Monitor/1.0"}});
+          const reachable = response.status < 500;
+          return {id:service.id,name:service.name,status:reachable?"operational":"outage",httpStatus:response.status,responseTime:Date.now()-started,checkedAt:new Date().toISOString()};
+        } catch (error) {
+          return {id:service.id,name:service.name,status:"outage",httpStatus:null,responseTime:Date.now()-started,error:error?.name==="AbortError"?"Timed out":"Connection failed",checkedAt:new Date().toISOString()};
+        } finally { clearTimeout(timer); }
+      }));
+      const operational = results.filter(x=>x.status==="operational").length;
+      const summary = operational===results.length?"operational":operational===0?"outage":"degraded";
+      const payload = JSON.stringify({summary,operational,total:results.length,checkedAt:new Date().toISOString(),services:results});
+      return new Response(request.method==="HEAD"?null:payload,{status:200,headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store, max-age=0","Access-Control-Allow-Origin":"*","Access-Control-Allow-Methods":"GET, HEAD, OPTIONS","Access-Control-Allow-Headers":"Content-Type","X-Content-Type-Options":"nosniff"}});
+    }
     // Pathflo forwards the www platform hostname to this Worker as its workers.dev
     // upstream. Serve the Studio app for browser page/navigation requests; API
     // operations remain POST requests handled below.
