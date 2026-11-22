@@ -38,6 +38,53 @@ jobs:
           grep -q '/assets/files/style.css' _site/index.html
           grep -q '/assets/files/design-system.css' _site/index.html
 
+          # Publish clean product URLs as real GitHub Pages directories. The custom
+          # domain points directly to Pages, so these aliases must exist in the
+          # Pages artifact; a separately deployed Worker cannot rewrite them.
+          mkdir -p _site/present/new _site/present/view _site/present/presenter
+          mkdir -p _site/sites/new _site/sites/editor _site/sites/publish
+          cp _site/presentations/editor/index.html _site/present/index.html
+          cp _site/presentations/new/index.html _site/present/new/index.html
+          cp _site/presentations/view/audience/index.html _site/present/view/index.html
+          cp _site/presentations/view/presenter/index.html _site/present/presenter/index.html
+          cp _site/websites/index.html _site/sites/index.html
+          cp _site/websites/new/index.html _site/sites/new/index.html
+          cp _site/websites/editor/index.html _site/sites/editor/index.html
+          cp _site/websites/publish/index.html _site/sites/publish/index.html
+
+          # Catch dynamic clean URLs and route them to the matching static app
+          # entry point while preserving the requested ID as a query parameter.
+          cat > _site/404.html <<'EOF'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="robots" content="noindex">
+            <title>Page not found | Project</title>
+            <style>
+              *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#f7f7fa;color:#20212a;font:15px Inter,system-ui,sans-serif}
+              main{width:min(440px,100%);padding:36px;border:1px solid #e6e7ee;border-radius:16px;background:#fff;text-align:center;box-shadow:0 18px 55px #20212a0b}
+              h1{margin:0 0 8px;font-size:26px;letter-spacing:-.05em}p{color:#737582;line-height:1.6}
+              a{display:inline-flex;margin-top:12px;padding:11px 16px;border-radius:8px;background:#625bf6;color:#fff;text-decoration:none;font-weight:650}
+            </style>
+          </head>
+          <body><main><h1>Page not found</h1><p>That Project page may have moved, or the address may be incorrect.</p><a href="/">Back to Project</a></main>
+          <script>
+          (function(){
+            var path=decodeURIComponent(location.pathname).replace(/\\/g,"/");
+            var target=null, match;
+            if((match=path.match(/^\\/present\\/(\\d{6})\\/?$/i))) target="/present/view/?room="+encodeURIComponent(match[1]);
+            else if((match=path.match(/^\\/present\\/(\\d{6})\\/(audience|presenter)\\/?$/i))) target=(match[2].toLowerCase()==="presenter"?"/present/presenter/":"/present/view/")+"?id="+encodeURIComponent(match[1]);
+            else if((match=path.match(/^\\/view\\/(\\d{6})\\/?$/i))) target="/present/view/?room="+encodeURIComponent(match[1]);
+            else if((match=path.match(/^\\/presentations\\/view\\/([a-z0-9_-]+)\\/(audience|presenter)\\/?$/i))) target=(match[2].toLowerCase()==="presenter"?"/present/presenter/":"/present/view/")+"?id="+encodeURIComponent(match[1]);
+            else if((match=path.match(/^\\/sites\\/([a-z0-9-]+)\\/(editor|publish)\\/?$/i))) target="/sites/"+match[2].toLowerCase()+"/?id="+encodeURIComponent(match[1]);
+            else if((match=path.match(/^\\/websites\\/([a-z0-9-]+)\\/(editor|publish)\\/?$/i))) target="/sites/"+match[2].toLowerCase()+"/?id="+encodeURIComponent(match[1]);
+            if(target) location.replace(target+location.hash);
+          })();
+          </script></body></html>
+          EOF
+
           # /home remains a compatibility URL and redirects to the root homepage.
           mkdir -p _site/home
           cat > _site/home/index.html <<'EOF'
