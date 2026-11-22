@@ -229,19 +229,29 @@ const params = new URLSearchParams(incoming.search);
     pathname = "/websites/";
   }
   const query = params.toString();
-  const target = new URL("https://aquathecanary.github.io/project" + pathname + (query ? "?" + query : ""));
+  // GitHub Pages redirects its github.io URL to the repository CNAME.
+  // That CNAME points back to this Worker, so fetching Pages here loops.
+  // Read the deployed source files from GitHub's raw content host instead.
+  let sourcePath = pathname || "/";
+  if (sourcePath.endsWith("/")) sourcePath += "index.html";
+  else if (!/\.[a-z0-9]{1,8}$/i.test(sourcePath)) sourcePath += "/index.html";
+  const target = new URL("https://raw.githubusercontent.com/AquaTheCanary/project/main" + sourcePath + (query ? "?" + query : ""));
   const upstream = await fetch(new Request(target.toString(), request));
-  const contentType = upstream.headers.get("Content-Type") || "";
-  if (!contentType.toLowerCase().includes("text/html")) return upstream;
+  if (!upstream.ok) return new Response(upstream.body, {status:upstream.status,statusText:upstream.statusText,headers:upstream.headers});
+  const extension = (sourcePath.match(/\.([a-z0-9]{1,8})$/i) || [,""])[1].toLowerCase();
+  const mimeTypes = {html:"text/html; charset=utf-8",css:"text/css; charset=utf-8",js:"text/javascript; charset=utf-8",mjs:"text/javascript; charset=utf-8",json:"application/json; charset=utf-8",svg:"image/svg+xml",png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",webp:"image/webp",gif:"image/gif",ico:"image/x-icon",woff:"font/woff",woff2:"font/woff2",ttf:"font/ttf",otf:"font/otf",pdf:"application/pdf",txt:"text/plain; charset=utf-8",xml:"application/xml; charset=utf-8",mp4:"video/mp4",webm:"video/webm"};
+  const headers = new Headers(upstream.headers);
+  headers.set("Content-Type", mimeTypes[extension] || upstream.headers.get("Content-Type") || "application/octet-stream");
+  headers.set("Cache-Control", "no-store");
+  headers.set("X-Project-Upstream", "raw.githubusercontent.com");
+  if (extension !== "html") return new Response(upstream.body, {status:upstream.status,statusText:upstream.statusText,headers});
+  headers.delete("Content-Length");
   const html = (await upstream.text())
     .replace(/assets\/Files\//gi, "assets/files/")
     .replace(/(?:\.\.\/)+assets\//gi, "/assets/")
     .replaceAll("interactive-studio-icon.svg", "newp.png")
     .replaceAll("project-mark.svg", "newp-nobg.png")
     .replaceAll("project-logo.svg", "newp-nobg.png");
-  const headers = new Headers(upstream.headers);
-  headers.delete("Content-Length");
-  headers.set("Cache-Control", "no-store");
   return new Response(html, {status:upstream.status,statusText:upstream.statusText,headers});
 }
 function normaliseHostname(value) {
