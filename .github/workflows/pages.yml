@@ -73,17 +73,21 @@ jobs:
           cat > _site/register/organisation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/auth/organisation/register/"+location.search+location.hash)</script><a href="/auth/organisation/register/">Continue</a>
           EOF
-          mkdir -p _site/sites/new _site/presentation/new _site/forms/new _site/forms/submitted _site/legal/policies/terms-of-service _site/legal/policies/privacy
+          mkdir -p _site/sites/new _site/present/new _site/forms/new _site/forms/submitted _site/legal/policies/terms-of-service _site/legal/policies/privacy
           cat > _site/sites/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/sites/new/"+location.search+location.hash)</script><a href="/sites/new/">Create a site</a>
           EOF
           cat > _site/sites/new/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/websites/?create=1"+location.hash)</script><a href="/websites/?create=1">Create a site</a>
           EOF
-          cat > _site/presentation/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/presentation/new/"+location.search+location.hash)</script><a href="/presentation/new/">Create a presentation</a>
+          cat > _site/present/index.html <<'EOF'
+          <!doctype html><meta charset="utf-8"><script>location.replace("/present/new/"+location.search+location.hash)</script><a href="/present/new/">Create a presentation</a>
           EOF
-          cat > _site/presentation/new/index.html <<'EOF'
+          mkdir -p _site/presentation
+          cat > _site/presentation/index.html <<'EOF'
+          <!doctype html><meta charset="utf-8"><script>location.replace("/present/"+location.search+location.hash)</script><a href="/present/">Open Project Present</a>
+          EOF
+          cat > _site/present/new/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/presentations/new/"+location.search+location.hash)</script><a href="/presentations/new/">Create a presentation</a>
           EOF
           mkdir -p _site/legal/policies
@@ -116,9 +120,9 @@ jobs:
             var p=decodeURIComponent(location.pathname),m,t=null,q=location.search,h=location.hash;
             if((m=p.match(/^\/sites\/view\/([0-9]{6})\/?$/))) t="/published-sites-static/?preview="+encodeURIComponent(m[1]);
             else if((m=p.match(/^\/sites\/([0-9]{6})\/?$/))) t="/websites/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/host\/?$/))) t="/presenter/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/audience\/?$/))) t="/audience/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\/presentation\/([0-9]{6})\/?$/))) t="/presentations/editor/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/present\/([0-9]{6})\/host\/?$/))) t="/presenter/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/present\/([0-9]{6})\/audience\/?$/))) t="/audience/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/present\/([0-9]{6})\/?$/))) t="/presentations/editor/?id="+encodeURIComponent(m[1]);
             else if((m=p.match(/^\/forms\/take\/([^/]+)\/?$/))) t="/forms/respond/?id="+encodeURIComponent(m[1]);
             else if((m=p.match(/^\/forms\/([^/]+)\/submitted\/?$/))) t="/forms/submitted/?id="+encodeURIComponent(m[1]);
             else if((m=p.match(/^\/forms\/([^/]+)\/results\/?$/))) t="/forms/new/?id="+encodeURIComponent(m[1])+"&view=results";
