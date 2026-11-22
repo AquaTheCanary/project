@@ -1,1 +1,182 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=../"><title>Project</title><script>location.replace("../"+location.search+location.hash)</script><link rel="stylesheet" href="../assets/Files/design-system.css"></head><body><a href="../">Continue to Project</a></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<script>
+/* Always open the marketing homepage at the top; avoid animated browser scroll restoration. */
+try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (_) {}
+document.documentElement.style.scrollBehavior = "auto";
+window.addEventListener("pageshow", function (event) {
+  if (location.pathname === "/" || location.pathname === "/index.html") {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }
+});
+</script><meta name="description" content="Create interactive presentations, design responsive websites and share your ideas with Project. Free to use.">
+<meta name="description" content="Create presentations, build websites and bring ideas to life with Project.">
+<title>Project — Make ideas interactive</title>
+<link rel="icon" href="assets/images/newp.png">
+<link rel="stylesheet" href="/assets/files/style.css?v=20261121-2">
+<script src="assets/files/router.js" defer></script><script src="assets/files/app.js" defer></script>
+<style>
+/* Marketing site */
+.marketing{background:#fff;color:#1d1d22;overflow:hidden}
+.marketing-nav{height:76px;max-width:1440px;margin:auto;padding:0 44px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eeeef1}
+.marketing-brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:16px;font-weight:650;letter-spacing:-.04em}
+.marketing-brand img{width:30px;height:30px;object-fit:contain}
+.marketing-navlinks{display:flex;align-items:center;gap:34px}
+.marketing-navlinks a,.marketing-signin{font-size:13px;color:#55545e;text-decoration:none;font-weight:550}
+.marketing-navlinks a:hover,.marketing-signin:hover{color:#635bff}
+.marketing-actions{display:flex;align-items:center;gap:22px}
+.marketing-cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 19px;border-radius:8px;background:#625bf6;color:white!important;text-decoration:none;font-size:13px;font-weight:650;transition:background .18s,transform .18s}
+.marketing-cta:hover{background:#5149e7;transform:translateY(-1px)}
+.marketing-hero{max-width:1440px;margin:auto;padding:112px 44px 74px;display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,.92fr);gap:54px;align-items:center}
+.hero-copy{max-width:610px}
+.hero-label{display:inline-flex;align-items:center;gap:9px;color:#625bf6;font-size:12px;font-weight:650;letter-spacing:.015em;margin-bottom:26px}
+.hero-label:before{content:"";width:7px;height:7px;background:#625bf6;border-radius:50%}
+.hero-copy h1{font-size:clamp(52px,6.3vw,82px);line-height:.99;letter-spacing:-.078em;font-weight:650;margin:0 0 25px;color:#1b1b20}
+.hero-copy h1 span{color:#625bf6}
+.hero-copy>p{max-width:490px;color:#696873;font-size:17px;line-height:1.65;margin:0 0 32px}
+.hero-buttons{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.hero-secondary{font-size:13px;font-weight:600;color:#26252c;text-decoration:none}
+.hero-secondary span{color:#625bf6;margin-left:5px}
+.hero-note{margin-top:22px;color:#92919a;font-size:11px}
+.hero-art{position:relative;min-height:510px;display:flex;align-items:center;justify-content:center}
+.product-window{position:relative;width:min(100%,650px);background:#fff;border:1px solid #e6e5eb;border-radius:12px;box-shadow:0 28px 90px #27234a16;overflow:hidden;transform:rotate(1.2deg)}
+.window-bar{height:48px;border-bottom:1px solid #eeedf1;display:flex;align-items:center;padding:0 16px;gap:7px}
+.window-dot{width:8px;height:8px;border-radius:50%;background:#dedde4}
+.window-title{margin-left:9px;color:#777681;font-size:10px}
+.window-share{margin-left:auto;background:#625bf6;color:#fff;padding:6px 11px;border-radius:5px;font-size:9px;font-weight:650}
+.window-body{display:grid;grid-template-columns:125px minmax(0,1fr) 120px;min-height:365px;background:#f7f7fa}
+.window-side{padding:18px 11px;background:#fff;border-right:1px solid #eeedf1}
+.window-side.right{border-right:0;border-left:1px solid #eeedf1}
+.window-side small{display:block;color:#9a99a2;font-size:8px;font-weight:700;letter-spacing:.1em;margin-bottom:13px}
+.window-layer{height:27px;border-radius:5px;margin:5px 0;padding:7px 8px;color:#777681;font-size:8px}
+.window-layer.active{background:#f1f0ff;color:#554de0}
+.window-canvas{display:grid;place-items:center;padding:25px}
+.slide-preview{width:100%;aspect-ratio:16/10;background:#fff;border:1px solid #ecebf0;box-shadow:0 7px 20px #1d1c2a0b;padding:11%;display:flex;flex-direction:column;justify-content:center}
+.slide-preview small{font-size:8px;color:#625bf6;letter-spacing:.13em;font-weight:700}
+.slide-preview strong{font-size:clamp(20px,2.8vw,34px);line-height:1.04;letter-spacing:-.065em;margin:14px 0 10px;color:#24232b}
+.slide-preview p{font-size:9px;line-height:1.6;color:#777681;max-width:230px}
+.window-control{height:6px;border-radius:4px;background:#eeedf2;margin:12px 0}.window-control.short{width:60%}
+.window-color{width:24px;height:24px;border-radius:6px;background:#625bf6;margin-top:20px}
+.float-note{position:absolute;right:-12px;bottom:48px;padding:14px 17px;background:#fff;border:1px solid #e8e7ed;border-radius:9px;box-shadow:0 12px 34px #27234a12;font-size:10px;color:#5b5965;transform:rotate(-2deg)}
+.float-note b{display:block;color:#25242b;font-size:12px;margin-bottom:4px}
+.marketing-proof{border-top:1px solid #eeeef1;border-bottom:1px solid #eeeef1;padding:26px 44px;text-align:center;color:#8c8b94;font-size:11px;letter-spacing:.04em}
+.marketing-proof strong{color:#55535f;font-weight:650}
+.marketing-section{max-width:1440px;margin:auto;padding:105px 44px}
+.section-intro{max-width:620px;margin-bottom:48px}
+.section-intro .eyebrow{font-size:11px;color:#625bf6;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.section-intro h2{font-size:clamp(36px,4.3vw,55px);line-height:1.04;letter-spacing:-.065em;margin:15px 0;color:#1e1d24;font-weight:620}
+.section-intro p{font-size:15px;line-height:1.7;color:#74727d;max-width:520px}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.product-card{border:1px solid #e9e8ed;border-radius:11px;padding:26px 25px 29px;min-height:225px;background:#fff;transition:border-color .2s,transform .2s}
+.product-card:hover{border-color:#c9c5ff;transform:translateY(-3px)}
+.product-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:transparent;color:#625bf6;font-size:17px;margin-bottom:22px}
+.product-icon img{display:block;width:48px;height:48px;object-fit:contain}
+.product-card h3{font-size:18px;letter-spacing:-.04em;margin-bottom:8px;color:#26252d}
+.product-card p{font-size:13px;line-height:1.7;color:#777580;max-width:310px}
+.product-card a{display:inline-block;margin-top:18px;color:#625bf6;font-size:12px;font-weight:650;text-decoration:none}
+.workflow-section{background:#f7f7fa;border-top:1px solid #eeeef1;border-bottom:1px solid #eeeef1}
+.workflow-inner{max-width:1440px;margin:auto;padding:100px 44px;display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;align-items:center}
+.workflow-inner h2{font-size:clamp(36px,4vw,52px);line-height:1.04;letter-spacing:-.065em;margin:12px 0 18px}
+.workflow-inner p{color:#777580;font-size:14px;line-height:1.75;max-width:390px}
+.workflow-list{display:grid;gap:0;border-top:1px solid #e4e3e9}
+.workflow-row{display:grid;grid-template-columns:46px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid #e4e3e9}
+.workflow-row>span{font-size:11px;color:#625bf6;font-weight:700;padding-top:3px}
+.workflow-row h3{font-size:15px;margin-bottom:5px;letter-spacing:-.02em}
+.workflow-row p{font-size:12px;max-width:none}
+.marketing-bottom{max-width:1440px;margin:auto;padding:95px 44px;text-align:center}
+.marketing-bottom h2{font-size:clamp(37px,4.5vw,58px);line-height:1.04;letter-spacing:-.07em;margin-bottom:17px}
+.marketing-bottom p{color:#777580;font-size:14px;margin-bottom:27px}
+.marketing-footer{border-top:1px solid #eeeef1;padding:28px 44px;display:flex;justify-content:space-between;align-items:center;gap:20px;max-width:1440px;margin:auto;color:#898892;font-size:11px}
+.marketing-footer nav{display:flex;gap:22px;flex-wrap:wrap}
+.marketing-footer a{color:#666570;text-decoration:none}
+@media(max-width:900px){.marketing-nav{padding:0 22px}.marketing-navlinks{gap:17px}.marketing-hero{grid-template-columns:1fr;padding:76px 24px 58px;gap:30px}.hero-copy{max-width:720px}.hero-art{min-height:420px}.product-window{max-width:620px}.marketing-section,.workflow-inner{padding:76px 24px}.workflow-inner{grid-template-columns:1fr;gap:35px}}
+@media(max-width:650px){.marketing-nav{height:66px;padding:0 16px}.marketing-navlinks{display:none}.marketing-actions{gap:12px}.marketing-signin{display:none}.marketing-cta{min-height:40px;padding:0 14px}.marketing-brand{font-size:14px}.marketing-hero{padding:65px 20px 44px}.hero-copy h1{font-size:clamp(48px,13vw,68px)}.hero-copy>p{font-size:15px}.hero-art{min-height:300px;margin:0 -8px}.window-body{grid-template-columns:78px minmax(0,1fr)}.window-side.right{display:none}.window-side{padding:13px 7px}.window-canvas{padding:14px}.float-note{right:0;bottom:16px}.marketing-proof{padding:22px 20px}.marketing-section,.workflow-inner{padding:68px 20px}.product-grid{grid-template-columns:1fr}.product-card{min-height:0}.marketing-bottom{padding:70px 20px}.marketing-footer{padding:24px 20px;align-items:flex-start;flex-direction:column}}
+
+/* Homepage layout and scroll stability repairs. */
+html,body.marketing{scroll-behavior:auto!important;overflow-anchor:none!important}
+body.marketing{display:block!important;min-height:100vh!important;width:100%!important}
+body.marketing>header.marketing-nav{flex:0 0 auto!important}
+body.marketing>main{display:block!important;width:100%!important}
+body.marketing .marketing-hero{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(420px,.92fr)!important;align-items:center!important}
+body.marketing .product-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+body.marketing .workflow-inner{display:grid!important;grid-template-columns:.8fr 1.2fr!important}
+@media(max-width:900px){body.marketing .marketing-hero{grid-template-columns:1fr!important}body.marketing .workflow-inner{grid-template-columns:1fr!important}}
+@media(max-width:650px){body.marketing .product-grid{grid-template-columns:1fr!important}}
+
+/* Homepage full-bleed header: keep the bar attached to the viewport, not a centred content column. */
+html,body.marketing{width:100%!important;max-width:none!important;margin:0!important;padding-left:0!important;padding-right:0!important;box-sizing:border-box!important}
+body.marketing{overflow-x:hidden!important}
+body.marketing>.marketing-nav{
+  display:flex!important;position:relative!important;left:50%!important;
+  transform:translateX(-50%)!important;
+  width:100vw!important;max-width:none!important;min-width:100vw!important;
+  margin:0!important;box-sizing:border-box!important;
+  border-left:0!important;border-right:0!important;border-radius:0!important;
+}
+
+</style>
+<link rel="stylesheet" href="/assets/files/design-system.css?v=20261121-2"><script>
+/* Route dedicated product hostnames into their existing Project application areas. */
+(function () {
+  var productRoutes = {
+    "presentr.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/presentation/",
+    "www.presentr.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/presentation/",
+    "siteify.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/sites/new/",
+    "www.siteify.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/sites/new/",
+    "formr.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/forms/new/",
+    "www.formr.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/forms/new/",
+    "cloudbase.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/products/",
+    "www.cloudbase.convex-project.abrdns.com": "https://www.convex-project.abrdns.com/products/"
+  };
+  var target = productRoutes[window.location.hostname.toLowerCase()];
+  if (target && (window.location.pathname === "/" || window.location.pathname === "/index.html")) {
+    window.location.replace(target);
+  }
+})();
+</script>
+</head>
+<body class="page-body marketing">
+<header class="marketing-nav">
+<a class="marketing-brand" data-route="/" aria-label="Project home"><img src="assets/images/newp-nobg.png" alt=""><span>Project</span></a>
+<nav class="marketing-navlinks"><a data-route="/products/">Products</a><a data-route="/apps/">Apps</a><a data-route="/solutions/">Solutions</a><a data-route="/resources/">Resources</a></nav>
+<div class="marketing-actions"><a class="marketing-signin" data-route="/login/">Sign in</a><a class="marketing-cta" data-route="/register/personal/">Get started <span aria-hidden="true">↗</span></a></div>
+</header>
+<main>
+<section class="marketing-hero">
+<div class="hero-copy">
+<div class="hero-label">ONE WORKSPACE. THREE PRODUCTS.</div>
+<h1>Make ideas<br> <span>happen.</span></h1>
+<p>A connected workspace for presentations, websites, forms and files. Everything you need to take an idea from first draft to finished work.</p>
+<div class="hero-buttons"><a class="marketing-cta" data-route="/register/personal/">Start creating <span aria-hidden="true">↗</span></a><a class="hero-secondary" data-route="/products/">Explore the platform <span>→</span></a></div>
+<div class="hero-note">Free to use. Your work, all in one place.</div>
+</div>
+<div class="hero-art" aria-label="Preview of the Project presentation editor">
+<div class="product-window"><div class="window-bar"><i class="window-dot"></i><i class="window-dot"></i><i class="window-dot"></i><span class="window-title">Project / Untitled presentation</span><span class="window-share">Share</span></div>
+<div class="window-body"><aside class="window-side"><small>SLIDES</small><div class="window-layer active">01 &nbsp; Introduction</div><div class="window-layer">02 &nbsp; The idea</div><div class="window-layer">03 &nbsp; Next steps</div><div class="window-layer">＋ Add slide</div></aside>
+<div class="window-canvas"><div class="slide-preview"><small>INTRODUCTION</small><strong>Ideas move<br>people forward.</strong><p>Bring your story to life with presentations that invite people in.</p></div></div>
+<aside class="window-side right"><small>DESIGN</small><div class="window-control"></div><div class="window-control short"></div><div class="window-control"></div><div class="window-color"></div></aside></div></div>
+<div class="float-note"><b>Made to be shared.</b>Present, publish and explore.</div>
+</div>
+</section>
+<div class="marketing-proof"><strong>Three focused products. One connected workspace.</strong> &nbsp; Create · Share · Publish · Present</div>
+<section class="marketing-section">
+<div class="section-intro"><div class="eyebrow">The workspace</div><h2>Everything you need.<br>Nothing in the way.</h2><p>A focused set of tools for shaping ideas, making them real and sharing them with the people who matter.</p></div>
+<div class="product-grid">
+<article class="product-card"><div class="product-icon"><img src="assets/images/project-present.svg" alt="Project Present logo"></div><h3>Project Present</h3><p>Create expressive presentations, add audience decision points and present with confidence.</p><a href="https://www.convex-project.abrdns.com/presentation/">Explore Project Present ↗</a></article>
+<article class="product-card"><div class="product-icon"><img src="assets/images/project-sites.svg" alt="Project Sites logo"></div><h3>Project Sites</h3><p>Design responsive websites in a visual editor, then publish them to your own address.</p><a href="https://www.convex-project.abrdns.com/sites/new/">Explore Project Sites ↗</a></article>
+<article class="product-card"><div class="product-icon"><img src="assets/images/project-forms.svg" alt="Project Forms logo"></div><h3>Project Forms</h3><p>Build forms, collect responses and keep the information you gather organised.</p><a href="https://www.convex-project.abrdns.com/forms/new/">Explore Project Forms ↗</a></article>
+</div>
+</section>
+<section class="workflow-section"><div class="workflow-inner"><div><div class="eyebrow" style="font-size:11px;color:#625bf6;font-weight:700;letter-spacing:.1em;text-transform:uppercase">A simpler workflow</div><h2>Less switching.<br>More making.</h2><p>Your projects belong in one considered workspace. Move between building, editing and sharing without losing your momentum.</p></div><div class="workflow-list"><div class="workflow-row"><span>01</span><div><h3>Start with a blank canvas</h3><p>Choose a presentation or website and shape it around your idea.</p></div></div><div class="workflow-row"><span>02</span><div><h3>Make it yours</h3><p>Use focused editing tools to get the details right and keep your work consistent.</p></div></div><div class="workflow-row"><span>03</span><div><h3>Put it out into the world</h3><p>Present live, share a link or publish a website when it is ready.</p></div></div></div></div></section>
+
+<section class="marketing-section detail-section"><div class="section-intro"><div class="eyebrow">Made for the whole process</div><h2>One place for every<br>part of the idea.</h2><p>Start with a thought, shape it into something people can understand, then give it a place to live.</p></div><div class="detail-grid"><article class="detail-item"><span class="detail-number">01 / DESIGN</span><h3>Give your ideas structure.</h3><p>Lay out your story with slides, clear visual hierarchy and focused editing tools. Keep the message front and centre.</p><a data-route="/presentation/">Explore the presentation editor ↗</a></article><article class="detail-item"><span class="detail-number">02 / BUILD</span><h3>Make a space of your own.</h3><p>Arrange page sections, edit content and check desktop, tablet and mobile layouts in the website builder.</p><a data-route="/sites/">Explore the website builder ↗</a></article><article class="detail-item"><span class="detail-number">03 / SHARE</span><h3>Take it beyond your screen.</h3><p>Present your work, share it with an audience or publish a website with its own address.</p><a data-route="/products/">See how it works ↗</a></article></div></section>
+<section class="showcase-section"><div class="showcase-inner"><div class="showcase-copy"><div class="eyebrow">A workspace that stays out of your way</div><h2>Room to think.<br>Tools when you need them.</h2><p>Keep your canvas at the centre. Your pages, layers and settings stay organised around it, so the interface supports the work instead of competing with it.</p><ul><li>Clear, predictable editing controls</li><li>Responsive previews for different screens</li><li>Simple routes between your projects</li></ul></div><div class="showcase-ui"><div class="showcase-top"><span>Untitled website</span><span class="showcase-status">Saved</span></div><div class="showcase-content"><div class="showcase-sidebar"><b>LAYERS</b><i class="selected">◫ &nbsp; Hero</i><i>▤ &nbsp; Features</i><i>▧ &nbsp; Footer</i><b>INSERT</b><i>＋ &nbsp; Section</i></div><div class="showcase-page"><div class="showcase-page-nav">STUDIO&nbsp;&nbsp;&nbsp;&nbsp; About&nbsp;&nbsp; Work&nbsp;&nbsp; Contact</div><div class="showcase-page-copy"><small>DESIGN YOUR NEXT MOVE</small><strong>Make room<br>for what’s next.</strong><p>A simple page, shaped around your message.</p><em>Explore more&nbsp; ↗</em></div></div><div class="showcase-inspector"><b>DESIGN</b><i>Width</i><span></span><i>Spacing</i><span></span><i>Colour</i><span class="swatch"></span></div></div></div></div></section>
+<section class="marketing-section principles-section"><div class="section-intro"><div class="eyebrow">Thoughtful by default</div><h2>Simple on the surface.<br>Capable underneath.</h2></div><div class="principles-grid"><div><b>01</b><h3>Clarity first</h3><p>Clean layouts and clear controls make it easier to focus on what you are creating.</p></div><div><b>02</b><h3>Made to adapt</h3><p>Build for a large screen, then refine the experience for tablets and phones.</p></div><div><b>03</b><h3>Ready to share</h3><p>Move from private draft to presentation or published website when you are ready.</p></div><div><b>04</b><h3>Free to create</h3><p>Use the Project workspace without subscriptions or paid feature tiers.</p></div></div></section>
+<section class="faq-section"><div class="faq-inner"><div><div class="eyebrow">A few quick answers</div><h2>Good to know.</h2><p>New here? These are the basics.</p></div><div class="marketing-faq"><details><summary>What can I create with Project?</summary><p>Use Project Present for presentations, Project Sites for websites and Project Forms for forms and surveys.</p></details><details><summary>Can I publish a website?</summary><p>Yes. The website builder supports publishing to an Project address, with custom-domain setup for domains you own.</p></details><details><summary>Is Project free?</summary><p>Yes. The workspace is designed to be free to use, with no subscription tiers.</p></details><details><summary>Can I present to an audience?</summary><p>Yes. Presentations include separate presenter and audience experiences.</p></details></div></div></section>
+<section class="marketing-bottom"><h2>Have an idea?<br>Make something of it.</h2><p>Your next project can start right here.</p><a class="marketing-cta" data-route="/register/personal/">Get started for free <span aria-hidden="true">↗</span></a></section>
+</main>
+<footer class="marketing-footer"><span>© <span data-year>2026</span> Project · A Convex, LLC company</span><nav><a data-route="/products/">Product</a><a data-route="/contact/">Contact</a><a data-route="/privacy-policy/">Privacy</a><a data-route="/terms-of-service/">Terms</a><a data-route="/github/">View on GitHub</a></nav></footer>
+</body></html>
