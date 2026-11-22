@@ -72,18 +72,12 @@ jobs:
           cat > _site/register/organisation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/auth/organisation/register/"+location.search+location.hash)</script><a href="/auth/organisation/register/">Continue</a>
           EOF
-          mkdir -p _site/sites/new _site/present/new _site/presentation/new _site/legal/policies/terms-of-service _site/legal/policies/privacy
+          mkdir -p _site/sites/new _site/presentation/new _site/forms/new _site/forms/submitted _site/legal/policies/terms-of-service _site/legal/policies/privacy
           cat > _site/sites/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/websites/"+location.search+location.hash)</script><a href="/websites/">Your websites</a>
+          <!doctype html><meta charset="utf-8"><script>location.replace("/sites/new/"+location.search+location.hash)</script><a href="/websites/">Your websites</a>
           EOF
           cat > _site/sites/new/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/websites/?create=1"+location.hash)</script><a href="/websites/?create=1">Create a site</a>
-          EOF
-          cat > _site/present/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/presentations/new/"+location.search+location.hash)</script><a href="/presentations/new/">Create a presentation</a>
-          EOF
-          cat > _site/present/new/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/presentations/new/"+location.search+location.hash)</script><a href="/presentations/new/">Create a presentation</a>
           EOF
           cat > _site/presentation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/presentation/new/"+location.search+location.hash)</script><a href="/presentation/new/">Create a presentation</a>
@@ -103,6 +97,15 @@ jobs:
           EOF
           done
 
+          # Serve the existing Forms builder at /forms/new; /forms itself redirects there.
+          cp _site/forms/index.html _site/forms/new/index.html
+          sed -i 's#../assets/#/assets/#g' _site/forms/new/index.html
+          cat > _site/forms/index.html <<'EOF'
+          <!doctype html><meta charset="utf-8"><script>location.replace("/forms/new/"+location.search+location.hash)</script><a href="/forms/new/">Open Forms</a>
+          EOF
+          cat > _site/forms/submitted/index.html <<'EOF'
+          <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Response submitted | Project Forms</title><link rel="stylesheet" href="/assets/files/design-system.css"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f7f8fc;color:#252638;font:16px system-ui}.card{width:min(560px,calc(100% - 40px));padding:38px;background:white;border:1px solid #e7e8f0;border-radius:18px;text-align:center}h1{letter-spacing:-.05em}p{color:#6b7080;line-height:1.7}a{color:#635bff;font-weight:700}</style></head><body><main class="card"><p>PROJECT FORMS</p><h1>Thank you.</h1><p>Your response has been submitted successfully.</p><a href="/">Back to Project</a></main></body></html>
+          EOF
           # Dynamic app routes are resolved here so GitHub Pages can serve clean URLs.
           cat > _site/404.html <<'EOF'
           <!doctype html>
@@ -110,15 +113,15 @@ jobs:
           <body><script>
           (function(){
             var p=decodeURIComponent(location.pathname),m,t=null,q=location.search,h=location.hash;
-            if((m=p.match(/^\/sites\/view\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/i))) t="/published-sites-static/?preview="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\/sites\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/i))) t="/websites/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\/present\/([0-9]{6})\/host\/?$/))) t="/presenter/?id="+encodeURIComponent(m[1])+"&mode=host";
-            else if((m=p.match(/^\/present\/([0-9]{6})\/audience\/?$/))) t="/audience/?id="+encodeURIComponent(m[1])+"&mode=audience";
-            else if((m=p.match(/^\/present\/([0-9]{6})\/?$/))) t="/presentations/editor/?id="+encodeURIComponent(m[1]);
+            if((m=p.match(/^\/sites\/view\/([0-9]{6})\/?$/))) t="/published-sites-static/?preview="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/sites\/([0-9]{6})\/?$/))) t="/websites/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/host\/?$/))) t="/presenter/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/audience\/?$/))) t="/audience/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/presentation\/([0-9]{6})\/?$/))) t="/presentations/editor/?id="+encodeURIComponent(m[1]);
             else if((m=p.match(/^\/forms\/take\/([^/]+)\/?$/))) t="/forms/respond/?id="+encodeURIComponent(m[1]);
             else if((m=p.match(/^\/forms\/([^/]+)\/submitted\/?$/))) t="/forms/submitted/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\/forms\/([^/]+)\/results\/?$/))) t="/forms/?id="+encodeURIComponent(m[1]);
-            if(t){location.replace(t+(t.indexOf("?")>=0?(q?"&"+q.slice(1):""):q)+h);return;}
+            else if((m=p.match(/^\/forms\/([^/]+)\/results\/?$/))) t="/forms/new/?id="+encodeURIComponent(m[1])+"&view=results";
+            if(t){location.replace(t+(t.indexOf("?")>=0?(q?"&"+q.slice(1):""):"")+h);return;}
             document.body.innerHTML='<main style="font:16px system-ui;text-align:center;padding:12vh 20px"><h1>Page not found</h1><p>That Project page could not be found.</p><a href="/">Back to Project</a></main>';
           })();
           </script></body></html>
