@@ -120,6 +120,35 @@ async function serveWebsite(request, env, hostnameOverride) {
   if (request.method === "HEAD") return new Response(null, {status:response.status,headers:response.headers});
   return response;
 }
+async function serveMainDomainPath(request, env) {
+  if (request.method !== "GET" && request.method !== "HEAD") return null;
+  const url = new URL(request.url);
+  const host = String(request.headers.get("X-IS-Original-Host") || url.hostname).toLowerCase();
+  if (host !== "convex-project.abrdns.com" && host !== "www.convex-project.abrdns.com") return null;
+  const rawPath = url.pathname.replace(/^\\/+|\\/+$/g, "");
+  if (!rawPath || rawPath.includes("/") || /\\.[a-z0-9]{1,8}$/i.test(rawPath)) return null;
+  let path;
+  try { path = decodeURIComponent(rawPath).toLowerCase(); } catch (_) { return null; }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(path)) return null;
+  // Six-digit IDs remain stable. They are aliases which permanently redirect
+  // to the published, human-readable site name.
+  if (/^\\d{6}$/.test(path)) {
+    const site = await readPublicDocument("websites", path, env);
+    if (!site) return null;
+    if (site.status !== "published") return notPublished(path);
+    const publicSlug = String(site.publicSlug || "").toLowerCase();
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(publicSlug)) return notPublished(path);
+    return Response.redirect(new URL("/" + publicSlug + url.search, url.origin), 301);
+  }
+  const mapping = await readPublicDocument("websitePaths", path, env);
+  if (!mapping) return null;
+  if (mapping === false || mapping.status !== "published" || !mapping.websiteSlug) return notPublished(path);
+  const site = await readPublicDocument("websites", String(mapping.websiteSlug), env);
+  if (!site || site.status !== "published" || site.publicSlug !== path) return notPublished(path);
+  const response = renderPublishedSite(site, host);
+  if (request.method === "HEAD") return new Response(null, {status:response.status,headers:response.headers});
+  return response;
+}
 function legacyProductPath(host, pathname) {
   const hostMap = {
     "presentr.convex-project.abrdns.com": "/presentation/",
@@ -630,7 +659,12 @@ export default {
       const suffix = "." + PLATFORM_HOST;
       const label = originalHost.endsWith(suffix) ? originalHost.slice(0, -suffix.length) : "";
       const isMainSiteHost = originalHost === "convex-project.abrdns.com" || originalHost === "www.convex-project.abrdns.com";
-      if (originalHost === PLATFORM_HOST || originalHost === HELP_HOST || isMainSiteHost) return proxyStudioApp(request);
+      if (isMainSiteHost) {
+        const publishedPath = await serveMainDomainPath(request, env);
+        if (publishedPath) return publishedPath;
+        return proxyStudioApp(request);
+      }
+      if (originalHost === PLATFORM_HOST || originalHost === HELP_HOST) return proxyStudioApp(request);
       if (!label || label.includes(".") || !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label)) {
         return new Response("Forbidden: invalid website hostname.", {status:403,headers:{"Cache-Control":"no-store"}});
       }
@@ -643,7 +677,12 @@ export default {
       if (!customerHost) return new Response("Forbidden: invalid Apexly proxy signature.", {status:403,headers:{"Cache-Control":"no-store"}});
       return serveWebsite(request, env, customerHost);
     }
-    if (hostname === PLATFORM_HOST || hostname === HELP_HOST || hostname === "interactivestudio.abrdns.com" || hostname === "www.interactivestudio.abrdns.com" || hostname === "convex-project.abrdns.com" || hostname === "www.convex-project.abrdns.com") return proxyStudioApp(request);
+    if (hostname === "convex-project.abrdns.com" || hostname === "www.convex-project.abrdns.com") {
+      const publishedPath = await serveMainDomainPath(request, env);
+      if (publishedPath) return publishedPath;
+      return proxyStudioApp(request);
+    }
+    if (hostname === PLATFORM_HOST || hostname === HELP_HOST || hostname === "interactivestudio.abrdns.com" || hostname === "www.interactivestudio.abrdns.com") return proxyStudioApp(request);
     if (hostname !== API_HOST) return serveWebsite(request, env);
     // Public, read-only platform health endpoint used by the live status page.
     if (url.pathname === "/health" && (request.method === "GET" || request.method === "HEAD")) {
