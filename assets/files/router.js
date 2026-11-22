@@ -6,7 +6,21 @@
   window.APP_BASE_PATH = repositoryBase;
   window.getAppUrl = function (path) {
     const value = String(path || "/").trim();
-    const clean = "/" + value.replace(/^\/+/, "");
+    let clean = "/" + value.replace(/^\/+/, "");
+    const routeMap = [
+      [/^\/presentations\/editor\/?$/, "/present/"],
+      [/^\/presentations\/new\/?$/, "/present/new/"],
+      [/^\/presentations\/view\/audience\/?$/, "/present/view/"],
+      [/^\/presentations\/view\/presenter\/?$/, "/present/presenter/"],
+      [/^\/websites\/?$/, "/sites/"],
+      [/^\/websites\/new\/?$/, "/sites/new/"],
+      [/^\/websites\/editor\/?$/, "/sites/editor/"],
+      [/^\/websites\/publish\/?$/, "/sites/publish/"],
+      [/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i, "/sites/$1/$2/"]
+    ];
+    for (const [pattern, target] of routeMap) {
+      if (pattern.test(clean)) { clean = clean.replace(pattern, target); break; }
+    }
     return repositoryBase + (clean === "/" ? "/" : clean);
   };
   function applyRoutes(root = document) {
