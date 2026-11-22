@@ -139,6 +139,8 @@ function legacyProductPath(host, pathname) {
     [/^\/presentations\/new\/?$/i, "/present/new/"],
     [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
     [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
+    [/^\/presentations\/view\/([a-z0-9_-]+)\/(audience|presenter)\/?$/i, "/present/$1/$2/"],
+    [/^\/view\/(\d{6})\/?$/i, "/present/view/$1/"],
     [/^\/websites\/?$/i, "/sites/"],
     [/^\/websites\/(.*)$/i, "/sites/$1"],
     [/^\/forms\/?$/i, "/forms/"]
