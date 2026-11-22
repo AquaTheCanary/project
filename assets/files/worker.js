@@ -138,7 +138,7 @@ function legacyProductPath(host, pathname) {
     [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
     [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
     [/^\/websites\/?$/i, "/sites/"],
-    [/^\/websites\/(.*)$/i, "/sites/$1/"],
+    [/^\/websites\/(.*)$/i, "/sites/$1"],
     [/^\/forms\/?$/i, "/forms/"]
   ];
   for (const [pattern, target] of legacyRoutes) {
@@ -175,6 +175,21 @@ const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST) pathname = "/help/index.html";
   else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
   let match;
+  // Redirect legacy main-domain routes to their canonical product path.
+  const legacyMainRoutes = [
+    [/^\/presentations\/editor\/?$/i, "/present/"],
+    [/^\/presentations\/new\/?$/i, "/present/new/"],
+    [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
+    [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
+    [/^\/websites\/?$/i, "/sites/"],
+    [/^\/websites\/new\/?$/i, "/sites/new/"],
+    [/^\/websites\/editor\/?$/i, "/sites/editor/"],
+    [/^\/websites\/publish\/?$/i, "/sites/publish/"],
+    [/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i, "/sites/$1/$2/"]
+  ];
+  for (const [pattern, targetPath] of legacyMainRoutes) {
+    if (pattern.test(pathname)) return Response.redirect("https://www.convex-project.abrdns.com" + pathname.replace(pattern, targetPath) + incoming.search, 301);
+  }
   // Canonical product paths share the main Project origin.
   if (pathname === "/present" || pathname === "/present/") {
     pathname = "/presentations/editor/";
@@ -204,21 +219,6 @@ const params = new URLSearchParams(incoming.search);
   } else if ((match = pathname.match(/^\/sites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) {
     params.set("id", match[1]);
     pathname = match[2] === "editor" ? "/websites/" : "/websites/publish/";
-  }
-  // Redirect legacy main-domain routes to their canonical product path.
-  const legacyMainRoutes = [
-    [/^\/presentations\/editor\/?$/i, "/present/"],
-    [/^\/presentations\/new\/?$/i, "/present/new/"],
-    [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
-    [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
-    [/^\/websites\/?$/i, "/sites/"],
-    [/^\/websites\/new\/?$/i, "/sites/new/"],
-    [/^\/websites\/editor\/?$/i, "/sites/editor/"],
-    [/^\/websites\/publish\/?$/i, "/sites/publish/"],
-    [/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i, "/sites/$1/$2/"]
-  ];
-  for (const [pattern, targetPath] of legacyMainRoutes) {
-    if (pattern.test(pathname)) return Response.redirect("https://www.convex-project.abrdns.com" + pathname.replace(pattern, targetPath) + incoming.search, 301);
   }
   // Clean, ID-based application URLs are mapped to static GitHub Pages entry points.
   if ((match = pathname.match(/^\/view\/(\d{6})\/?$/i))) {
