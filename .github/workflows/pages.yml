@@ -66,12 +66,8 @@ jobs:
           cat > _site/register/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Create an account | Project</title><link rel="stylesheet" href="/assets/files/design-system.css"><main style="max-width:720px;margin:12vh auto;padding:24px;font:16px system-ui"><h1>Create your Project account</h1><p>Choose the type of account you want to create.</p><p><a href="/register/personal/">Personal account →</a></p><p><a href="/register/organisation/">Organisation account →</a></p></main>
           EOF
-          cat > _site/register/personal/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/auth/personal/register/"+location.search+location.hash)</script><a href="/auth/personal/register/">Continue</a>
-          EOF
-          cat > _site/register/organisation/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/auth/organisation/register/"+location.search+location.hash)</script><a href="/auth/organisation/register/">Continue</a>
-          EOF
+          cp auth/personal/register/index.html _site/register/personal/index.html
+          cp auth/organisation/register/index.html _site/register/organisation/index.html
           mkdir -p _site/sites/new _site/presentation/new _site/forms/new _site/legal/policies/terms-of-service _site/legal/policies/privacy
           cat > _site/sites/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/sites/new/"+location.search+location.hash)</script><a href="/sites/new/">Create a site</a>
