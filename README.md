@@ -3,10 +3,11 @@
 Project is the connected creative workspace from **Convex, LLC**.
 
 ## Products
-- **Presentr** — interactive presentations.
-- **Siteify** — visual website creation and publishing.
-- **Formr** — forms, surveys and response collection.
-- **Cloudbase** — cloud file storage at https://www.cloudbase.convex-project.abrdns.com.
+- **Project Present** — interactive presentations (existing Presentr address).
+- **Project Sites** — visual website creation and publishing (existing Siteify address).
+- **Project Forms** — forms, surveys and response collection (existing Formr address).
+
+Cloudbase has been retired from the product suite. Legacy Cloudbase data paths are retained temporarily to avoid deleting existing user files.
 
 The Project web application is a static-first frontend with Firebase authentication and Firestore-backed features, plus the existing publishing and serverless integrations.
 
@@ -17,9 +18,9 @@ For the project documentation and contribution guidance, see [the repository doc
 
 ## Product addresses
 - Project: https://www.convex-project.abrdns.com
-- Presentr: https://www.presentr.convex-project.abrdns.com
-- Siteify: https://www.siteify.convex-project.abrdns.com
-- Formr: https://www.formr.convex-project.abrdns.com
-- Cloudbase: https://www.cloudbase.convex-project.abrdns.com
+- Project Present (existing URL): https://www.presentr.convex-project.abrdns.com
+- Project Sites (existing URL): https://www.siteify.convex-project.abrdns.com
+- Project Forms (existing URL): https://www.formr.convex-project.abrdns.com
+- Retired Cloudbase address: redirects to the products page when routed through Project
 
 These hostnames need matching DNS records and hosting custom-domain bindings before they resolve publicly.
