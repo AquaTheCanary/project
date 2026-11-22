@@ -132,7 +132,7 @@ async function serveMainDomainPath(request, env) {
   try { path = decodeURIComponent(match[1]).toLowerCase(); } catch (_) { return null; }
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(path)) return null;
   // Six-digit IDs are stable aliases which permanently redirect to the public name.
-  if (/^\\d{6}$/.test(path)) {
+  if (/^\d{6}$/.test(path)) {
     const site = await readPublicDocument("websites", path, env);
     if (!site) return null;
     if (site.status !== "published") return notPublished(path);
