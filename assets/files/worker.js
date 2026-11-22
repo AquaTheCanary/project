@@ -208,6 +208,11 @@ const params = new URLSearchParams(incoming.search);
   if (pathname === "/sites" || pathname === "/sites/") {
     return Response.redirect(new URL("/sites/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/sites/new" || pathname === "/sites/new/") {
+    if (params.get("create") !== "1") {
+      const target = new URL("/sites/new/" + incoming.search, incoming.origin);
+      target.searchParams.set("create", "1");
+      return Response.redirect(target, 302);
+    }
     pathname = "/websites/";
     params.set("create", "1");
   } else if ((match = pathname.match(/^\/sites\/view\/(\d{6})\/?$/i))) {
@@ -249,6 +254,11 @@ const params = new URLSearchParams(incoming.search);
   } else if (pathname === "/forms" || pathname === "/forms/") {
     return Response.redirect(new URL("/forms/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/forms/new" || pathname === "/forms/new/") {
+    if (params.get("create") !== "1") {
+      const target = new URL("/forms/new/" + incoming.search, incoming.origin);
+      target.searchParams.set("create", "1");
+      return Response.redirect(target, 302);
+    }
     pathname = "/forms/";
     params.set("create", "1");
   } else if ((match = pathname.match(/^\/forms\/take\/([^/]+)\/?$/i))) {
