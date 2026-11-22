@@ -19,8 +19,9 @@ const server = http.createServer(async (req, res) => {
   const suffix = ".is-sites.abrdns.com";
   const isPlatformRoot = originalHost === "is-sites.abrdns.com";
   const isHelpCenter = originalHost === "help.interactivestudio.abrdns.com";
+  const isMainSite = originalHost === "convex-project.abrdns.com" || originalHost === "www.convex-project.abrdns.com";
   const label = originalHost.endsWith(suffix) ? originalHost.slice(0, -suffix.length) : "";
-  if (!isPlatformRoot && !isHelpCenter && (!label || label.includes(".") || !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label))) {
+  if (!isPlatformRoot && !isHelpCenter && !isMainSite && (!label || label.includes(".") || !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label))) {
     res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
     return res.end("Unknown website hostname.");
   }
