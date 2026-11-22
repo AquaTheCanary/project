@@ -433,10 +433,10 @@ $("confirm-publish").onclick=async()=>{
   await db.collection("websites").doc(active.slug).set(update,{merge:true});
   await pathRef.set({publicSlug,websiteSlug:active.slug,ownerUid:user.uid,status:"published",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
   active={...active,...update};
-  $("publish-address").textContent="https://"+PLATFORM+"/"+publicSlug;
-  $("publish-status").textContent="Published. Your six-digit website ID redirects to this name.";
+  $("publish-address").textContent="https://"+PLATFORM+"/sites/view/"+publicSlug;
+  $("publish-status").textContent="Published at /sites/view/. Your six-digit website ID redirects to this name.";
   $("publish-title").textContent="Your website is published";
-  $("open-published").href="https://"+PLATFORM+"/"+publicSlug;
+  $("open-published").href="https://"+PLATFORM+"/sites/view/"+publicSlug;
   $("open-published").classList.remove("hidden");
   button.textContent="Published ✓";
   button.disabled=true;
