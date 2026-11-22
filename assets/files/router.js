@@ -38,7 +38,7 @@
   // and the tab icon on the branded square asset, regardless of legacy markup.
   function repairBrandAssets(root = document) {
     const base = window.getAppUrl("/assets/images/");
-    root.querySelectorAll('img[src*="project-logo.svg"],img[src*="project-mark.svg"],img[src*="interactive-studio-icon.svg"],img.brand-logo').forEach(img => {
+    root.querySelectorAll('img[src*="project-logo.svg"],img[src*="project-mark.svg"],img[src*="interactive-studio-icon.svg"]').forEach(img => {
       const isTabLike = img.closest("link[rel~='icon']") || /favicon|tablogo/i.test(img.alt || "");
       const target = base + (isTabLike ? "newp.png" : "newp-nobg.png");
       if (!img.src.endsWith(isTabLike ? "newp.png" : "newp-nobg.png")) img.src = target;
