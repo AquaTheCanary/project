@@ -180,9 +180,12 @@ async function proxyStudioApp(request) {
   }
   // Normalize legacy uppercase asset paths after the folder consolidation.
   pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
-const params = new URLSearchParams(incoming.search);
-  if (requestHost === HELP_HOST || pathname === "/help" || pathname === "/help/") pathname = "/help/index.html";
+  const params = new URLSearchParams(incoming.search);
+  // The Worker serves source files directly from GitHub, not the generated
+  // Pages artifact. Map the public root to the homepage source in /home.
+  if (pathname === "/" || pathname === "/index.html") pathname = "/home/";
   else if (pathname === "/home" || pathname === "/home/") return Response.redirect(new URL("/" + incoming.search, incoming.origin), 301);
+  if (requestHost === HELP_HOST || pathname === "/help" || pathname === "/help/") pathname = "/help/index.html";
   let match;
   // Canonical public page routes. Public URLs stay clean while source files remain in their implementation folders.
   if (pathname === "/login/personal" || pathname === "/login/personal/") {
