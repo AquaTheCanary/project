@@ -4,8 +4,8 @@ This folder is a separate Vercel project used only to serve published customer w
 
 ## Vercel project setup
 
-1. Import the GitHub repository `AquaTheCanary/interactivestudio` into Vercel.
-2. Set the project's **Root Directory** to `published-sites`.
+1. Import the GitHub repository `AquaTheCanary/project` into Vercel.
+2. Set the project's **Root Directory** to `assets/files/published-sites`.
 3. Leave the build command empty; Vercel will deploy the Node.js function in `api/site.js`.
 4. Add the environment variable `FIREBASE_API_KEY` using the Firebase Web API key from the existing app configuration.
 5. Deploy the project.
