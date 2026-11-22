@@ -8,15 +8,16 @@
     const value = String(path || "/").trim();
     let clean = "/" + value.replace(/^\/+/, "");
     const routeMap = [
-      [/^\/presentations\/editor\/?$/, "/present/"],
-      [/^\/presentations\/new\/?$/, "/present/new/"],
-      [/^\/presentations\/view\/audience\/?$/, "/present/view/"],
-      [/^\/presentations\/view\/presenter\/?$/, "/present/presenter/"],
-      [/^\/websites\/?$/, "/sites/"],
-      [/^\/websites\/new\/?$/, "/sites/new/"],
-      [/^\/websites\/editor\/?$/, "/sites/editor/"],
-      [/^\/websites\/publish\/?$/, "/sites/publish/"],
-      [/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i, "/sites/$1/$2/"]
+      [/^\\/auth\\/personal\\/login\\/?$/, "/login/personal/"],
+      [/^\\/auth\\/organisation\\/login\\/?$/, "/login/organisation/"],
+      [/^\\/auth\\/personal\\/register\\/?$/, "/register/personal/"],
+      [/^\\/auth\\/organisation\\/register\\/?$/, "/register/organisation/"],
+      [/^\\/websites\\/?$/, "/sites/"],
+      [/^\\/websites\\/new\\/?$/, "/sites/new/"],
+      [/^\\/websites\\/editor\\/?$/, "/sites/new/"],
+      [/^\\/presentations\\/new\\/?$/, "/presentation/new/"],
+      [/^\\/presentations\\/editor\\/?$/, "/presentation/new/"],
+      [/^\\/presenter\\/?$/, "/presentation/"]
     ];
     for (const [pattern, target] of routeMap) {
       if (pattern.test(clean)) { clean = clean.replace(pattern, target); break; }
