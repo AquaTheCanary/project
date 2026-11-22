@@ -72,12 +72,18 @@ jobs:
           cat > _site/register/organisation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/auth/organisation/register/"+location.search+location.hash)</script><a href="/auth/organisation/register/">Continue</a>
           EOF
-          mkdir -p _site/sites/new _site/presentation/new _site/legal/policies/terms-of-service _site/legal/policies/privacy
+          mkdir -p _site/sites/new _site/present/new _site/presentation/new _site/legal/policies/terms-of-service _site/legal/policies/privacy
           cat > _site/sites/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/sites/new/"+location.search+location.hash)</script><a href="/sites/new/">Create a site</a>
+          <!doctype html><meta charset="utf-8"><script>location.replace("/websites/"+location.search+location.hash)</script><a href="/websites/">Your websites</a>
           EOF
           cat > _site/sites/new/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/websites/?create=1"+location.hash)</script><a href="/websites/?create=1">Create a site</a>
+          EOF
+          cat > _site/present/index.html <<'EOF'
+          <!doctype html><meta charset="utf-8"><script>location.replace("/presentations/new/"+location.search+location.hash)</script><a href="/presentations/new/">Create a presentation</a>
+          EOF
+          cat > _site/present/new/index.html <<'EOF'
+          <!doctype html><meta charset="utf-8"><script>location.replace("/presentations/new/"+location.search+location.hash)</script><a href="/presentations/new/">Create a presentation</a>
           EOF
           cat > _site/presentation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/presentation/new/"+location.search+location.hash)</script><a href="/presentation/new/">Create a presentation</a>
@@ -104,12 +110,14 @@ jobs:
           <body><script>
           (function(){
             var p=decodeURIComponent(location.pathname),m,t=null,q=location.search,h=location.hash;
-            if((m=p.match(/^\\/sites\\/(\\d{6})\\/?$/))) t="/websites/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\\/presentation\\/([a-zA-Z0-9_-]{6})\\/present\\/host\\/?$/))) t="/presenter/?id="+encodeURIComponent(m[1])+"&mode=host";
-            else if((m=p.match(/^\\/presentation\\/([a-zA-Z0-9_-]{6})\\/present\\/audience\\/?$/))) t="/audience/?id="+encodeURIComponent(m[1])+"&mode=audience";
-            else if((m=p.match(/^\\/forms\\/take\\/([^/]+)\\/?$/))) t="/forms/respond/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\\/forms\\/([^/]+)\\/submitted\\/?$/))) t="/forms/submitted/?id="+encodeURIComponent(m[1]);
-            else if((m=p.match(/^\\/forms\\/([^/]+)\\/results\\/?$/))) t="/forms/results/?id="+encodeURIComponent(m[1]);
+            if((m=p.match(/^\/sites\/view\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/i))) t="/published-sites-static/?preview="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/sites\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/i))) t="/websites/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/present\/([0-9]{6})\/host\/?$/))) t="/presenter/?id="+encodeURIComponent(m[1])+"&mode=host";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/audience\/?$/))) t="/audience/?id="+encodeURIComponent(m[1])+"&mode=audience";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/?$/))) t="/presentations/editor/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/forms\/take\/([^/]+)\/?$/))) t="/forms/respond/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/forms\/([^/]+)\/submitted\/?$/))) t="/forms/submitted/?id="+encodeURIComponent(m[1]);
+            else if((m=p.match(/^\/forms\/([^/]+)\/results\/?$/))) t="/forms/?id="+encodeURIComponent(m[1]);
             if(t){location.replace(t+q+h);return;}
             document.body.innerHTML='<main style="font:16px system-ui;text-align:center;padding:12vh 20px"><h1>Page not found</h1><p>That Project page could not be found.</p><a href="/">Back to Project</a></main>';
           })();
