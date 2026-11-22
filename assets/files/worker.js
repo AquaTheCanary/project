@@ -127,7 +127,9 @@ function legacyProductPath(host, pathname) {
     "siteify.convex-project.abrdns.com": "/sites/",
     "www.siteify.convex-project.abrdns.com": "/sites/",
     "formr.convex-project.abrdns.com": "/forms/",
-    "www.formr.convex-project.abrdns.com": "/forms/"
+    "www.formr.convex-project.abrdns.com": "/forms/",
+    "cloudbase.convex-project.abrdns.com": "/products/",
+    "www.cloudbase.convex-project.abrdns.com": "/products/"
   };
   const base = hostMap[String(host || "").toLowerCase()];
   if (!base) return null;
