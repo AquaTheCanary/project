@@ -592,7 +592,11 @@ $("confirm-publish").onclick=async()=>{
    if(record.status!=="active")throw new Error("Your custom domain is not ready yet. Connect it, then use Check DNS & SSL until it is active.");
    await save("published");
    const publicSlug=active.publicSlug||slugify(active.siteName||active.title||active.slug);const update={publicSlug,customDomain:hostname,publishTarget:"custom",publishedHostname:hostname,username:profileHandle,status:"published",updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+   const pathRef=db.collection("websitePaths").doc(publicSlug);
+   const existingPath=await pathRef.get();
+   if(existingPath.exists&&existingPath.data().websiteSlug!==active.slug)throw new Error("That public website name is already in use. Rename your site or choose another public name.");
    await db.collection("websites").doc(active.slug).set(update,{merge:true});
+   await pathRef.set({publicSlug,websiteSlug:active.slug,ownerUid:user.uid,status:"published",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
    active={...active,...update};
    if(previousHost&&previousHost!==hostname&&previousHost.endsWith("."+PLATFORM))await db.collection("websiteHosts").doc(previousHost).set({status:"draft",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
    else if(previousHost&&previousHost!==hostname)await db.collection("websiteDomains").doc(previousHost).set({status:"inactive",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
