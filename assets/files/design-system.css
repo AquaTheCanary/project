@@ -139,3 +139,75 @@ footer{background:#fbfaf8!important;border-color:#e9e5e2!important}
 .product-app-nav .nav-links a:hover{background:#f4f4f8!important;color:#282936!important}
 .product-app-nav .nav-actions{display:flex!important;align-items:center!important;gap:10px!important}
 @media(max-width:760px){.product-app-nav{flex-wrap:wrap!important;padding:10px 14px!important;gap:10px!important}.product-app-nav .nav-links{order:3;width:100%;justify-content:flex-start!important;overflow-x:auto!important}.product-app-nav .nav-links a{white-space:nowrap!important;padding:8px 10px!important}}
+
+
+/* Shared Project app shell: consistent navigation, page rhythm and controls. */
+.home-nav.product-app-nav{
+  min-height:66px!important;height:66px!important;padding:0 clamp(18px,3vw,42px)!important;
+  gap:20px!important;background:#fff!important;border-bottom:1px solid #e7e8ef!important;
+  box-shadow:0 1px 0 rgba(24,26,42,.02)!important;backdrop-filter:none!important;
+}
+.home-nav.product-app-nav .brand-logo{height:30px!important;max-width:150px!important}
+.home-nav.product-app-nav .brand-name{font-size:13px!important;font-weight:700!important;letter-spacing:-.025em!important}
+.home-nav.product-app-nav .nav-links{gap:5px!important}
+.home-nav.product-app-nav .nav-links a{min-height:36px!important;padding:0 12px!important;border-radius:8px!important;font-size:12px!important;font-weight:600!important}
+.home-nav.product-app-nav .nav-actions{gap:9px!important}
+.home-nav.product-app-nav .user-email-badge{max-width:230px!important;min-height:33px!important;border-radius:8px!important;background:#fafafd!important;font-size:10px!important}
+main.shell{width:min(1440px,calc(100% - 56px))!important;max-width:1440px!important;margin:0 auto!important;padding:34px 0 76px!important}
+main.shell>.head,main.shell>.hero{display:flex!important;align-items:flex-end!important;justify-content:space-between!important;gap:22px!important;margin:0 0 25px!important}
+main.shell .head h1,main.shell .hero h1{margin:8px 0!important;font-size:clamp(32px,4vw,46px)!important;line-height:1.04!important;letter-spacing:-.065em!important;font-weight:740!important}
+main.shell .head p,main.shell .hero p{max-width:620px!important;margin:0!important;color:#747684!important;font-size:13px!important;line-height:1.65!important}
+main.shell .layout{display:grid!important;grid-template-columns:260px minmax(0,1fr)!important;gap:18px!important;align-items:start!important}
+main.shell .panel{min-width:0!important;padding:19px!important;border:1px solid #e7e8ef!important;border-radius:13px!important;background:#fff!important;box-shadow:0 4px 18px rgba(26,28,46,.025)!important}
+main.shell .panel-title{font-size:10px!important;font-weight:750!important;letter-spacing:.12em!important;color:#858797!important}
+main.shell .btn-primary-large,main.shell .btn-primary-small,main.shell .btn-secondary-small,main.shell .btn-secondary,main.shell .btn,.work .btn{
+  min-height:36px!important;padding:0 13px!important;border-radius:8px!important;font-size:11px!important;font-weight:650!important;box-shadow:none!important
+}
+main.shell .btn-primary-large,main.shell .btn-primary-small,.work .btn.primary{background:#625bf6!important;border-color:#625bf6!important;color:#fff!important}
+main.shell .btn-secondary-small,main.shell .btn-secondary,main.shell .btn{background:#fff!important;border:1px solid #e3e5ed!important;color:#454756!important}
+main.shell input,main.shell select,main.shell textarea{border:1px solid #e2e4ec!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important}
+main.shell .empty{padding:52px 22px!important;border:1px dashed #dedfe8!important;border-radius:11px!important;background:#fcfcfe!important}
+main.shell .empty h2{margin:0 0 9px!important;font-size:20px!important;letter-spacing:-.045em!important;color:#282936!important}
+main.shell .empty p{max-width:460px!important;margin:0 auto 16px!important;color:#777988!important;line-height:1.65!important}
+main.shell .list button,main.shell .items button{border-radius:9px!important;border-color:#e8e9f0!important}
+main.shell .list button.active,main.shell .items button.active{background:#f3f2ff!important;border-color:#c9c5ff!important}
+body.page-body .work{background:#f5f6fa!important;color:#242633!important}
+body.page-body .bar{min-height:62px!important;padding:10px 18px!important;background:#fff!important;border-bottom:1px solid #e7e8ef!important}
+body.page-body .bar input{min-height:36px!important;border:1px solid #e5e6ee!important;border-radius:8px!important;background:#fafafd!important;font-size:12px!important}
+body.page-body .bar .status{font-size:10px!important;font-weight:600!important;color:#737684!important}
+body.page-body .layout:has(>.side):has(>.stage){grid-template-columns:250px minmax(0,1fr) 286px!important;background:#fff!important}
+body.page-body .side{padding:17px!important;background:#fff!important;border-color:#e7e8ef!important}
+body.page-body .side .label{font-size:10px!important;font-weight:750!important;letter-spacing:.12em!important;color:#858797!important}
+body.page-body .thumb{padding:8px!important;border-radius:9px!important;border-color:#e8e9f0!important}
+body.page-body .thumb.active{border-color:#bdb8ff!important;background:#f4f3ff!important;box-shadow:0 0 0 2px #625bf610!important}
+body.page-body .stage{background-color:#f3f4f8!important;background-image:radial-gradient(#dfe1e9 .85px,transparent .85px)!important;background-size:18px 18px!important}
+body.page-body .tools{padding:10px 14px!important;background:#fff!important;border-bottom:1px solid #e7e8ef!important}
+body.page-body .tools button,body.page-body .tools select{min-height:32px!important;border-radius:7px!important;border-color:#e2e4ec!important;background:#fff!important;font-size:10px!important}
+body.page-body .canvas{border:1px solid #e5e6ed!important;border-radius:7px!important;box-shadow:0 16px 46px rgba(31,33,53,.09)!important}
+body.page-body .asset-dock{border:1px solid #e4e5ed!important;border-radius:13px!important;background:rgba(255,255,255,.97)!important;box-shadow:0 10px 34px rgba(31,33,53,.10)!important}
+body.page-body .foot{background:#fff!important;border-top:1px solid #e7e8ef!important;color:#777987!important}
+body[data-website-page=editor] .shell{width:min(1440px,calc(100% - 56px))!important;padding-top:30px!important}
+body[data-website-page=editor] .builder{grid-template-columns:220px minmax(0,1fr) 270px!important;gap:0!important;border:1px solid #e5e6ed!important;border-radius:12px!important;background:#fff!important;box-shadow:0 12px 34px rgba(30,32,50,.055)!important}
+body[data-website-page=editor] .builder-tools,body[data-website-page=editor] .builder-properties{padding:17px!important;background:#fff!important;border:0!important}
+body[data-website-page=editor] .builder-tools{border-right:1px solid #e8e9ef!important}
+body[data-website-page=editor] .builder-properties{border-left:1px solid #e8e9ef!important}
+body[data-website-page=editor] .builder-stage{background-color:#f4f5f9!important;background-image:radial-gradient(#dfe1e9 .85px,transparent .85px)!important;background-size:18px 18px!important;padding:18px!important}
+body[data-website-page=editor] .builder-canvas{border:1px solid #e6e7ee!important;border-radius:7px!important;box-shadow:0 14px 42px rgba(31,33,53,.09)!important}
+body[data-website-page=editor] .design-toolbar{margin-top:20px!important;border-radius:10px 10px 0 0!important;background:#fff!important;border-color:#e6e7ee!important;color:#353644!important}
+@media(max-width:900px){
+ main.shell{width:calc(100% - 32px)!important;padding-top:25px!important}
+ main.shell .layout{grid-template-columns:1fr!important}
+ body.page-body .layout:has(>.side):has(>.stage){grid-template-columns:1fr!important}
+ body.page-body .side.right{border-left:0!important;border-top:1px solid #e7e8ef!important}
+ body[data-website-page=editor] .shell{width:calc(100% - 32px)!important}
+ body[data-website-page=editor] .builder{grid-template-columns:1fr!important}
+ body[data-website-page=editor] .builder-tools{border-right:0!important;border-bottom:1px solid #e8e9ef!important}
+ body[data-website-page=editor] .builder-properties{border-left:0!important;border-top:1px solid #e8e9ef!important}
+}
+@media(max-width:620px){
+ .home-nav.product-app-nav{height:auto!important;min-height:64px!important}
+ main.shell>.head,main.shell>.hero{align-items:flex-start!important;flex-direction:column!important}
+ main.shell .panel{padding:14px!important}
+ body.page-body .bar{align-items:flex-start!important}
+ body.page-body .layout:has(>.side):has(>.stage){display:flex!important;flex-direction:column!important}
+}
