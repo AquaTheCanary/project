@@ -44,10 +44,10 @@
 <main class="choice-main">
 <section class="choice-heading"><div class="choice-eyebrow">Welcome back</div><h1>How would you like to sign in?</h1><p>Choose the account type you use to access Project.</p></section>
 <section class="choice-grid" aria-label="Choose an account type">
-<a class="choice-card" data-route="/auth/personal/login/"><div class="choice-icon" aria-hidden="true">◉</div><h2>Personal account</h2><p>Sign in to your own workspace and access your presentations, websites, forms and files.</p><span class="choice-action">Personal sign in <span>→</span></span></a>
-<a class="choice-card org" data-route="/auth/organisation/login/"><div class="choice-icon" aria-hidden="true">▦</div><h2>Organisation account</h2><p>Sign in with your work account to access your organisation's shared workspace.</p><span class="choice-action">Organisation sign in <span>→</span></span></a>
+<a class="choice-card" data-route="/login/personal/"><div class="choice-icon" aria-hidden="true">◉</div><h2>Personal account</h2><p>Sign in to your own workspace and access your presentations, websites, forms and files.</p><span class="choice-action">Personal sign in <span>→</span></span></a>
+<a class="choice-card org" data-route="/login/organisation/"><div class="choice-icon" aria-hidden="true">▦</div><h2>Organisation account</h2><p>Sign in with your work account to access your organisation's shared workspace.</p><span class="choice-action">Organisation sign in <span>→</span></span></a>
 </section>
-<div class="choice-bottom">New to Project? <a data-route="/auth/personal/register/">Create a free personal account</a></div>
+<div class="choice-bottom">New to Project? <a data-route="/register/personal/">Create a free personal account</a></div>
 </main>
 <footer class="choice-footer">© 2026 Project. All rights reserved.<br><a class="admin-link" data-route="/admin/console/">Administrator sign in →</a></footer>
 <script>(async()=>{try{await studioAuth.redirectReady;const user=await studioAuth.currentUser();if(!user)return;await studioAuth.refreshEmailVerification(user);const live=firebase.auth().currentUser||user;if(!live.emailVerified)return;const type=await studioAuth.getAccountType(live);if(type==="personal"||type==="organisation")location.replace(window.getAppUrl("/dashboard/"));}catch(error){console.warn("Account detection on sign-in chooser failed:",error);}})();</script></body></html>
