@@ -511,10 +511,9 @@ export default {
     if (url.pathname === "/health" && (request.method === "GET" || request.method === "HEAD")) {
       const checks = [
         {id:"project",name:"Project",url:"https://www.convex-project.abrdns.com/"},
-        {id:"presentr",name:"Presentr",url:"https://www.presentr.convex-project.abrdns.com/"},
-        {id:"siteify",name:"Siteify",url:"https://www.siteify.convex-project.abrdns.com/"},
-        {id:"formr",name:"Formr",url:"https://www.formr.convex-project.abrdns.com/"},
-        {id:"cloudbase",name:"Cloudbase",url:"https://www.cloudbase.convex-project.abrdns.com/"},
+        {id:"presentr",name:"Project Present",url:"https://www.presentr.convex-project.abrdns.com/"},
+        {id:"siteify",name:"Project Sites",url:"https://www.siteify.convex-project.abrdns.com/"},
+        {id:"formr",name:"Project Forms",url:"https://www.formr.convex-project.abrdns.com/"},
         {id:"firebase-auth",name:"Firebase Authentication",url:"https://identitytoolkit.googleapis.com/$discovery/rest?version=v1"},
         {id:"firestore",name:"Cloud Firestore",url:"https://firestore.googleapis.com/$discovery/rest?version=v1"},
         {id:"firebase-storage",name:"Firebase Storage",url:"https://firebasestorage.googleapis.com/$discovery/rest?version=v1"},
