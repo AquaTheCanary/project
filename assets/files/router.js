@@ -1,26 +1,30 @@
-// Shared route resolver and appearance controller for Interactive Studio.
+// Project canonical URL resolver and shared appearance controller.
 (function () {
   "use strict";
   const isGitHubPages = location.hostname.toLowerCase().endsWith(".github.io");
-  const repositoryBase = isGitHubPages ? "/interactivestudio" : "";
+  const repositoryBase = isGitHubPages ? "/project" : "";
   window.APP_BASE_PATH = repositoryBase;
+  const routeMap = [
+    [/^\/home\/?$/, "/"],
+    [/^\/auth\/personal\/login\/?$/, "/login/personal/"],
+    [/^\/auth\/organisation\/login\/?$/, "/login/organisation/"],
+    [/^\/auth\/personal\/register\/?$/, "/register/personal/"],
+    [/^\/auth\/organisation\/register\/?$/, "/register/organisation/"],
+    [/^\/websites\/?$/, "/sites/"],
+    [/^\/websites\/new\/?$/, "/sites/new/"],
+    [/^\/websites\/editor\/?$/, "/sites/new/"],
+    [/^\/present\/?$/, "/presentation/"],
+    [/^\/presentations\/?$/, "/presentation/"],
+    [/^\/presentations\/new\/?$/, "/presentation/new/"],
+    [/^\/presentations\/editor\/?$/, "/presentation/new/"],
+    [/^\/presenter\/?$/, "/presentation/"],
+    [/^\/forms\/?$/, "/forms/new/"]
+  ];
   window.getAppUrl = function (path) {
     const value = String(path || "/").trim();
     let clean = "/" + value.replace(/^\/+/, "");
-    const routeMap = [
-      [/^\\/auth\\/personal\\/login\\/?$/, "/login/personal/"],
-      [/^\\/auth\\/organisation\\/login\\/?$/, "/login/organisation/"],
-      [/^\\/auth\\/personal\\/register\\/?$/, "/register/personal/"],
-      [/^\\/auth\\/organisation\\/register\\/?$/, "/register/organisation/"],
-      [/^\\/websites\\/?$/, "/sites/"],
-      [/^\\/websites\\/new\\/?$/, "/sites/new/"],
-      [/^\\/websites\\/editor\\/?$/, "/sites/new/"],
-      [/^\\/presentations\\/new\\/?$/, "/presentation/new/"],
-      [/^\\/presentations\\/editor\\/?$/, "/presentation/new/"],
-      [/^\\/presenter\\/?$/, "/presentation/"]
-    ];
     for (const [pattern, target] of routeMap) {
-      if (pattern.test(clean)) { clean = clean.replace(pattern, target); break; }
+      if (pattern.test(clean)) { clean = target + clean.slice(clean.match(pattern)[0].length); break; }
     }
     return repositoryBase + (clean === "/" ? "/" : clean);
   };
@@ -34,15 +38,12 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => applyRoutes());
   else applyRoutes();
 
-
-  // Central logo resolver: keep every page on the canonical transparent wordmark
-  // and the tab icon on the branded square asset, regardless of legacy markup.
   function repairBrandAssets(root = document) {
     const base = window.getAppUrl("/assets/images/");
     root.querySelectorAll('img[src*="project-logo.svg"],img[src*="project-mark.svg"],img[src*="interactive-studio-icon.svg"]').forEach(img => {
-      const isTabLike = img.closest("link[rel~='icon']") || /favicon|tablogo/i.test(img.alt || "");
-      const target = base + (isTabLike ? "newp.png" : "newp-nobg.png");
-      if (!img.src.endsWith(isTabLike ? "newp.png" : "newp-nobg.png")) img.src = target;
+      const tabLike = /favicon|tablogo/i.test(img.alt || "");
+      const target = base + (tabLike ? "newp.png" : "newp-nobg.png");
+      if (!img.src.endsWith(tabLike ? "newp.png" : "newp-nobg.png")) img.src = target;
       img.onerror = () => { img.onerror = null; img.src = base + "newp.png"; };
     });
     root.querySelectorAll('link[rel~="icon"]').forEach(icon => {
@@ -54,10 +55,9 @@
   try {
     new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
       if (node.nodeType === 1) repairBrandAssets(node);
-    }))).observe(document.documentElement, {childList:true,subtree:true});
+    }))).observe(document.documentElement, { childList: true, subtree: true });
   } catch (_) {}
 
-  // Light mode is the platform-wide default and is intentionally not user-toggleable.
   function enforceLightAppearance() {
     const root = document.documentElement;
     if (root.dataset.theme !== "light") root.dataset.theme = "light";
@@ -65,16 +65,7 @@
     try { if (localStorage.getItem("is-theme") !== "light") localStorage.setItem("is-theme", "light"); } catch (_) {}
   }
   enforceLightAppearance();
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", enforceLightAppearance, { once: true });
-  }
-  // Prevent older page scripts or stored preferences from re-applying dark mode.
-  try {
-    new MutationObserver(enforceLightAppearance).observe(document.documentElement, {
-      attributes: true, attributeFilter: ["data-theme", "style"]
-    });
-  } catch (_) {}
-  window.addEventListener("storage", event => {
-    if (event.key === "is-theme" && event.newValue !== "light") enforceLightAppearance();
-  });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", enforceLightAppearance, { once: true });
+  try { new MutationObserver(enforceLightAppearance).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "style"] }); } catch (_) {}
+  window.addEventListener("storage", event => { if (event.key === "is-theme" && event.newValue !== "light") enforceLightAppearance(); });
 })();
