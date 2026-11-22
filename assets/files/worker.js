@@ -147,8 +147,8 @@ async function serveMainDomainPath(request, env) {
 }
 function legacyProductPath(host, pathname) {
   const hostMap = {
-    "presentr.convex-project.abrdns.com": "/presentation/",
-    "www.presentr.convex-project.abrdns.com": "/presentation/",
+    "presentr.convex-project.abrdns.com": "/present/",
+    "www.presentr.convex-project.abrdns.com": "/present/",
     "siteify.convex-project.abrdns.com": "/sites/",
     "www.siteify.convex-project.abrdns.com": "/sites/",
     "formr.convex-project.abrdns.com": "/forms/",
@@ -160,10 +160,10 @@ function legacyProductPath(host, pathname) {
   if (!base) return null;
   if (/^\/(?:assets|images|fonts|favicon|robots\.txt|sitemap\.xml|__\/)/i.test(pathname)) return pathname;
   const legacyRoutes = [
-    [/^\/presentations\/editor\/?$/i, "/presentation/"],
-    [/^\/presentations\/new\/?$/i, "/presentation/new/"],
-    [/^\/presentations\/view\/audience\/?$/i, "/presentation/"],
-    [/^\/presentations\/view\/presenter\/?$/i, "/presentation/"],
+    [/^\/presentations\/editor\/?$/i, "/present/"],
+    [/^\/presentations\/new\/?$/i, "/present/new/"],
+    [/^\/presentations\/view\/audience\/?$/i, "/present/"],
+    [/^\/presentations\/view\/presenter\/?$/i, "/present/"],
     [/^\/presentations\/view\/(\d{6})\/presenter\/?$/i, "/presentation/$1/present/host/"],
     [/^\/presentations\/view\/(\d{6})\/audience\/?$/i, "/presentation/$1/present/audience/"],
     [/^\/view\/(\d{6})\/?$/i, "/presentation/$1/present/audience/"],
@@ -175,11 +175,11 @@ function legacyProductPath(host, pathname) {
     if (pattern.test(pathname)) return pathname.replace(pattern, target);
   }
   if (pathname === "/" || pathname === "/index.html") return base;
-  if (pathname === "/present" || pathname === "/present/") return "/presentation/";
-  if (/^\/present\/(\d{6})\/?$/i.test(pathname)) return pathname.replace(/^\/present\//i, "/presentation/");
+  if (pathname === "/present" || pathname === "/present/") return "/present/";
+  if (/^\/present\/(\d{6})\/?$/i.test(pathname)) return pathname.replace(/^\/present\//i, "/present/");
   if (/^\/present\/(\d{6})\/host\/?$/i.test(pathname)) return pathname.replace(/^\/present\/(\d{6})\/host\/?$/i, "/presentation/$1/present/host/");
   if (/^\/present\/(\d{6})\/audience\/?$/i.test(pathname)) return pathname.replace(/^\/present\/(\d{6})\/audience\/?$/i, "/presentation/$1/present/audience/");
-  if (pathname.startsWith("/presentation/") || pathname.startsWith("/sites/") || pathname.startsWith("/forms/")) return pathname;
+  if (pathname.startsWith("/present/") || pathname.startsWith("/sites/") || pathname.startsWith("/forms/")) return pathname;
   return pathname;
 }
 
@@ -245,7 +245,7 @@ async function proxyStudioApp(request) {
     params.set("create", "1");
   } else if ((match = pathname.match(/^\/sites\/(\d{6})\/?$/i))) {
     return Response.redirect(new URL("/sites/view/" + match[1] + incoming.search, incoming.origin), 301);
-  } else if (pathname === "/presentation" || pathname === "/presentation/") {
+  } else if (pathname === "/presentation" || pathname === "/present/") {
     return Response.redirect(new URL("/present/" + incoming.search, incoming.origin), 301);
   } else if ((match = pathname.match(/^\/presentation\/new\/?$/i))) {
     return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
@@ -256,17 +256,17 @@ async function proxyStudioApp(request) {
   } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/?$/i))) {
     return Response.redirect(new URL("/present/" + match[1] + "/" + incoming.search, incoming.origin), 301);
   } else if (pathname === "/present" || pathname === "/present/") {
-    pathname = "/presentations/new/";
+    pathname = "/present/new/";
   } else if (pathname === "/present/new" || pathname === "/present/new/") {
-    pathname = "/presentations/new/";
+    pathname = "/present/new/";
   } else if ((match = pathname.match(/^\/present\/(\d{6})\/host\/?$/i))) {
-    pathname = "/presentations/view/host/";
+    pathname = "/present/view/host/";
     params.set("id", match[1]);
   } else if ((match = pathname.match(/^\/present\/(\d{6})\/audience\/?$/i))) {
-    pathname = "/presentations/view/audience/";
+    pathname = "/present/view/audience/";
     params.set("id", match[1]);
   } else if ((match = pathname.match(/^\/present\/(\d{6})\/?$/i))) {
-    pathname = "/presentations/editor/";
+    pathname = "/present/editor/";
     params.set("id", match[1]);
   } else if ((match = pathname.match(/^\/presentations\/(?:new|editor)\/?$/i))) {
     return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
