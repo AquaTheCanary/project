@@ -55,27 +55,23 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="robots" content="noindex">
             <title>Page not found | Project</title>
-            <style>
-              *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#f7f7fa;color:#20212a;font:15px Inter,system-ui,sans-serif}
-              main{width:min(440px,100%);padding:36px;border:1px solid #e6e7ee;border-radius:16px;background:#fff;text-align:center;box-shadow:0 18px 55px #20212a0b}
-              h1{margin:0 0 8px;font-size:26px;letter-spacing:-.05em}p{color:#737582;line-height:1.6}
-              a{display:inline-flex;margin-top:12px;padding:11px 16px;border-radius:8px;background:#625bf6;color:#fff;text-decoration:none;font-weight:650}
-            </style>
           </head>
-          <body><main><h1>Page not found</h1><p>That Project page may have moved, or the address may be incorrect.</p><a href="/">Back to Project</a></main>
-          <script>
-          (function(){
-            var path=decodeURIComponent(location.pathname);
-            var target=null, match;
-            if((match=path.match(/^\/present\/(\d{6})\/?$/i))) target="/present/view/?room="+encodeURIComponent(match[1]);
-            else if((match=path.match(/^\/present\/(\d{6})\/(audience|presenter)\/?$/i))) target=(match[2].toLowerCase()==="presenter"?"/present/presenter/":"/present/view/")+"?id="+encodeURIComponent(match[1]);
-            else if((match=path.match(/^\/view\/(\d{6})\/?$/i))) target="/present/view/?room="+encodeURIComponent(match[1]);
-            else if((match=path.match(/^\/presentations\/view\/([a-z0-9_-]+)\/(audience|presenter)\/?$/i))) target=(match[2].toLowerCase()==="presenter"?"/present/presenter/":"/present/view/")+"?id="+encodeURIComponent(match[1]);
-            else if((match=path.match(/^\/sites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) target="/sites/"+match[2].toLowerCase()+"/?id="+encodeURIComponent(match[1]);
-            else if((match=path.match(/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) target="/sites/"+match[2].toLowerCase()+"/?id="+encodeURIComponent(match[1]);
-            if(target) location.replace(target+location.hash);
-          })();
-          </script></body></html>
+          <body>
+            <script>
+            (function(){
+              var path=decodeURIComponent(location.pathname);
+              var match, target=null;
+              if((match=path.match(/^\\/presenter\\/(\\d{6})\\/?$/i))) target="/presenter/?id="+encodeURIComponent(match[1]);
+              else if((match=path.match(/^\\/presenter\\/(\\d{6})\\/(audience|presenter)\\/?$/i))) target="/presenter/?id="+encodeURIComponent(match[1])+"&mode="+encodeURIComponent(match[2].toLowerCase());
+              else if((match=path.match(/^\\/view\\/(\\d{6})\\/?$/i))) target="/presenter/?id="+encodeURIComponent(match[1]);
+              else if((match=path.match(/^\\/presentations\\/view\\/([a-z0-9_-]+)\\/(audience|presenter)\\/?$/i))) target="/presenter/?id="+encodeURIComponent(match[1])+"&mode="+encodeURIComponent(match[2].toLowerCase());
+              else if((match=path.match(/^\\/websites\\/([a-z0-9-]+)\\/(editor|publish)\\/?$/i))) target="/websites/"+match[2].toLowerCase()+"/?id="+encodeURIComponent(match[1]);
+              if(target){location.replace(target+location.hash);return;}
+              document.body.innerHTML='<main style="font:16px system-ui;text-align:center;padding:12vh 20px"><h1>Page not found</h1><p>That Project page may have moved, or the address may be incorrect.</p><a href="/">Back to Project</a></main>';
+            })();
+            </script>
+          </body>
+          </html>
           EOF
 
           # /home remains a compatibility URL and redirects to the root homepage.
