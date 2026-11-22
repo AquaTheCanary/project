@@ -196,7 +196,7 @@ const params = new URLSearchParams(incoming.search);
   } else if ((match = pathname.match(/^\/sites\/(\d{6})\/?$/i))) {
     pathname = "/websites/";
     params.set("id", match[1]);
-  } else if (pathname === "/presentation" || pathname === "/present/") {
+  } else if (pathname === "/presentation" || pathname === "/presentation/") {
     return Response.redirect(new URL("/present/" + incoming.search, incoming.origin), 301);
   } else if (pathname === "/presentation/new" || pathname === "/presentation/new/") {
     return Response.redirect(new URL("/present/new/" + incoming.search, incoming.origin), 301);
@@ -229,8 +229,6 @@ const params = new URLSearchParams(incoming.search);
     params.set("id", match[1]);
     params.set("view", "results");
   }
-  if (pathname === "/present" || pathname === "/present/") return Response.redirect(new URL("/present/" + incoming.search, incoming.origin), 301);
-  if (pathname === "/present/new" || pathname === "/present/new/") return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 301);
   if ((match = pathname.match(/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) {
     params.set("id", match[1]);
     pathname = match[2] === "editor" ? "/websites/" : "/websites/publish/";
