@@ -148,7 +148,7 @@
 .library-card-body{padding:13px 14px 14px}
 .library-card-title{display:flex;align-items:center;gap:8px;padding-right:30px;font-size:13px;font-weight:750;letter-spacing:-.2px;overflow-wrap:anywhere}
 .library-card-meta{margin-top:5px;color:#85889a;font-size:10px}
-.library-card-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px}
+.library-card-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px}.library-card>.library-card-actions{padding:0 14px 13px;margin-top:0}
 .library-open{font-size:11px;font-weight:700;color:#554bc5;text-decoration:none}
 .library-delete{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #eee0e2;border-radius:7px;background:#fff;color:#b34b5a;font-size:10px;cursor:pointer}
 .library-delete:hover{background:#fff4f4;border-color:#e9c5cb}
@@ -158,7 +158,7 @@
 .library-card.compact .preview-window strong{font-size:11px}
 .library-card.compact .preview-window span{display:none}
 .library-card.compact .library-card-body{padding:9px 11px}
-.library-card.compact .library-card-actions{margin-top:8px}
+.library-card.compact .library-card-actions{margin-top:0;padding:0 11px 10px}
 .projects-grid.is-compact{grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px}
 .library-empty{grid-column:1/-1;padding:35px 18px;border:1px dashed #dedfeb;border-radius:12px;text-align:center;color:#77798c;font-size:12px}
 @media(max-width:650px){.library-toolbar{gap:8px}.library-search{flex-basis:100%}.library-toolbar select{flex:1}.density-switch button span{display:none}.density-switch button{width:34px;justify-content:center;padding:0}.m365-dashboard .projects-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px}.library-preview{height:100px}.library-card-body{padding:10px}.library-card-title{font-size:11px}}
@@ -203,8 +203,8 @@ function renderLibrary(){
   const actions=document.createElement("div");actions.className="library-card-actions";
   const openLink=document.createElement("a");openLink.className="library-open";openLink.href=projectUrl(item);openLink.textContent="Open project ↗";
   const del=document.createElement("button");del.type="button";del.className="library-delete";del.textContent="⌫ Delete";
-  del.onclick=async event=>{event.stopPropagation();if(!confirm('Delete "'+item.title+'" permanently? This cannot be undone.'))return;del.disabled=true;del.textContent="Deleting…";try{if(item.type==="present"){localStorage.removeItem("studio_deck_"+item.id);const legacyKey="studio_projects_"+user.uid;let legacy=[];try{legacy=JSON.parse(localStorage.getItem(legacyKey)||"[]")}catch(_){}localStorage.setItem(legacyKey,JSON.stringify(legacy.filter(x=>x.id!==item.id)))}else if(item.type==="sites"){const db=firebase.firestore();await db.collection("websites").doc(item.id).delete();const paths=await db.collection("websitePaths").where("websiteSlug","==",item.id).get();const batch=db.batch();paths.forEach(doc=>batch.delete(doc.ref));await batch.commit();}else{await firebase.firestore().collection("forms").doc(item.id).delete();}libraryItems=libraryItems.filter(x=>!(x.type===item.type&&x.id===item.id));renderLibrary();}catch(error){alert("Couldn't delete this project: "+error.message);del.disabled=false;del.textContent="⌫ Delete";}};
-  actions.append(openLink,del);body.append(title,meta,actions);open.append(preview,body);open.onclick=()=>{location.href=projectUrl(item)};card.append(open);projectsRoot.append(card);
+  del.onclick=async event=>{event.stopPropagation();if(!confirm('Delete "'+item.title+'" permanently? This cannot be undone.'))return;del.disabled=true;del.textContent="Deleting…";try{if(item.type==="present"){localStorage.removeItem("studio_deck_"+item.id);const legacyKey="studio_projects_"+user.uid;let legacy=[];try{legacy=JSON.parse(localStorage.getItem(legacyKey)||"[]")}catch(_){}localStorage.setItem(legacyKey,JSON.stringify(legacy.filter(x=>x.id!==item.id)))}else if(item.type==="sites"){const db=firebase.firestore();await db.collection("websites").doc(item.id).delete();if(item.data.publicSlug)await db.collection("websitePaths").doc(item.data.publicSlug).delete();if(item.data.publishedHostname){await db.collection("websiteDomains").doc(item.data.publishedHostname).delete().catch(()=>{});await db.collection("websiteHosts").doc(item.data.publishedHostname).delete().catch(()=>{});}}else{await firebase.firestore().collection("forms").doc(item.id).delete();}libraryItems=libraryItems.filter(x=>!(x.type===item.type&&x.id===item.id));renderLibrary();}catch(error){alert("Couldn't delete this project: "+error.message);del.disabled=false;del.textContent="⌫ Delete";}};
+  body.append(title,meta);open.append(preview,body);open.onclick=()=>{location.href=projectUrl(item)};actions.append(openLink,del);card.append(open,actions);projectsRoot.append(card);
  });
 }
 $("view-comfortable").onclick=()=>{compactView=false;localStorage.setItem("project_library_density","comfortable");renderLibrary()};
