@@ -10,7 +10,7 @@ const FREE_DOMAINS = new Set(["gmail.com","googlemail.com","yahoo.com","yahoo.co
 const PLATFORM_HOST = "is-sites.abrdns.com";
 const HELP_HOST = "help.interactivestudio.abrdns.com";
 const API_HOST = "interactive-studio.convexllc.workers.dev";
-const FIREBASE_PROJECT_ID = "interactive-studio-convexllc";
+const FIREBASE_PROJECT_ID = "convexllc-project";
 
 function decodeFirestoreValue(value) {
   if (!value || typeof value !== "object") return null;
@@ -74,7 +74,7 @@ function renderPublishedSite(site, hostname) {
   return new Response(html,{status:200,headers:{"Content-Type":"text/html; charset=utf-8","Cache-Control":"public, max-age=60, s-maxage=60","X-Content-Type-Options":"nosniff","Referrer-Policy":"strict-origin-when-cross-origin","Content-Security-Policy":"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src https: data:; font-src https:; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"}});
 }
 function notPublished(hostname) {
-  const html = "<!doctype html><html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>Website not found</title><body style='font:16px system-ui;background:#f7f8fc;color:#252638;display:grid;place-items:center;min-height:100vh;margin:0'><main style='max-width:520px;padding:32px;text-align:center;background:white;border:1px solid #e7e8f0;border-radius:18px'><h1 style='letter-spacing:-.05em'>This website isn't published yet.</h1><p style='color:#73788a'>The address <b>" + escapeHTML(hostname) + "</b> is not connected to a published Interactive Studio website.</p><a href='https://is-sites.abrdns.com/websites/' style='color:#635bff;font-weight:700'>Create a website with Interactive Studio</a></main></body></html>";
+  const html = "<!doctype html><html><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>Website not found</title><body style='font:16px system-ui;background:#f7f8fc;color:#252638;display:grid;place-items:center;min-height:100vh;margin:0'><main style='max-width:520px;padding:32px;text-align:center;background:white;border:1px solid #e7e8f0;border-radius:18px'><h1 style='letter-spacing:-.05em'>This website isn't published yet.</h1><p style='color:#73788a'>The address <b>" + escapeHTML(hostname) + "</b> is not connected to a published Interactive Studio website.</p><a href='https://convex-project.abrdns.com/websites/' style='color:#635bff;font-weight:700'>Create a website with Interactive Studio</a></main></body></html>";
   return new Response(html, {status:404,headers:{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store","X-Content-Type-Options":"nosniff"}});
 }
 async function verifyApexlyRequest(request, env) {
@@ -138,7 +138,7 @@ async function serveMainDomainPath(request, env) {
     if (site.status !== "published") return notPublished(path);
     const publicSlug = String(site.publicSlug || "").toLowerCase();
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(publicSlug)) return notPublished(path);
-    return Response.redirect(new URL("/" + publicSlug + url.search, url.origin), 301);
+    return Response.redirect(new URL("https://convex-project.abrdns.com/" + publicSlug + url.search), 301);
   }
   const mapping = await readPublicDocument("websitePaths", path, env);
   if (!mapping) return null;
