@@ -38,21 +38,14 @@ jobs:
           grep -q '/assets/files/style.css' _site/index.html
           grep -q '/assets/files/design-system.css' _site/index.html
 
-          # Publish clean product URLs as real GitHub Pages directories. The custom
-          # domain points directly to Pages, so these aliases must exist in the
-          # Pages artifact; a separately deployed Worker cannot rewrite them.
-          mkdir -p _site/present/new _site/present/view _site/present/presenter
-          mkdir -p _site/sites/new _site/sites/editor _site/sites/publish
-          cp _site/presentations/editor/index.html _site/present/index.html
-          cp _site/presentations/new/index.html _site/present/new/index.html
-          cp _site/presentations/view/audience/index.html _site/present/view/index.html
-          cp _site/presentations/view/presenter/index.html _site/present/presenter/index.html
-          cp _site/websites/index.html _site/sites/index.html
-          cp _site/websites/new/index.html _site/sites/new/index.html
-          cp _site/websites/editor/index.html _site/sites/editor/index.html
-          cp _site/websites/publish/index.html _site/sites/publish/index.html
+          # The canonical product URLs are /presenter/ and /websites/.
+          # Do not create obsolete /present/ or /sites/ aliases.
+          test -s _site/presenter/index.html
+          test -s _site/websites/index.html
+          test -s _site/websites/editor/index.html
+          test -s _site/websites/publish/index.html
 
-          # Catch dynamic clean URLs and route them to the matching static app
+          # Catch dynamic product URLs and route them to the canonical app
           # entry point while preserving the requested ID as a query parameter.
           cat > _site/404.html <<'EOF'
           <!doctype html>
