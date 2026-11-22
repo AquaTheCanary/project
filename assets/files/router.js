@@ -18,7 +18,6 @@
     [/^\/presentations\/?$/, "/presentation/new/"],
     [/^\/presentations\/new\/?$/, "/presentation/new/"],
     [/^\/presentations\/editor\/?$/, "/presentation/"],
-    [/^\/presenter\/?$/, "/presentation/"],
     [/^\/forms\/?$/, "/forms/new/"]
   ];
   window.getAppUrl = function (path) {
