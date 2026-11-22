@@ -4,7 +4,7 @@ services:
     runtime: static
     branch: main
     buildCommand: echo "Static publishing site - no build required"
-    staticPublishPath: ./published-sites-static
+    staticPublishPath: ./assets/files/published-sites-static
     domains:
       - "*.websites.is-sites.abrdns.com"
     autoDeployTrigger: commit
