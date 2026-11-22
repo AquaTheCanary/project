@@ -625,7 +625,8 @@ export default {
       const originalHost = String(request.headers.get("X-IS-Original-Host") || "").trim().toLowerCase().replace(/:\\d+$/, "");
       const suffix = "." + PLATFORM_HOST;
       const label = originalHost.endsWith(suffix) ? originalHost.slice(0, -suffix.length) : "";
-      if (originalHost === PLATFORM_HOST || originalHost === HELP_HOST) return proxyStudioApp(request);
+      const isMainSiteHost = originalHost === "convex-project.abrdns.com" || originalHost === "www.convex-project.abrdns.com";
+      if (originalHost === PLATFORM_HOST || originalHost === HELP_HOST || isMainSiteHost) return proxyStudioApp(request);
       if (!label || label.includes(".") || !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label)) {
         return new Response("Forbidden: invalid website hostname.", {status:403,headers:{"Cache-Control":"no-store"}});
       }
