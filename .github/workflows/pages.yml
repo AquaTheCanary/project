@@ -84,7 +84,9 @@ jobs:
           cat > _site/presentation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>location.replace("/present/new/"+location.search+location.hash)</script><a href="/present/new/">Create a presentation</a>
           EOF
-          cp present/new/index.html _site/presentation/new/index.html
+          cat > _site/presentation/new/index.html <<'EOF'
+          <!doctype html><meta charset="utf-8"><script>location.replace("/present/new/"+location.search+location.hash)</script><a href="/present/new/">Create a presentation</a>
+          EOF
           test -s _site/presentation/index.html
           test -s _site/presentation/new/index.html
           mkdir -p _site/legal/policies
@@ -126,7 +128,7 @@ jobs:
             else if((m=p.match(/^\/forms\/([^/]+)\/results\/?$/))) { serve("forms/index.html",{id:m[1],view:"results"}); return; }
             else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/(host|audience)\/?$/))){ serve("present/view/"+(m[2]==="host"?"host":"audience")+"/index.html",{id:m[1]}); return; }
             else if((m=p.match(/^\/presentation\/([0-9]{6})\/?$/))) { serve("present/editor/index.html",{id:m[1]}); return; }
-            else if(p==="/presentation/new/" || p==="/presentation/new") t="/present/new/";
+            else if(p==="/presentation/new/" || p==="/presentation/new" || p==="/presentation/" || p==="/presentation") t="/present/new/";
             else if(p==="/presentation" || p==="/presentation/") t="/present/";
             else if(p==="/presentation/new/" || p==="/presentation/new") t="/present/new/";
             else if((m=p.match(/^\/present\/([0-9]{6})\/host\/?$/))) t="/present/"+encodeURIComponent(m[1])+"/host/";
