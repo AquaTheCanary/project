@@ -231,7 +231,7 @@ const params = new URLSearchParams(incoming.search);
   } else if (pathname === "/presentation/new" || pathname === "/presentation/new/") {
     pathname = "/presentations/new/";
   } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/host\/?$/i))) {
-    pathname = "/presentations/view/presenter/";
+    pathname = "/presentations/view/host/";
     params.set("id", match[1]);
   } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/audience\/?$/i))) {
     pathname = "/presentations/view/audience/";
