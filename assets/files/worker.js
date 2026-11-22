@@ -221,7 +221,7 @@ const params = new URLSearchParams(incoming.search);
       const hostname = String(site.publishedHostname).toLowerCase();
       if (/^(?=.{1,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/.test(hostname)) return Response.redirect("https://" + hostname + "/", 302);
     }
-    pathname = "/published-sites-static/";
+    pathname = "/assets/files/published-sites-static/";
     params.set("preview", match[1]);
   } else if ((match = pathname.match(/^\/sites\/(\d{6})\/?$/i))) {
     pathname = "/websites/";
