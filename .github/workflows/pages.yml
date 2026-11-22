@@ -55,7 +55,7 @@ jobs:
           test -s auth/organisation/register/index.html
           test -s presentations/new/index.html
           test -s presentations/editor/index.html
-          test -s presentations/view/presenter/index.html
+          test -s presentations/view/host/index.html
           test -s presentations/view/audience/index.html
 
           # Build clean public entry points and legacy policy redirects.
