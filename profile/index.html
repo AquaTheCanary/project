@@ -23,7 +23,7 @@ body.page-body{background:#f6f7fb;color:#252638}.profile-shell{width:min(900px,c
 <section class="profile-card">
 <div id="profile-loading" class="profile-status">Loading your profile…</div>
 <div id="profile-content" hidden>
-<div class="profile-hero"><img id="profile-photo" class="profile-avatar" alt="Profile photo"><div><h1 id="profile-name">Your profile</h1><p id="profile-email"></p><span class="profile-badge" id="profile-type">Personal account</span></div></div>
+<div class="profile-hero" id="profile-hero"><img id="profile-photo" class="profile-avatar" alt="Profile photo"><div><h1 id="profile-name">Your profile</h1><p id="profile-email"></p><span class="profile-badge" id="profile-type">Personal account</span><p id="public-bio" style="margin-top:10px;max-width:560px;line-height:1.7"></p><a id="public-website" href="#" target="_blank" rel="noopener" hidden style="display:inline-block;margin-top:8px;color:#5d55d8;font-size:12px;font-weight:700">Website ↗</a></div></div>
 <div class="profile-details">
 <div class="detail"><small>Email verification</small><strong id="profile-verified">Checking…</strong></div>
 <div class="detail"><small>Sign-in method</small><strong id="profile-provider">—</strong></div>
@@ -38,26 +38,43 @@ body.page-body{background:#f6f7fb;color:#252638}.profile-shell{width:min(900px,c
 </main>
 <script>
 (async()=>{
- const $=id=>document.getElementById(id);
+ const $=id=>document.getElementById(id),db=firebase.firestore();
  const fallback="data:image/svg+xml;charset=utf-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" rx="60" fill="#24283a"/><text x="60" y="75" text-anchor="middle" font-size="52" fill="#a99fff">✦</text></svg>');
+ const showError=message=>{$("profile-loading").textContent=message;$("profile-loading").hidden=false;$("profile-content").hidden=true};
  try{
-  const user=await studioAuth.requireUser("/auth/personal/login/");
-  if(!user)return;
-  await user.reload();
-  const p=await studioAuth.getProfile(firebase.auth().currentUser||user);
+  const handle=new URLSearchParams(location.search).get("handle");
+  if(handle){
+   const handleDoc=await db.collection("handles").doc(handle).get();
+   if(!handleDoc.exists)throw new Error("We couldn't find that profile.");
+   const uid=handleDoc.data().uid;
+   const publicDoc=await db.collection("publicProfiles").doc(uid).get();
+   if(!publicDoc.exists||publicDoc.data().visibility!=="public")throw new Error("This profile is private or unavailable.");
+   const data=publicDoc.data();
+   $("profile-photo").src=data.showAvatar===false?fallback:(data.photoURL||fallback);
+   $("profile-photo").hidden=data.showAvatar===false;
+   $("profile-name").textContent=data.showName===false?(data.handle||handle):((data.displayName||data.handle||handle));
+   $("profile-email").textContent="";
+   $("profile-type").textContent="@"+(data.handle||handle);
+   $("public-bio").textContent=data.bio||"";
+   if(data.website){$("public-website").href=data.website;$("public-website").textContent=data.website.replace(/^https?:\/\//,"")+" ↗";$("public-website").hidden=false;}
+   ["profile-verified","profile-provider","profile-account-type","profile-display-name","profile-uid"].forEach(id=>{const el=$(id);if(el&&el.parentElement)el.parentElement.hidden=true});
+   document.querySelector(".profile-actions").hidden=true;
+   document.title=(data.displayName||data.handle||handle)+" | Project";
+   $("profile-loading").hidden=true;$("profile-content").hidden=false;
+   $("signout").hidden=true;
+   return;
+  }
+  const user=await studioAuth.requireUser("/auth/personal/login/");if(!user)return;
+  await user.reload();const p=await studioAuth.getProfile(firebase.auth().currentUser||user);
   const type=p.accountType==="organisation"?"Organisation":"Personal";
-  $("profile-photo").src=p.photoURL||fallback;
-  $("profile-name").textContent=p.name||"Project creator";
-  $("profile-email").textContent=p.email||"";
-  $("profile-type").textContent=type+" account";
+  $("profile-photo").src=p.photoURL||fallback;$("profile-name").textContent=p.name||"Project creator";$("profile-email").textContent=p.email||"";$("profile-type").textContent=type+" account";
   $("profile-verified").textContent=p.emailVerified?"Verified":"Not verified";
   $("profile-provider").textContent=String(p.provider||"password").replace(".com","").replace(/^./,s=>s.toUpperCase());
-  $("profile-account-type").textContent=type;
-  $("profile-display-name").textContent=p.name||"—";
-  $("profile-uid").textContent=p.uid;
-  $("profile-loading").hidden=true;
-  $("profile-content").hidden=false;
- }catch(error){$("profile-loading").textContent=error.message||"Your profile could not be loaded."}
+  $("profile-account-type").textContent=type;$("profile-display-name").textContent=p.name||"—";$("profile-uid").textContent=p.uid;
+  const doc=await db.collection("userProfiles").doc(user.uid).get(),data=doc.exists?doc.data():{};
+  if(data.handle){const link=document.createElement("a");link.href=window.getAppUrl("/profile/?handle="+encodeURIComponent(data.handle));link.textContent="View public profile ↗";link.style.cssText="display:inline-block;margin-top:8px;color:#5d55d8;font-size:12px;font-weight:700";$("profile-hero").append(link)}
+  $("profile-loading").hidden=true;$("profile-content").hidden=false;
+ }catch(error){showError(error.message||"Your profile could not be loaded.")}
  $("signout").onclick=()=>studioAuth.signOut();
 })();
 </script>
