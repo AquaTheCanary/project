@@ -55,7 +55,7 @@ const server = http.createServer(async (req, res) => {
     });
     const responseHeaders = {};
     upstream.headers.forEach((value, name) => {
-      if (!["transfer-encoding", "connection", "content-length"].includes(name.toLowerCase())) responseHeaders[name] = value;
+      if (!["transfer-encoding", "connection", "content-length", "content-encoding"].includes(name.toLowerCase())) responseHeaders[name] = value;
     });
     const responseBody = req.method === "HEAD" ? null : Buffer.from(await upstream.arrayBuffer());
     if (responseBody) responseHeaders["content-length"] = String(responseBody.length);
