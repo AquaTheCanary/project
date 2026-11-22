@@ -1,4 +1,4 @@
-const PROJECT = "interactive-studio-convexllc";
+const PROJECT = "convexllc-project";
 const PLATFORM = "is-sites.abrdns.com";
 const SERVICE_HOST = "interactivestudio.vercel.app";
 
