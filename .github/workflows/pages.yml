@@ -94,6 +94,7 @@ jobs:
 
           # Serve the existing Forms builder at /forms/new; /forms itself redirects there.
           cp _site/forms/index.html _site/forms/new/index.html
+          sed -i 's#</body>#<script>if(!new URLSearchParams(location.search).has("id")&&!new URLSearchParams(location.search).has("create"))location.replace("/forms/new/?create=1"+location.hash)</script></body>#' _site/forms/new/index.html
           sed -i 's#../assets/#/assets/#g' _site/forms/new/index.html
           cat > _site/forms/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/forms/new/"+location.search+location.hash)</script><a href="/forms/new/">Open Forms</a>
