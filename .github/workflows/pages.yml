@@ -60,10 +60,10 @@ jobs:
           test -s auth/organisation/login/index.html
           test -s auth/personal/register/index.html
           test -s auth/organisation/register/index.html
-          test -s presentations/new/index.html
-          test -s presentations/editor/index.html
-          test -s presentations/view/host/index.html
-          test -s presentations/view/audience/index.html
+          test -s present/new/index.html
+          test -s present/editor/index.html
+          test -s present/view/host/index.html
+          test -s present/view/audience/index.html
 
           # Build clean public entry points and legacy policy redirects.
           mkdir -p _site/login/personal _site/login/organisation
@@ -84,7 +84,7 @@ jobs:
           cat > _site/presentation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>location.replace("/presentation/new/"+location.search+location.hash)</script><a href="/presentation/new/">Create a presentation</a>
           EOF
-          cp presentations/new/index.html _site/presentation/new/index.html
+          cp present/new/index.html _site/presentation/new/index.html
           test -s _site/presentation/index.html
           test -s _site/presentation/new/index.html
           mkdir -p _site/legal/policies
@@ -124,15 +124,15 @@ jobs:
             else if((m=p.match(/^\/forms\/take\/([^/]+)\/?$/))) { serve("forms/respond/index.html",{id:m[1]}); return; }
             else if((m=p.match(/^\/forms\/([^/]+)\/submitted\/?$/))) { serve("forms/submitted/index.html",{id:m[1]}); return; }
             else if((m=p.match(/^\/forms\/([^/]+)\/results\/?$/))) { serve("forms/index.html",{id:m[1],view:"results"}); return; }
-            else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/(host|audience)\/?$/))){ serve("presentations/view/"+(m[2]==="host"?"presenter":"audience")+"/index.html",{id:m[1]}); return; }
-            else if((m=p.match(/^\/presentation\/([0-9]{6})\/?$/))) { serve("presentations/editor/index.html",{id:m[1]}); return; }
-            else if(p==="/presentation/new/" || p==="/presentation/new") t="/presentation/new/";
+            else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/(host|audience)\/?$/))){ serve("present/view/"+(m[2]==="host"?"presenter":"audience")+"/index.html",{id:m[1]}); return; }
+            else if((m=p.match(/^\/presentation\/([0-9]{6})\/?$/))) { serve("present/editor/index.html",{id:m[1]}); return; }
+            else if(p==="/presentation/new/" || p==="/presentation/new") t="/present/new/";
             else if(p==="/present" || p==="/present/") t="/presentation/";
-            else if(p==="/present/new/" || p==="/present/new") t="/presentation/new/";
-            else if((m=p.match(/^\/present\/([0-9]{6})\/host\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/present/host/";
-            else if((m=p.match(/^\/present\/([0-9]{6})\/audience\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/present/audience/";
-            else if((m=p.match(/^\/present\/([0-9]{6})\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/";
-            else if(p==="/presentations/new/" || p==="/presentations/new" || p==="/presentations/editor/" || p==="/presentations/editor") t="/presentation/new/";
+            else if(p==="/presentation/new/" || p==="/presentation/new") t="/present/new/";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/host\/?$/))) t="/present/"+encodeURIComponent(m[1])+"/host/";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/audience\/?$/))) t="/present/"+encodeURIComponent(m[1])+"/audience/";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/?$/))) t="/present/"+encodeURIComponent(m[1])+"/";
+            else if(p==="/presentations/new/" || p==="/presentations/new" || p==="/presentations/editor/" || p==="/presentations/editor") t="/present/new/";
             else if(p==="/websites" || p==="/websites/") t="/sites/";
             else if(p==="/auth/personal/login/" || p==="/auth/personal/login") t="/login/personal/";
             else if(p==="/auth/organisation/login/" || p==="/auth/organisation/login") t="/login/organisation/";
