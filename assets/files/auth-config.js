@@ -371,7 +371,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       if (!activeUser) throw new Error("Sign in before requesting a verification email.");
       try {
         const token = await activeUser.getIdToken(true);
-        const response = await fetch("https://convexllc-project.vercel.app/api/send-verification", {
+        const response = await fetch("https://api.convexllc.org/api/send-verification", {
           method: "POST",
           headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
           body: "{}"
