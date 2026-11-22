@@ -25,8 +25,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site/assets
-          # Publish only the app source tree and static assets. Backend source,
-          # documentation and repository metadata stay out of the public site.
+          # Publish only the application source and public static assets.
           rsync -a assets/app/ _site/
           rsync -a assets/files/ _site/assets/files/
           rsync -a assets/images/ _site/assets/images/
