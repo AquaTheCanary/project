@@ -240,7 +240,7 @@ const params = new URLSearchParams(incoming.search);
     pathname = "/websites/";
   }
   const query = params.toString();
-  const target = new URL("https://www.convex-project.abrdns.com" + pathname + (query ? "?" + query : ""));
+  const target = new URL("https://aquathecanary.github.io/project" + pathname + (query ? "?" + query : ""));
   const upstream = await fetch(new Request(target.toString(), request));
   const contentType = upstream.headers.get("Content-Type") || "";
   if (!contentType.toLowerCase().includes("text/html")) return upstream;
