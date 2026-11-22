@@ -1,8 +1,0 @@
-/assets/Files/* /assets/files/:splat 200
-/assets/images/interactive-studio-icon.svg /assets/images/newp.png 200
-/assets/images/interactive-studio-logo.svg /assets/images/newp-nobg.png 200
-/assets/images/headerlogo.png /assets/images/newp-nobg.png 200
-/assets/images/logo.png /assets/images/newp-nobg.png 200
-/assets/images/project-logo.svg /assets/images/newp-nobg.png 200
-/assets/images/project-mark.svg /assets/images/newp-nobg.png 200
-/assets/images/tablogo.png /assets/images/newp.png 200

@@ -1,8 +1,0 @@
-{
-  "name": "project-worker-deploy",
-  "private": true,
-  "description": "Cloudflare Workers deployment entry point",
-  "scripts": {
-    "deploy": "cd assets/files && npm run deploy"
-  }
-}
