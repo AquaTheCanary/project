@@ -82,11 +82,13 @@ service cloud.firestore {
           && get(/databases/$(database)/documents/forms/$(request.resource.data.formId)).data.published == true;
       }
       allow create: if publishedForm()
+        && request.resource.data.ownerUid
+          == get(/databases/$(database)/documents/forms/$(request.resource.data.formId)).data.ownerUid
         && request.resource.data.answers is map
         && request.resource.data.answers.size() <= 40;
-      allow read: if signedIn()
-        && exists(/databases/$(database)/documents/forms/$(resource.data.formId))
-        && get(/databases/$(database)/documents/forms/$(resource.data.formId)).data.ownerUid == request.auth.uid;
+      // Response queries must include ownerUid == request.auth.uid so Firestore
+      // can prove access for every returned document without a cross-document query.
+      allow read: if signedIn() && resource.data.ownerUid == request.auth.uid;
       allow update, delete: if false;
     }
 
