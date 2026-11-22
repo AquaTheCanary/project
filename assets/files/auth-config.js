@@ -239,14 +239,26 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     async getAccountType(user) {
       const activeUser = user || await studioAuth.currentUser();
       if (!activeUser) return null;
-      const record = await studioAuth.getAccountRecord(activeUser);
-      if (record && (record.accountType === "personal" || record.accountType === "organisation")) return record.accountType;
-      // Compatibility for sessions created before account type was stored in Firestore.
-      if (localStorage.getItem("is_user_uid") === activeUser.uid) {
-        const cached = localStorage.getItem("is_user_account_type");
-        if (cached === "personal" || cached === "organisation") return cached;
+      // A previously authenticated browser already has a UID-bound account-type
+      // cache written by finishSignIn(). Use it if Firestore is temporarily
+      // unavailable (for example, rules have not propagated yet). Never use a
+      // cached type for a different Firebase UID.
+      const cachedType = localStorage.getItem("is_user_uid") === activeUser.uid
+        ? localStorage.getItem("is_user_account_type") : null;
+      try {
+        const record = await studioAuth.getAccountRecord(activeUser);
+        if (record && (record.accountType === "personal" || record.accountType === "organisation")) {
+          localStorage.setItem("is_user_uid", activeUser.uid);
+          localStorage.setItem("is_user_account_type", record.accountType);
+          return record.accountType;
+        }
+        if (cachedType === "personal" || cachedType === "organisation") return cachedType;
+        return null;
+      } catch (error) {
+        console.warn("Firestore account-type lookup failed; checking this browser's UID-bound session cache.", error);
+        if (cachedType === "personal" || cachedType === "organisation") return cachedType;
+        throw error;
       }
-      return null;
     },
     async resolveAccountType(user, requestedType) {
       const activeUser = user || await studioAuth.currentUser();
