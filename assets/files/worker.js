@@ -179,21 +179,10 @@ const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST) pathname = "/help/index.html";
   else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
   let match;
-  // Redirect legacy main-domain routes to their canonical product path.
-  const legacyMainRoutes = [
-    [/^\/presentations\/editor\/?$/i, "/present/"],
-    [/^\/presentations\/new\/?$/i, "/present/new/"],
-    [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
-    [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
-    [/^\/websites\/?$/i, "/sites/"],
-    [/^\/websites\/new\/?$/i, "/sites/new/"],
-    [/^\/websites\/editor\/?$/i, "/sites/editor/"],
-    [/^\/websites\/publish\/?$/i, "/sites/publish/"],
-    [/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i, "/sites/$1/$2/"]
-  ];
-  for (const [pattern, targetPath] of legacyMainRoutes) {
-    if (pattern.test(pathname)) return Response.redirect("https://www.convex-project.abrdns.com" + pathname.replace(pattern, targetPath) + incoming.search, 301);
-  }
+  // Legacy source-file paths (/presentations and /websites) are real
+  // GitHub Pages directories. Do not redirect them to /present or /sites:
+  // those public aliases are internally rewritten below, so redirecting
+  // both directions creates a permanent loop and looks like a missing page.
   // Canonical product paths share the main Project origin.
   if (pathname === "/present" || pathname === "/present/") {
     pathname = "/presentations/editor/";
