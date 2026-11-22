@@ -85,13 +85,13 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
   // Shared session policy: 60 minutes without activity, or 30 minutes after
   // the last open app tab is closed. Activity is synchronised across tabs.
-  const SESSION_KEY = "interactive_studio_session_v2";
-  const TAB_KEY = "interactive_studio_tab_v2";
-  const IDLE_LIMIT = 60 * 60 * 1000;
-  const CLOSED_LIMIT = 30 * 60 * 1000;
-  const HEARTBEAT = 15000;
-  let sessionTimer = null;
-  let sessionTabId = null;
+  // Firebase Auth LOCAL persistence is the source of truth for sessions.
+  // Keep a lightweight marker for this browser, but never sign users out for
+  // inactivity, closing a tab, or restarting their browser. Firebase will
+  // end the session when its refresh token expires or is revoked, and the
+  // explicit signOut() action clears the session.
+  const SESSION_KEY = "interactive_studio_session_v3";
+  const TAB_KEY = "interactive_studio_tab_v3";
   let sessionEnding = false;
   function readSession() {
     try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "{}"); }
@@ -101,100 +101,28 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     try { localStorage.setItem(SESSION_KEY, JSON.stringify(value)); } catch (_) {}
   }
   function beginFreshSession() {
-    const now = Date.now();
-    writeSession({ lastActivity: now, lastSeen: now, closedAt: 0, tabs: {} });
-  }
-  function sessionTabs(state, now) {
-    const tabs = state.tabs && typeof state.tabs === "object" ? state.tabs : {};
-    Object.keys(tabs).forEach(id => { if (!tabs[id] || now - tabs[id] > 60000) delete tabs[id]; });
-    state.tabs = tabs;
-    return tabs;
+    writeSession({ uid: auth.currentUser ? auth.currentUser.uid : null, createdAt: Date.now() });
   }
   async function expireSession(reason) {
     if (sessionEnding) return;
     sessionEnding = true;
     const accountType = localStorage.getItem("is_user_account_type") === "organisation" ? "organisation" : "personal";
-    if (sessionTimer) clearInterval(sessionTimer);
-    const state = readSession();
-    state.tabs = {};
-    state.closedAt = Date.now();
-    writeSession(state);
     try { await auth.signOut(); } catch (_) {}
     ["is_user_uid","is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem("interactive_studio_session");
     sessionEnding = false;
     if (location.pathname.indexOf("/auth/") !== 0) {
-      const target = appUrl("/auth/" + accountType + "/login/") + "?reason=" + encodeURIComponent(reason || "session-ended");
-      location.replace(target);
+      location.replace(appUrl("/auth/" + accountType + "/login/") + "?reason=" + encodeURIComponent(reason || "session-expired"));
     }
   }
   function startSessionLifecycle(user) {
-    if (!user || sessionTimer) return;
-    const now = Date.now();
-    const state = readSession();
-    const tabs = sessionTabs(state, now);
-    const otherTabsOpen = Object.keys(tabs).length > 0;
-    const lastActivity = Number(state.lastActivity || state.lastSeen || now);
-    const closedAt = Number(state.closedAt || 0);
-    const lastSeen = Number(state.lastSeen || 0);
-    const closedTooLong = !otherTabsOpen && ((closedAt && now - closedAt >= CLOSED_LIMIT) || (!closedAt && lastSeen && now - lastSeen >= CLOSED_LIMIT));
-    if (now - lastActivity >= IDLE_LIMIT || closedTooLong) {
-      expireSession(closedTooLong ? "tab-closed" : "inactivity");
-      return;
+    if (!user) return;
+    const existing = readSession();
+    if (existing.uid && existing.uid !== user.uid) {
+      ["is_user_uid","is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
     }
-    sessionTabId = sessionStorage.getItem(TAB_KEY);
-    if (!sessionTabId) {
-      sessionTabId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : "tab-" + Math.random().toString(36).slice(2);
-      sessionStorage.setItem(TAB_KEY, sessionTabId);
-    }
-    tabs[sessionTabId] = now;
-    state.tabs = tabs;
-    state.lastSeen = now;
-    state.lastActivity = lastActivity;
-    state.closedAt = 0;
-    writeSession(state);
-    const markActivity = () => {
-      const current = readSession();
-      current.tabs = sessionTabs(current, Date.now());
-      current.tabs[sessionTabId] = Date.now();
-      current.lastActivity = Date.now();
-      current.lastSeen = Date.now();
-      current.closedAt = 0;
-      writeSession(current);
-    };
-    let lastActivityWrite = 0;
-    const onActivity = () => {
-      if (Date.now() - lastActivityWrite < 10000) return;
-      lastActivityWrite = Date.now();
-      markActivity();
-    };
-    ["pointerdown","pointermove","mousemove","keydown","touchstart","scroll","wheel","input","click"].forEach(type => addEventListener(type, onActivity, { passive: true }));
-    addEventListener("storage", event => {
-      if (event.key !== SESSION_KEY || !event.newValue) return;
-      const latest = readSession();
-      if (Date.now() - Number(latest.lastActivity || 0) >= IDLE_LIMIT) expireSession("inactivity");
-    });
-    addEventListener("pagehide", () => {
-      if (sessionEnding) return;
-      const current = readSession();
-      current.tabs = sessionTabs(current, Date.now());
-      delete current.tabs[sessionTabId];
-      current.lastSeen = Date.now();
-      if (!Object.keys(current.tabs).length) current.closedAt = Date.now();
-      writeSession(current);
-    });
-    sessionTimer = setInterval(() => {
-      const current = readSession();
-      const stamp = Date.now();
-      current.tabs = sessionTabs(current, stamp);
-      current.tabs[sessionTabId] = stamp;
-      current.lastSeen = stamp;
-      if (stamp - Number(current.lastActivity || current.lastSeen || stamp) >= IDLE_LIMIT) {
-        writeSession(current);
-        expireSession("inactivity");
-        return;
-      }
-      writeSession(current);
-    }, HEARTBEAT);
+    writeSession({ uid: user.uid, createdAt: existing.uid === user.uid && existing.createdAt ? existing.createdAt : Date.now() });
   }
 
   const studioAuth = {
@@ -541,7 +469,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   // Firebase LOCAL persistence survives navigation, reloads and browser restarts.
   studioAuth.redirectReady = Promise.resolve().then(() => studioAuth.completeRedirectSignIn());
 
-  auth.onAuthStateChanged(user => { if (user) startSessionLifecycle(user); else { if (sessionTimer) clearInterval(sessionTimer); sessionTimer = null; } });
+  auth.onAuthStateChanged(user => { if (user) startSessionLifecycle(user); });
 
   window.studioAuth = studioAuth;
   let ssoInProgress = false;
