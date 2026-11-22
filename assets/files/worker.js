@@ -675,7 +675,7 @@ export default {
     if (url.pathname === "/health" && (request.method === "GET" || request.method === "HEAD")) {
       const checks = [
         {id:"project",name:"Project",url:"https://www.convex-project.abrdns.com/"},
-        {id:"presentr",name:"Project Present",url:"https://www.convex-project.abrdns.com/presentation/"},
+        {id:"presentr",name:"Project Present",url:"https://www.convex-project.abrdns.com/present/"},
         {id:"siteify",name:"Project Sites",url:"https://www.convex-project.abrdns.com/sites/"},
         {id:"formr",name:"Project Forms",url:"https://www.convex-project.abrdns.com/forms/"},
         {id:"firebase-auth",name:"Firebase Authentication",url:"https://identitytoolkit.googleapis.com/$discovery/rest?version=v1"},
