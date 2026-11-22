@@ -614,8 +614,8 @@ $("confirm-publish").onclick=async()=>{
   if(existingPath.exists&&existingPath.data().websiteSlug!==active.slug)throw new Error("That public website name is already in use. Choose another name.");
   await save("published");
   if(active.publicSlug&&active.publicSlug!==publicSlug)await db.collection("websitePaths").doc(active.publicSlug).set({status:"draft",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
-  if(previousHost&&previousHost!==hostname&&previousHost.endsWith(".is-sites.abrdns.com"))await db.collection("websiteHosts").doc(previousHost).set({status:"draft",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
-  else if(previousHost&&previousHost!==hostname&&previousHost!==PLATFORM)await db.collection("websiteDomains").doc(previousHost).set({status:"inactive",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  if(previousHost&&previousHost.endsWith(".is-sites.abrdns.com"))await db.collection("websiteHosts").doc(previousHost).set({status:"draft",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  else if(previousHost&&previousHost!==PLATFORM)await db.collection("websiteDomains").doc(previousHost).set({status:"inactive",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
   const update={publicSlug,domainSubdomain:publicSlug,domainFormat:"path",publishTarget:"builtin",customDomain:"",publishedHostname:"",username:profileHandle,status:"published",updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
   await db.collection("websites").doc(active.slug).set(update,{merge:true});
   await pathRef.set({publicSlug,websiteSlug:active.slug,ownerUid:user.uid,status:"published",updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
