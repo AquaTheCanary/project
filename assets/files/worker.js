@@ -182,6 +182,7 @@ async function proxyStudioApp(request) {
   pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
 const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST || pathname === "/help" || pathname === "/help/") pathname = "/help/index.html";
+  else if (pathname === "/home" || pathname === "/home/") return Response.redirect(new URL("/" + incoming.search, incoming.origin), 301);
   let match;
   // Canonical public page routes. Public URLs stay clean while source files remain in their implementation folders.
   if (pathname === "/login/personal" || pathname === "/login/personal/") {
