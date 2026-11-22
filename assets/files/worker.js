@@ -181,9 +181,28 @@ async function proxyStudioApp(request) {
   // Normalize legacy uppercase asset paths after the folder consolidation.
   pathname = pathname.replace(/\/assets\/Files\//gi, "/assets/files/");
 const params = new URLSearchParams(incoming.search);
-  if (requestHost === HELP_HOST) pathname = "/help/index.html";
-  else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
+  if (requestHost === HELP_HOST || pathname === "/help" || pathname === "/help/") pathname = "/help/index.html";
   let match;
+  // Canonical public page routes. Public URLs stay clean while source files remain in their implementation folders.
+  if (pathname === "/login/personal" || pathname === "/login/personal/") {
+    pathname = "/auth/personal/login/";
+  } else if (pathname === "/login/organisation" || pathname === "/login/organisation/") {
+    pathname = "/auth/organisation/login/";
+  } else if (pathname === "/register" || pathname === "/register/") {
+    pathname = "/register/index.html";
+  } else if (pathname === "/register/personal" || pathname === "/register/personal/") {
+    pathname = "/auth/personal/register/";
+  } else if (pathname === "/register/organisation" || pathname === "/register/organisation/") {
+    pathname = "/auth/organisation/register/";
+  } else if (pathname === "/legal/policies/terms-of-service" || pathname === "/legal/policies/terms-of-service/") {
+    pathname = "/legal/terms-of-service/";
+  } else if (pathname === "/legal/policies/privacy" || pathname === "/legal/policies/privacy/") {
+    pathname = "/legal/privacy-policy/";
+  } else if (["/privacy","/privacy/","/privacy-policy","/privacy-policy/"].includes(pathname)) {
+    return Response.redirect(new URL("/legal/policies/privacy/" + incoming.search, incoming.origin), 301);
+  } else if (["/tos","/tos/","/terms-of-service","/terms-of-service/","/tos-policy","/tos-policy/","/terms-of-service-policy","/terms-of-service-policy/"].includes(pathname)) {
+    return Response.redirect(new URL("/legal/policies/terms-of-service/" + incoming.search, incoming.origin), 301);
+  }
   // Canonical public product routes. Keep app source files in their existing folders.
   if (pathname === "/sites" || pathname === "/sites/") {
     return Response.redirect(new URL("/sites/new/" + incoming.search, incoming.origin), 302);
