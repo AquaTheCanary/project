@@ -19,6 +19,6 @@
  localStorage.setItem("studio_active_project",id);
  if(!projects.some(p=>p.id===id)){projects.unshift({id,title:"Untitled presentation",updatedAt:new Date().toISOString()});}
  localStorage.setItem(key,JSON.stringify(projects.slice(0,100)));
- location.replace(window.getAppUrl("/presentation/"+encodeURIComponent(id)+"/"));
+ location.replace(window.getAppUrl("/present/"+encodeURIComponent(id)+"/"));
  }catch(error){console.error("Could not prepare presentation:",error);status.textContent="We couldn't open the editor. Please return to your workspace and try again.";}})();
 </script></body></html>
