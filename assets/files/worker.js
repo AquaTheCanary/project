@@ -296,6 +296,10 @@ async function proxyStudioApp(request) {
   headers.set("Cache-Control", "no-store");
   headers.set("X-Project-Upstream", "raw.githubusercontent.com");
   if (extension !== "html") return new Response(upstream.body, {status:upstream.status,statusText:upstream.statusText,headers});
+  // GitHub raw file hosting adds a restrictive CSP that blocks external app stylesheets, scripts and images.
+  // The app is served through this Worker, so remove that upstream policy from proxied HTML documents.
+  headers.delete("Content-Security-Policy");
+  headers.delete("Content-Security-Policy-Report-Only");
   headers.delete("Content-Length");
   const html = (await upstream.text())
     .replace(/assets\/Files\//gi, "assets/files/")
