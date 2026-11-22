@@ -125,20 +125,20 @@ async function serveMainDomainPath(request, env) {
   const url = new URL(request.url);
   const host = String(request.headers.get("X-IS-Original-Host") || url.hostname).toLowerCase();
   if (host !== "convex-project.abrdns.com" && host !== "www.convex-project.abrdns.com") return null;
-  const rawPath = url.pathname.replace(/^\/+|\/+$/g, "");
-  if (!rawPath || rawPath.includes("/") || /\.[a-z0-9]{1,8}$/i.test(rawPath)) return null;
+  // Published Project Sites always live under /sites/view/<public-name-or-id>.
+  const match = url.pathname.match(/^\\/sites\\/view\\/([^/]+)\\/?$/i);
+  if (!match) return null;
   let path;
-  try { path = decodeURIComponent(rawPath).toLowerCase(); } catch (_) { return null; }
+  try { path = decodeURIComponent(match[1]).toLowerCase(); } catch (_) { return null; }
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(path)) return null;
-  // Six-digit IDs remain stable. They are aliases which permanently redirect
-  // to the published, human-readable site name.
-  if (/^\d{6}$/.test(path)) {
+  // Six-digit IDs are stable aliases which permanently redirect to the public name.
+  if (/^\\d{6}$/.test(path)) {
     const site = await readPublicDocument("websites", path, env);
     if (!site) return null;
     if (site.status !== "published") return notPublished(path);
     const publicSlug = String(site.publicSlug || "").toLowerCase();
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(publicSlug)) return notPublished(path);
-    return Response.redirect(new URL("https://convex-project.abrdns.com/" + publicSlug + url.search), 301);
+    return Response.redirect(new URL("https://convex-project.abrdns.com/sites/view/" + publicSlug + url.search), 301);
   }
   const mapping = await readPublicDocument("websitePaths", path, env);
   if (!mapping) return null;
