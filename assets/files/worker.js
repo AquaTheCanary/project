@@ -515,9 +515,9 @@ export default {
         {id:"siteify",name:"Siteify",url:"https://www.siteify.convex-project.abrdns.com/"},
         {id:"formr",name:"Formr",url:"https://www.formr.convex-project.abrdns.com/"},
         {id:"cloudbase",name:"Cloudbase",url:"https://www.cloudbase.convex-project.abrdns.com/"},
-        {id:"firebase-auth",name:"Firebase Authentication",url:"https://identitytoolkit.googleapis.com/"},
-        {id:"firestore",name:"Cloud Firestore",url:"https://firestore.googleapis.com/"},
-        {id:"firebase-storage",name:"Firebase Storage",url:"https://firebasestorage.googleapis.com/"},
+        {id:"firebase-auth",name:"Firebase Authentication",url:"https://identitytoolkit.googleapis.com/$discovery/rest?version=v1"},
+        {id:"firestore",name:"Cloud Firestore",url:"https://firestore.googleapis.com/$discovery/rest?version=v1"},
+        {id:"firebase-storage",name:"Firebase Storage",url:"https://firebasestorage.googleapis.com/$discovery/rest?version=v1"},
         {id:"worker-api",name:"Project API",url:"https://interactive-studio.convexllc.workers.dev/"}
       ];
       const results = await Promise.all(checks.map(async service => {
@@ -526,7 +526,7 @@ export default {
         const started = Date.now();
         try {
           const response = await fetch(service.url, {method:"GET",redirect:"follow",signal:controller.signal,headers:{"User-Agent":"Project-Status-Monitor/1.0"}});
-          const reachable = response.status < 500;
+          const reachable = response.ok;
           return {id:service.id,name:service.name,status:reachable?"operational":"outage",httpStatus:response.status,responseTime:Date.now()-started,checkedAt:new Date().toISOString()};
         } catch (error) {
           return {id:service.id,name:service.name,status:"outage",httpStatus:null,responseTime:Date.now()-started,error:error?.name==="AbortError"?"Timed out":"Connection failed",checkedAt:new Date().toISOString()};
