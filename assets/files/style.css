@@ -854,3 +854,45 @@ body.auth-page .auth-header>a{display:none}
 
 /* Keep native hidden state authoritative for components with explicit display rules. */
 [hidden]{display:none!important}
+
+
+/* Project 2026 visual refresh — richer surfaces, clearer hierarchy, and responsive polish. */
+:root{--brand-blue:#6258f5;--brand-violet:#9b65f5;--brand-cyan:#38c6c9;--text-main:#171625;--text-sub:#68677a;--border-color:#e9e8f2;--bg-subtle:#f7f6fc;--shadow-sm:0 8px 28px rgba(38,30,94,.06);--shadow-lg:0 24px 70px rgba(38,30,94,.14)}
+body{background:#fff;color:var(--text-main)}
+::selection{background:#dcd8ff;color:#29205d}
+.home-nav,.site-header,.app-header{backdrop-filter:blur(22px);background:rgba(255,255,255,.86);border-bottom-color:#ecebf4}
+.btn-primary-small,.btn-primary-large,.btn-submit,.btn-launch{background:linear-gradient(115deg,#6258f5,#8658ec);border-color:#6258f5;box-shadow:0 7px 18px rgba(98,88,245,.16)}
+.btn-primary-small:hover,.btn-primary-large:hover,.btn-submit:hover,.btn-launch:hover{background:linear-gradient(115deg,#5147e8,#7548db);box-shadow:0 12px 26px rgba(98,88,245,.25)}
+.btn-secondary-small,.btn-secondary-large,.btn-sso{border-color:#e6e4f0;background:rgba(255,255,255,.92)}
+.feature-card,.pricing-card,.solution-card,.contact-card,.download-card,.project-card,.product-tile{border-color:#e9e8f2;box-shadow:0 7px 26px rgba(32,28,75,.045);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.feature-card:hover,.pricing-card:hover,.solution-card:hover,.contact-card:hover,.download-card:hover,.project-card:hover,.product-tile:hover{transform:translateY(-5px);border-color:#d3cffd;box-shadow:0 18px 42px rgba(55,45,125,.11)}
+.hero-badge,.eyebrow{border-color:#e4e1ff;background:#f8f7ff;color:#5b51c9}
+.highlight-text{background:linear-gradient(105deg,#6258f5 5%,#9c62ed 54%,#32bfc2);background-clip:text;-webkit-background-clip:text;color:transparent}
+.auth-page{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 12% 12%,rgba(120,102,255,.19),transparent 38%),radial-gradient(ellipse at 88% 88%,rgba(45,198,194,.14),transparent 36%),#f7f7fc}
+.auth-page:before,.auth-page:after{content:"";position:fixed;z-index:-1;width:300px;height:300px;border-radius:50%;filter:blur(80px);opacity:.35;pointer-events:none}
+.auth-page:before{background:#9c8bff;top:-150px;right:-90px}.auth-page:after{background:#74d9d3;bottom:-160px;left:-90px}
+.auth-layout{border:1px solid rgba(226,224,242,.9);border-radius:28px;box-shadow:0 34px 100px rgba(42,35,100,.14)}
+.auth-aside{position:relative;overflow:hidden;background:radial-gradient(circle at 90% 10%,rgba(130,113,255,.7),transparent 34%),linear-gradient(150deg,#171a42,#3935a0 60%,#6651c9)}
+.auth-aside:after{content:"";position:absolute;width:260px;height:260px;right:-100px;bottom:-100px;border:1px solid #ffffff30;border-radius:50%;box-shadow:0 0 0 28px #ffffff0a,0 0 0 58px #ffffff08}
+.auth-container{border:0;border-radius:0;box-shadow:none}
+.auth-header h1{font-size:30px;letter-spacing:-1.4px}
+.btn-sso{border-radius:12px;min-height:50px;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.btn-sso:hover{transform:translateY(-2px);border-color:#c9c3ff;box-shadow:0 8px 20px rgba(67,56,150,.09)}
+.input-group input,.input-group select,.input-group textarea,.form-control{min-height:47px;border-radius:12px;background:#fdfdff}
+.input-group input:focus,.input-group select:focus,.input-group textarea:focus,.form-control:focus{border-color:#8177ff;box-shadow:0 0 0 4px rgba(98,88,245,.12)}
+.m365-topbar{background:rgba(255,255,255,.9)!important;backdrop-filter:blur(22px)!important}
+.workspace-rail{background:linear-gradient(180deg,#fbfaff,#f8f8fc)!important}
+.rail-link{border-radius:11px!important;transition:background .18s ease,color .18s ease,transform .18s ease!important}
+.rail-link:hover{transform:translateX(2px);background:#f0efff!important}
+.rail-link.active{background:linear-gradient(100deg,#eeedff,#f5f2ff)!important;color:#5145cf!important}
+.workspace-content{padding-top:48px!important}
+.m365-welcome{padding:26px 28px!important;border:1px solid #eceaf6!important;border-radius:22px!important;background:radial-gradient(ellipse at 90% 0%,#eeebff 0,transparent 48%),linear-gradient(120deg,#fff,#faf9ff)!important;box-shadow:0 12px 35px rgba(42,35,100,.045)!important}
+.m365-welcome h1{letter-spacing:-2px!important}
+.product-tile{border-radius:18px!important;min-height:230px!important;padding:24px!important}
+.product-tile-icon{border-radius:15px!important;box-shadow:inset 0 0 0 1px #ffffff80}
+.plan-tile{background:linear-gradient(145deg,#f5f2ff,#fff 70%)!important}
+.m365-dashboard .project-card{border-radius:16px!important}
+.m365-dashboard .create-card{background:linear-gradient(140deg,#faf9ff,#f2f0ff)!important;border:1.5px dashed #c7c1fa!important;border-radius:16px!important}
+footer{border-top-color:#eeedf4}
+@media(max-width:760px){.m365-welcome{padding:20px!important;border-radius:17px!important}.workspace-content{padding-top:25px!important}.auth-layout{border-radius:22px}.auth-container{padding:34px 22px}}
+@media(prefers-reduced-motion:reduce){.feature-card,.pricing-card,.solution-card,.contact-card,.download-card,.project-card,.product-tile,.btn-sso{transition:none!important}}
