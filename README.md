@@ -18,9 +18,9 @@ For the project documentation and contribution guidance, see [the repository doc
 
 ## Product addresses
 - Project: https://www.convex-project.abrdns.com
-- Project Present (existing URL): https://www.presentr.convex-project.abrdns.com
-- Project Sites (existing URL): https://www.siteify.convex-project.abrdns.com
-- Project Forms (existing URL): https://www.formr.convex-project.abrdns.com
+- Project Present: https://www.convex-project.abrdns.com/present/ (legacy Presentr hostname redirects)
+- Project Sites: https://www.convex-project.abrdns.com/sites/ (legacy Siteify hostname redirects)
+- Project Forms: https://www.convex-project.abrdns.com/forms/ (legacy Formr hostname redirects)
 - Retired Cloudbase address: redirects to the products page when routed through Project
 
-These hostnames need matching DNS records and hosting custom-domain bindings before they resolve publicly.
+The three products share the main Project origin and use /present/, /sites/ and /forms/ path prefixes. The previous product subdomains are retained as legacy redirects.
