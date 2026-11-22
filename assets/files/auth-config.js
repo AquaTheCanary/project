@@ -30,9 +30,10 @@ const firebaseApps = {
   }
 };
 const firebaseHost = window.location.hostname.toLowerCase();
-const firebaseProduct = firebaseHost.includes("formr") ? "formr"
-  : firebaseHost.includes("siteify") ? "siteify"
-  : firebaseHost.includes("presentr") ? "presentr" : null;
+const firebasePath = window.location.pathname.toLowerCase();
+const firebaseProduct = firebaseHost.includes("formr") || firebasePath.startsWith("/forms/") ? "formr"
+  : firebaseHost.includes("siteify") || firebasePath.startsWith("/sites/") ? "siteify"
+  : firebaseHost.includes("presentr") || firebasePath.startsWith("/present/") ? "presentr" : null;
 const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
   // Keep Firebase Auth's helper iframe and redirect handler on the Project origin.
   // The Cloudflare Worker proxies /__/ requests to Firebase Hosting so browser
