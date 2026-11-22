@@ -75,46 +75,16 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       }, 8000))
     ]));
 
-  // Shared session policy: 60 minutes without activity, or 30 minutes after
-  // the last open app tab is closed. Activity is synchronised across tabs.
-  // Firebase Auth LOCAL persistence is the source of truth for sessions.
-  // Keep a lightweight marker for this browser, but never sign users out for
-  // inactivity, closing a tab, or restarting their browser. Firebase will
-  // end the session when its refresh token expires or is revoked, and the
-  // explicit signOut() action clears the session.
-  const SESSION_KEY = "interactive_studio_session_v3";
-  const TAB_KEY = "interactive_studio_tab_v3";
+  // Firebase LOCAL persistence keeps the account signed in across navigation,
+  // tab closure and browser restarts. Only the explicit Sign out action clears it.
+  const SESSION_KEY = "interactive_studio_session_v4";
   let sessionEnding = false;
-  function readSession() {
-    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "{}"); }
-    catch (_) { return {}; }
-  }
-  function writeSession(value) {
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify(value)); } catch (_) {}
-  }
   function beginFreshSession() {
-    writeSession({ uid: auth.currentUser ? auth.currentUser.uid : null, createdAt: Date.now() });
-  }
-  async function expireSession(reason) {
-    if (sessionEnding) return;
-    sessionEnding = true;
-    const accountType = localStorage.getItem("is_user_account_type") === "organisation" ? "organisation" : "personal";
-    try { await auth.signOut(); } catch (_) {}
-    ["is_user_uid","is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
-    localStorage.removeItem(SESSION_KEY);
-    localStorage.removeItem("interactive_studio_session");
-    sessionEnding = false;
-    if (location.pathname.indexOf("/auth/") !== 0) {
-      location.replace(appUrl("/auth/" + accountType + "/login/") + "?reason=" + encodeURIComponent(reason || "session-expired"));
-    }
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({ uid: auth.currentUser?.uid || null, createdAt: Date.now() })); } catch (_) {}
   }
   function startSessionLifecycle(user) {
     if (!user) return;
-    const existing = readSession();
-    if (existing.uid && existing.uid !== user.uid) {
-      ["is_user_uid","is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
-    }
-    writeSession({ uid: user.uid, createdAt: existing.uid === user.uid && existing.createdAt ? existing.createdAt : Date.now() });
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({ uid: user.uid, createdAt: Date.now() })); } catch (_) {}
   }
 
   const studioAuth = {
@@ -274,12 +244,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       let accountType;
       try { accountType = await studioAuth.resolveAccountType(user, organisation ? "organisation" : "personal"); }
       catch (error) { await auth.signOut(); throw error; }
-      const session = readSession();
-      session.lastActivity = Date.now();
-      session.lastSeen = Date.now();
-      session.closedAt = 0;
-      session.tabs = sessionTabs(session, Date.now());
-      writeSession(session);
+      try { localStorage.setItem(SESSION_KEY, JSON.stringify({ uid: user.uid, createdAt: Date.now() })); } catch (_) {}
       const profile = await studioAuth.getProfile(user);
       localStorage.setItem("is_user_uid", profile.uid);
       localStorage.setItem("is_user_email", profile.email);
@@ -452,7 +417,6 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       ["is_user_uid","is_user_email","is_user_name","is_user_photo","is_user_plan","is_user_provider","is_user_account_type"].forEach(key => localStorage.removeItem(key));
       localStorage.removeItem("interactive_studio_session");
       localStorage.removeItem(SESSION_KEY);
-      sessionStorage.removeItem(TAB_KEY);
       window.location.replace(appUrl("/home/"));
     }
   };
