@@ -86,9 +86,8 @@ jobs:
           <!doctype html><meta charset="utf-8"><script>location.replace("/presentations/new/"+location.search+location.hash)</script><a href="/presentations/new/">Create a presentation</a>
           EOF
           mkdir -p _site/legal/policies
-          cat > _site/legal/policies/privacy/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/legal/privacy-policy/"+location.search+location.hash)</script><a href="/legal/privacy-policy/">Privacy policy</a>
-          EOF
+          cp _site/legal/terms-of-service/index.html _site/legal/policies/terms-of-service/index.html
+          cp _site/legal/privacy-policy/index.html _site/legal/policies/privacy/index.html
           for alias in privacy privacy-policy; do mkdir -p "_site/$alias"; cat > "_site/$alias/index.html" <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/legal/policies/privacy/"+location.search+location.hash)</script><a href="/legal/policies/privacy/">Privacy</a>
           EOF
@@ -116,9 +115,6 @@ jobs:
           })();
           </script></body></html>
           EOF
-
-          # Public policy aliases all point to the canonical legal/policies URLs.
-          for alias in legal/privacy-policy legal/terms-of-service; do :; done
 
           # /home remains a compatibility URL and redirects to the root homepage.
           mkdir -p _site/home
