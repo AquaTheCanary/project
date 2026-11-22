@@ -53,6 +53,7 @@ jobs:
           test -s _site/presenter/index.html
           test -s _site/audience/index.html
           test -s _site/forms/respond/index.html
+          test -s _site/forms/submitted/index.html
 
           # Build clean public entry points and legacy policy redirects.
           mkdir -p _site/login/personal _site/login/organisation
@@ -74,7 +75,7 @@ jobs:
           EOF
           mkdir -p _site/sites/new _site/presentation/new _site/forms/new _site/forms/submitted _site/legal/policies/terms-of-service _site/legal/policies/privacy
           cat > _site/sites/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><script>location.replace("/sites/new/"+location.search+location.hash)</script><a href="/websites/">Your websites</a>
+          <!doctype html><meta charset="utf-8"><script>location.replace("/sites/new/"+location.search+location.hash)</script><a href="/sites/new/">Create a site</a>
           EOF
           cat > _site/sites/new/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><script>location.replace("/websites/?create=1"+location.hash)</script><a href="/websites/?create=1">Create a site</a>

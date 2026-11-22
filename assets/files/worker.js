@@ -122,8 +122,8 @@ async function serveWebsite(request, env, hostnameOverride) {
 }
 function legacyProductPath(host, pathname) {
   const hostMap = {
-    "presentr.convex-project.abrdns.com": "/present/",
-    "www.presentr.convex-project.abrdns.com": "/present/",
+    "presentr.convex-project.abrdns.com": "/presentation/",
+    "www.presentr.convex-project.abrdns.com": "/presentation/",
     "siteify.convex-project.abrdns.com": "/sites/",
     "www.siteify.convex-project.abrdns.com": "/sites/",
     "formr.convex-project.abrdns.com": "/forms/",
@@ -179,54 +179,57 @@ const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST) pathname = "/help/index.html";
   else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
   let match;
-  // Legacy source-file paths (/presentations and /websites) are real
-  // GitHub Pages directories. Do not redirect them to /present or /sites:
-  // those public aliases are internally rewritten below, so redirecting
-  // both directions creates a permanent loop and looks like a missing page.
-  // Canonical product paths share the main Project origin.
-  if (pathname === "/present" || pathname === "/present/") {
-    pathname = "/presentations/editor/";
-  } else if (pathname === "/present/new" || pathname === "/present/new/") {
-    pathname = "/presentations/new/";
-  } else if (pathname === "/present/view" || pathname === "/present/view/") {
-    pathname = "/presentations/view/audience/";
-  } else if (pathname === "/present/presenter" || pathname === "/present/presenter/") {
-    pathname = "/presentations/view/presenter/";
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/?$/i))) {
-    params.set("room", match[1]);
-    pathname = "/presentations/view/audience/";
-  } else if ((match = pathname.match(/^\/present\/view\/(\d{6})\/?$/i))) {
-    params.set("room", match[1]);
-    pathname = "/presentations/view/audience/";
-  } else if ((match = pathname.match(/^\/present\/(\d{6})\/(audience|presenter)\/?$/i))) {
-    params.set("id", match[1]);
-    pathname = "/presentations/view/" + match[2] + "/";
-  } else if (pathname === "/sites" || pathname === "/sites/") {
-    pathname = "/websites/";
+  // Canonical public product routes. Keep app source files in their existing folders.
+  if (pathname === "/sites" || pathname === "/sites/") {
+    return Response.redirect(new URL("/sites/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/sites/new" || pathname === "/sites/new/") {
-    pathname = "/websites/new/";
-  } else if (pathname === "/sites/editor" || pathname === "/sites/editor/") {
-    pathname = "/websites/editor/";
-  } else if (pathname === "/sites/publish" || pathname === "/sites/publish/") {
-    pathname = "/websites/publish/";
-  } else if ((match = pathname.match(/^\/sites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) {
-    params.set("id", match[1]);
-    pathname = match[2] === "editor" ? "/websites/" : "/websites/publish/";
-  }
-  // Clean, ID-based application URLs are mapped to static GitHub Pages entry points.
-  if ((match = pathname.match(/^\/view\/(\d{6})\/?$/i))) {
-    params.set("room", match[1]);
-    pathname = "/presentations/view/audience/";
-  } else if ((match = pathname.match(/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) {
-    params.set("id", match[1]);
-    pathname = match[2] === "editor" ? "/websites/" : "/websites/publish/";
-  } else if ((match = pathname.match(/^\/presentations\/view\/([a-z0-9_-]+)\/(audience|presenter)\/?$/i))) {
-    params.set("id", match[1]);
-    pathname = "/presentations/view/" + match[2] + "/";
-  } else if (pathname === "/editor" || pathname === "/editor/") {
-    pathname = "/presentations/editor/";
-  } else if (pathname === "/websites" || pathname === "/websites/") {
     pathname = "/websites/";
+    params.set("create", "1");
+  } else if ((match = pathname.match(/^\/sites\/view\/(\d{6})\/?$/i))) {
+    const site = await readPublicDocument("websites", match[1], env);
+    if (site && site.status === "published" && site.publishedHostname) {
+      const hostname = String(site.publishedHostname).toLowerCase();
+      if (/^(?=.{1,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/.test(hostname)) return Response.redirect("https://" + hostname + "/", 302);
+    }
+    pathname = "/published-sites-static/";
+    params.set("preview", match[1]);
+  } else if ((match = pathname.match(/^\/sites\/(\d{6})\/?$/i))) {
+    pathname = "/websites/";
+    params.set("id", match[1]);
+  } else if (pathname === "/presentation" || pathname === "/presentation/") {
+    return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 302);
+  } else if (pathname === "/presentation/new" || pathname === "/presentation/new/") {
+    pathname = "/presentations/new/";
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/host\/?$/i))) {
+    pathname = "/presenter/";
+    params.set("id", match[1]);
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/present\/audience\/?$/i))) {
+    pathname = "/audience/";
+    params.set("id", match[1]);
+  } else if ((match = pathname.match(/^\/presentation\/(\d{6})\/?$/i))) {
+    pathname = "/presentations/editor/";
+    params.set("id", match[1]);
+  } else if (pathname === "/forms" || pathname === "/forms/") {
+    return Response.redirect(new URL("/forms/new/" + incoming.search, incoming.origin), 302);
+  } else if (pathname === "/forms/new" || pathname === "/forms/new/") {
+    pathname = "/forms/";
+    params.set("create", "1");
+  } else if ((match = pathname.match(/^\/forms\/take\/([^/]+)\/?$/i))) {
+    pathname = "/forms/respond/";
+    params.set("id", match[1]);
+  } else if ((match = pathname.match(/^\/forms\/([^/]+)\/submitted\/?$/i))) {
+    pathname = "/forms/submitted/";
+    params.set("id", match[1]);
+  } else if ((match = pathname.match(/^\/forms\/([^/]+)\/results\/?$/i))) {
+    pathname = "/forms/";
+    params.set("id", match[1]);
+    params.set("view", "results");
+  }
+  if (pathname === "/present" || pathname === "/present/") return Response.redirect(new URL("/presentation/" + incoming.search, incoming.origin), 301);
+  if (pathname === "/present/new" || pathname === "/present/new/") return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 301);
+  if ((match = pathname.match(/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) {
+    params.set("id", match[1]);
+    pathname = match[2] === "editor" ? "/websites/" : "/websites/publish/";
   }
   const query = params.toString();
   // GitHub Pages redirects its github.io URL to the repository CNAME.
