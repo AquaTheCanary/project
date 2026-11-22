@@ -139,7 +139,8 @@ function legacyProductPath(host, pathname) {
     [/^\/presentations\/new\/?$/i, "/presentation/new/"],
     [/^\/presentations\/view\/audience\/?$/i, "/presentation/"],
     [/^\/presentations\/view\/presenter\/?$/i, "/presentation/"],
-    [/^\/presentations\/view\/([a-z0-9_-]+)\/(audience|presenter)\/?$/i, "/presentation/$1/present/$2/"],
+    [/^\/presentations\/view\/(\d{6})\/presenter\/?$/i, "/presentation/$1/present/host/"],
+    [/^\/presentations\/view\/(\d{6})\/audience\/?$/i, "/presentation/$1/present/audience/"],
     [/^\/view\/(\d{6})\/?$/i, "/presentation/$1/present/audience/"],
     [/^\/websites\/?$/i, "/sites/"],
     [/^\/websites\/(.*)$/i, "/sites/$1"],
@@ -149,6 +150,10 @@ function legacyProductPath(host, pathname) {
     if (pattern.test(pathname)) return pathname.replace(pattern, target);
   }
   if (pathname === "/" || pathname === "/index.html") return base;
+  if (pathname === "/present" || pathname === "/present/") return "/presentation/";
+  if (/^\/present\/(\d{6})\/?$/i.test(pathname)) return pathname.replace(/^\/present\//i, "/presentation/");
+  if (/^\/present\/(\d{6})\/host\/?$/i.test(pathname)) return pathname.replace(/^\/present\/(\d{6})\/host\/?$/i, "/presentation/$1/present/host/");
+  if (/^\/present\/(\d{6})\/audience\/?$/i.test(pathname)) return pathname.replace(/^\/present\/(\d{6})\/audience\/?$/i, "/presentation/$1/present/audience/");
   if (pathname.startsWith("/presentation/") || pathname.startsWith("/sites/") || pathname.startsWith("/forms/")) return pathname;
   return pathname;
 }
