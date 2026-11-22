@@ -135,7 +135,7 @@ async function serveMainDomainPath(request, env) {
   if (/^\d{6}$/.test(path)) {
     const site = await readPublicDocument("websites", path, env);
     if (!site) return null;
-    if (site.status !== "published") return notPublished(path);
+    if (site.status !== "published") return null;
     const publicSlug = String(site.publicSlug || "").toLowerCase();
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(publicSlug)) return notPublished(path);
     return Response.redirect(new URL("https://convex-project.abrdns.com/sites/view/" + publicSlug + url.search), 301);
