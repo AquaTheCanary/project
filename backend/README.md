@@ -1,13 +1,14 @@
 # Project Firebase backend
 
-This repository uses one Firebase project for the Project platform and its four products.
+This repository uses one Firebase project for the Project platform and its three products.
 
 - Firebase project ID: `convexllc-project` (project number `82355515745`).
 - Project: user profiles, workspaces and organisations.
-- Presentr: `presentations` and nested `slides`.
-- Siteify: `siteProjects` and nested `pages`.
-- Formr: `formProjects` and nested `responses`.
-- Cloudbase: `cloudbaseFiles` metadata; file bytes are stored in Firebase Storage at `users/{uid}/cloudbase/**`.
+- Project Present: `presentations` and nested `slides`.
+- Project Sites: `siteProjects` and nested `pages`.
+- Project Forms: `formProjects` and nested `responses`.
+
+Cloudbase is retired from the product suite. Existing `cloudbaseFiles` metadata and `users/{uid}/cloudbase/**` storage paths remain in the rules temporarily so existing user data is not deleted or orphaned during the rebrand.
 
 ## Local setup
 
@@ -25,5 +26,5 @@ The root `firebase.json` and `.firebaserc` select the existing Firebase project.
 - Do not put Admin SDK credentials or service-account JSON in the website.
 - Firestore and Storage rules are the security boundary. Keep new collections private by default.
 - The current legacy collections (`rooms`, `forms`, `websites`, and related collections) are retained while the product apps migrate to the product-specific collections above.
-- **Billing constraint (important):** Firebase Cloud Storage requires the Blaze plan to provision or access buckets (requirement effective February 3, 2026). Cloud Functions deployment also requires Blaze. Do not upgrade or add billing unless you explicitly choose to. On Spark, the Cloudbase Storage rules can be prepared in this repository, but Firebase Storage uploads/downloads will not work. We can keep Cloudbase metadata in Firestore and later connect a no-Blaze object-storage provider such as Cloudflare R2 for file bytes.
+- **Billing constraint (important):** Firebase Cloud Storage requires the Blaze plan to provision or access buckets (requirement effective February 3, 2026). Cloud Functions deployment also requires Blaze. Do not upgrade or add billing unless you explicitly choose to. On Spark, the legacy Cloudbase Storage rules can remain in this repository, but Firebase Storage uploads/downloads will not work. We can keep Cloudbase metadata in Firestore and later connect a no-Blaze object-storage provider such as Cloudflare R2 for file bytes.
 - Authentication providers (Google, email/password, Microsoft if configured through OIDC) must be enabled in Firebase Console. Rules do not enable providers automatically.
