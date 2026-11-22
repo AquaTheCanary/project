@@ -25,7 +25,7 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site
-          rsync -a --exclude='.git' --exclude='.github' --exclude='_site' --exclude='presentations' --exclude='auth' --exclude='websites' --exclude='published-sites' --exclude='published-sites-static' --exclude='render-proxy' --exclude='functions' --exclude='backend' --exclude='forms/respond' --exclude='forms/submitted' --exclude='legal/privacy-policy' --exclude='legal/terms-of-service' ./ _site/
+          rsync -a --exclude='.git' --exclude='.github' --exclude='_site' --exclude='presentations' --exclude='auth' --exclude='websites' --exclude='published-sites' --exclude='published-sites-static' --exclude='render-proxy' --exclude='functions' --exclude='backend' --exclude='forms/respond' --exclude='forms/submitted' --exclude='home' --exclude='legal/privacy-policy' --exclude='legal/terms-of-service' ./ _site/
 
           # The homepage source lives in /home in the repository, but is published at /.
           test -s home/index.html
@@ -77,6 +77,7 @@ jobs:
           <!doctype html><meta charset="utf-8"><script>location.replace("/sites/new/"+location.search+location.hash)</script><a href="/sites/new/">Create a site</a>
           EOF
           cp websites/index.html _site/sites/new/index.html
+          sed -i 's#</body>#<script>if(!new URLSearchParams(location.search).has("id")&&!new URLSearchParams(location.search).has("create"))location.replace("/sites/new/?create=1"+location.hash)</script></body>#' _site/sites/new/index.html
           cat > _site/presentation/index.html <<'EOF'
           <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>location.replace("/presentation/new/"+location.search+location.hash)</script><a href="/presentation/new/">Create a presentation</a>
           EOF
@@ -139,11 +140,6 @@ jobs:
           </script></body></html>
           EOF
 
-          # /home redirects to the homepage published at /.
-          mkdir -p _site/home
-          cat > _site/home/index.html <<'EOF'
-          <!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="/"><script>location.replace("/"+location.search+location.hash)</script><a href="/">Continue to Project</a>
-          EOF
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
