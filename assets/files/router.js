@@ -13,11 +13,12 @@
     [/^\/websites\/?$/, "/sites/"],
     [/^\/websites\/new\/?$/, "/sites/new/"],
     [/^\/websites\/editor\/?$/, "/sites/new/"],
-    [/^\/presentation\/?$/, "/present/"],
-    [/^\/presentations\/?$/, "/present/"],
-    [/^\/presentations\/new\/?$/, "/present/new/"],
-    [/^\/presentations\/editor\/?$/, "/present/new/"],
-    [/^\/presenter\/?$/, "/present/"],
+    [/^\/present\/?$/, "/presentation/"],
+    [/^\/present\/new\/?$/, "/presentation/new/"],
+    [/^\/presentations\/?$/, "/presentation/new/"],
+    [/^\/presentations\/new\/?$/, "/presentation/new/"],
+    [/^\/presentations\/editor\/?$/, "/presentation/"],
+    [/^\/presenter\/?$/, "/presentation/"],
     [/^\/forms\/?$/, "/forms/new/"]
   ];
   window.getAppUrl = function (path) {
