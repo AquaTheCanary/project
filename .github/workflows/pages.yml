@@ -118,6 +118,7 @@ jobs:
             var p=decodeURIComponent(location.pathname),m,t=null,q=location.search,h=location.hash;
             if((m=p.match(/^\/sites\/view\/([0-9]{6})\/?$/))) t="/published-sites-static/?preview="+encodeURIComponent(m[1]);
             else if((m=p.match(/^\/sites\/([0-9]{6})\/?$/))) t="/websites/?id="+encodeURIComponent(m[1]);
+            else if(p==="/presentations/new/" || p==="/presentations/new" || p==="/presentations/editor/" || p==="/presentations/editor") t="/present/new/"+q+h;
             else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/host\/?$/))) t="/present/"+encodeURIComponent(m[1])+"/host/"+q+h;
             else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/audience\/?$/))) t="/present/"+encodeURIComponent(m[1])+"/audience/"+q+h;
             else if((m=p.match(/^\/presentation\/([0-9]{6})\/?$/))) t="/present/"+encodeURIComponent(m[1])+"/"+q+h;
