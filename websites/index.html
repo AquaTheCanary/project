@@ -612,7 +612,7 @@ $("confirm-publish").onclick=async()=>{
    return;
   }
   const publicSlug=slugify($("publish-subdomain").value||$("builder-site-name").value||active.siteName);
-  if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(publicSlug)||publicSlug.length>40||["www","api","admin","mail","ftp","sites","app","settings","status","support","login","register","dashboard","help","products","solutions","resources","legal","privacy","privacy-policy","terms","terms-of-service","tos","auth","home","assets","images","fonts","present","presentation","presentations","websites","forms","view"].includes(publicSlug)||/^\\d{6}$/.test(publicSlug))throw new Error("Choose a valid public website name using letters, numbers and hyphens.");
+  if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(publicSlug)||publicSlug.length>40||["www","api","admin","mail","ftp","sites","app","settings","status","support","login","register","dashboard","help","products","solutions","resources","legal","privacy","privacy-policy","terms","terms-of-service","tos","auth","home","assets","images","fonts","present","presentation","presentations","websites","forms","view"].includes(publicSlug)||/^\d{6}$/.test(publicSlug))throw new Error("Choose a valid public website name using letters, numbers and hyphens.");
   const pathRef=db.collection("websitePaths").doc(publicSlug);
   const existingPath=await pathRef.get();
   if(existingPath.exists&&existingPath.data().websiteSlug!==active.slug)throw new Error("That public website name is already in use. Choose another name.");
