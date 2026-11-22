@@ -120,10 +120,41 @@ async function serveWebsite(request, env, hostnameOverride) {
   if (request.method === "HEAD") return new Response(null, {status:response.status,headers:response.headers});
   return response;
 }
+function legacyProductPath(host, pathname) {
+  const hostMap = {
+    "presentr.convex-project.abrdns.com": "/present/",
+    "www.presentr.convex-project.abrdns.com": "/present/",
+    "siteify.convex-project.abrdns.com": "/sites/",
+    "www.siteify.convex-project.abrdns.com": "/sites/",
+    "formr.convex-project.abrdns.com": "/forms/",
+    "www.formr.convex-project.abrdns.com": "/forms/"
+  };
+  const base = hostMap[String(host || "").toLowerCase()];
+  if (!base) return null;
+  if (/^\/(?:assets|images|fonts|favicon|robots\.txt|sitemap\.xml|__\/)/i.test(pathname)) return pathname;
+  const legacyRoutes = [
+    [/^\/presentations\/editor\/?$/i, "/present/"],
+    [/^\/presentations\/new\/?$/i, "/present/new/"],
+    [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
+    [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
+    [/^\/websites\/?$/i, "/sites/"],
+    [/^\/websites\/(.*)$/i, "/sites/$1/"],
+    [/^\/forms\/?$/i, "/forms/"]
+  ];
+  for (const [pattern, target] of legacyRoutes) {
+    if (pattern.test(pathname)) return pathname.replace(pattern, target);
+  }
+  if (pathname === "/" || pathname === "/index.html") return base;
+  if (pathname.startsWith("/present/") || pathname.startsWith("/sites/") || pathname.startsWith("/forms/")) return pathname;
+  return pathname;
+}
+
 async function proxyStudioApp(request) {
   const incoming = new URL(request.url);
   const requestHost = String(request.headers.get("X-IS-Original-Host") || incoming.hostname).toLowerCase();
   let pathname = incoming.pathname;
+  const legacyPath = legacyProductPath(requestHost, pathname);
+  if (legacyPath) return Response.redirect("https://www.convex-project.abrdns.com" + legacyPath + incoming.search, 301);
   // Firebase Auth redirect helpers must be served from the app's own origin.
   // Proxy the complete reserved Firebase helper namespace to the project's
   // Firebase Hosting auth handler, preserving method, query, body and headers.
@@ -144,6 +175,51 @@ const params = new URLSearchParams(incoming.search);
   if (requestHost === HELP_HOST) pathname = "/help/index.html";
   else if (pathname === "/help" || pathname === "/help/") return Response.redirect("https://" + HELP_HOST + "/", 302);
   let match;
+  // Canonical product paths share the main Project origin.
+  if (pathname === "/present" || pathname === "/present/") {
+    pathname = "/presentations/editor/";
+  } else if (pathname === "/present/new" || pathname === "/present/new/") {
+    pathname = "/presentations/new/";
+  } else if (pathname === "/present/view" || pathname === "/present/view/") {
+    pathname = "/presentations/view/audience/";
+  } else if (pathname === "/present/presenter" || pathname === "/present/presenter/") {
+    pathname = "/presentations/view/presenter/";
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/?$/i))) {
+    params.set("room", match[1]);
+    pathname = "/presentations/view/audience/";
+  } else if ((match = pathname.match(/^\/present\/view\/(\d{6})\/?$/i))) {
+    params.set("room", match[1]);
+    pathname = "/presentations/view/audience/";
+  } else if ((match = pathname.match(/^\/present\/(\d{6})\/(audience|presenter)\/?$/i))) {
+    params.set("id", match[1]);
+    pathname = "/presentations/view/" + match[2] + "/";
+  } else if (pathname === "/sites" || pathname === "/sites/") {
+    pathname = "/websites/";
+  } else if (pathname === "/sites/new" || pathname === "/sites/new/") {
+    pathname = "/websites/new/";
+  } else if (pathname === "/sites/editor" || pathname === "/sites/editor/") {
+    pathname = "/websites/editor/";
+  } else if (pathname === "/sites/publish" || pathname === "/sites/publish/") {
+    pathname = "/websites/publish/";
+  } else if ((match = pathname.match(/^\/sites\/([a-z0-9-]+)\/(editor|publish)\/?$/i))) {
+    params.set("id", match[1]);
+    pathname = match[2] === "editor" ? "/websites/" : "/websites/publish/";
+  }
+  // Redirect legacy main-domain routes to their canonical product path.
+  const legacyMainRoutes = [
+    [/^\/presentations\/editor\/?$/i, "/present/"],
+    [/^\/presentations\/new\/?$/i, "/present/new/"],
+    [/^\/presentations\/view\/audience\/?$/i, "/present/view/"],
+    [/^\/presentations\/view\/presenter\/?$/i, "/present/presenter/"],
+    [/^\/websites\/?$/i, "/sites/"],
+    [/^\/websites\/new\/?$/i, "/sites/new/"],
+    [/^\/websites\/editor\/?$/i, "/sites/editor/"],
+    [/^\/websites\/publish\/?$/i, "/sites/publish/"],
+    [/^\/websites\/([a-z0-9-]+)\/(editor|publish)\/?$/i, "/sites/$1/$2/"]
+  ];
+  for (const [pattern, targetPath] of legacyMainRoutes) {
+    if (pattern.test(pathname)) return Response.redirect("https://www.convex-project.abrdns.com" + pathname.replace(pattern, targetPath) + incoming.search, 301);
+  }
   // Clean, ID-based application URLs are mapped to static GitHub Pages entry points.
   if ((match = pathname.match(/^\/view\/(\d{6})\/?$/i))) {
     params.set("room", match[1]);
@@ -166,6 +242,7 @@ const params = new URLSearchParams(incoming.search);
   if (!contentType.toLowerCase().includes("text/html")) return upstream;
   const html = (await upstream.text())
     .replace(/assets\/Files\//gi, "assets/files/")
+    .replace(/(?:\.\.\/)+assets\//gi, "/assets/")
     .replaceAll("interactive-studio-icon.svg", "newp.png")
     .replaceAll("project-mark.svg", "newp-nobg.png")
     .replaceAll("project-logo.svg", "newp-nobg.png");
@@ -479,6 +556,8 @@ export default {
     const origin = request.headers.get("Origin") || "";
     const url = new URL(request.url);
     const hostname = url.hostname.toLowerCase();
+    const legacyProductTarget = legacyProductPath(hostname, url.pathname);
+    if (legacyProductTarget) return Response.redirect("https://www.convex-project.abrdns.com" + legacyProductTarget + url.search, 301);
     // Render forwards wildcard site traffic through this authenticated gateway.
     // Only trust a single-label hostname inside our delegated sites zone.
     const renderProxyToken = request.headers.get("X-IS-Proxy-Token") || "";
@@ -511,9 +590,9 @@ export default {
     if (url.pathname === "/health" && (request.method === "GET" || request.method === "HEAD")) {
       const checks = [
         {id:"project",name:"Project",url:"https://www.convex-project.abrdns.com/"},
-        {id:"presentr",name:"Project Present",url:"https://www.presentr.convex-project.abrdns.com/"},
-        {id:"siteify",name:"Project Sites",url:"https://www.siteify.convex-project.abrdns.com/"},
-        {id:"formr",name:"Project Forms",url:"https://www.formr.convex-project.abrdns.com/"},
+        {id:"presentr",name:"Project Present",url:"https://www.convex-project.abrdns.com/present/"},
+        {id:"siteify",name:"Project Sites",url:"https://www.convex-project.abrdns.com/sites/"},
+        {id:"formr",name:"Project Forms",url:"https://www.convex-project.abrdns.com/forms/"},
         {id:"firebase-auth",name:"Firebase Authentication",url:"https://identitytoolkit.googleapis.com/$discovery/rest?version=v1"},
         {id:"firestore",name:"Cloud Firestore",url:"https://firestore.googleapis.com/$discovery/rest?version=v1"},
         {id:"firebase-storage",name:"Firebase Storage",url:"https://firebasestorage.googleapis.com/$discovery/rest?version=v1"},
