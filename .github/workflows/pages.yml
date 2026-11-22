@@ -114,19 +114,19 @@ jobs:
               history.replaceState(null,"",p+(params.toString()?"?"+params.toString():"")+h);
               fetch("https://raw.githubusercontent.com/AquaTheCanary/project/main/"+source).then(r=>{if(!r.ok)throw Error("not found");return r.text()}).then(html=>{if(!/<base\b/i.test(html))html=html.replace("<head>","<head><base href='/'>");document.open();document.write(html);document.close()}).catch(()=>{document.body.innerHTML="<main><h1>Page could not be loaded</h1><a href='/'>Back to Project</a></main>";});
             }
-            if((m=p.match(/^\\/sites\\/view\\/([0-9]{6})\\/?$/))) { serve("published-sites-static/index.html",{preview:m[1]}); return; }
-            else if((m=p.match(/^\\/sites\\/([0-9]{6})\\/?$/))) { serve("websites/index.html",{id:m[1]}); return; }
-            else if((m=p.match(/^\\/forms\\/take\\/([^/]+)\\/?$/))) { serve("forms/respond/index.html",{id:m[1]}); return; }
-            else if((m=p.match(/^\\/forms\\/([^/]+)\\/submitted\\/?$/))) { serve("forms/submitted/index.html",{id:m[1]}); return; }
-            else if((m=p.match(/^\\/forms\\/([^/]+)\\/results\\/?$/))) { serve("forms/index.html",{id:m[1],view:"results"}); return; }
-            else if((m=p.match(/^\\/presentation\\/([0-9]{6})\\/present\\/(host|audience)\\/?$/))){ serve("presentations/view/"+(m[2]==="host"?"presenter":"audience")+"/index.html",{id:m[1]}); return; }
-            else if((m=p.match(/^\\/presentation\\/([0-9]{6})\\/?$/))) { serve("presentations/editor/index.html",{id:m[1]}); return; }
+            if((m=p.match(/^\/sites\/view\/([0-9]{6})\/?$/))) { serve("published-sites-static/index.html",{preview:m[1]}); return; }
+            else if((m=p.match(/^\/sites\/([0-9]{6})\/?$/))) { serve("websites/index.html",{id:m[1]}); return; }
+            else if((m=p.match(/^\/forms\/take\/([^/]+)\/?$/))) { serve("forms/respond/index.html",{id:m[1]}); return; }
+            else if((m=p.match(/^\/forms\/([^/]+)\/submitted\/?$/))) { serve("forms/submitted/index.html",{id:m[1]}); return; }
+            else if((m=p.match(/^\/forms\/([^/]+)\/results\/?$/))) { serve("forms/index.html",{id:m[1],view:"results"}); return; }
+            else if((m=p.match(/^\/presentation\/([0-9]{6})\/present\/(host|audience)\/?$/))){ serve("presentations/view/"+(m[2]==="host"?"presenter":"audience")+"/index.html",{id:m[1]}); return; }
+            else if((m=p.match(/^\/presentation\/([0-9]{6})\/?$/))) { serve("presentations/editor/index.html",{id:m[1]}); return; }
             else if(p==="/presentation/new/" || p==="/presentation/new") t="/presentation/new/";
             else if(p==="/present" || p==="/present/") t="/presentation/";
             else if(p==="/present/new/" || p==="/present/new") t="/presentation/new/";
-            else if((m=p.match(/^\\/present\\/([0-9]{6})\\/host\\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/present/host/";
-            else if((m=p.match(/^\\/present\\/([0-9]{6})\\/audience\\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/present/audience/";
-            else if((m=p.match(/^\\/present\\/([0-9]{6})\\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/host\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/present/host/";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/audience\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/present/audience/";
+            else if((m=p.match(/^\/present\/([0-9]{6})\/?$/))) t="/presentation/"+encodeURIComponent(m[1])+"/";
             else if(p==="/presentations/new/" || p==="/presentations/new" || p==="/presentations/editor/" || p==="/presentations/editor") t="/presentation/new/";
             else if(p==="/websites" || p==="/websites/") t="/sites/";
             else if(p==="/auth/personal/login/" || p==="/auth/personal/login") t="/login/personal/";
