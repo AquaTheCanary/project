@@ -126,7 +126,7 @@ async function serveMainDomainPath(request, env) {
   const host = String(request.headers.get("X-IS-Original-Host") || url.hostname).toLowerCase();
   if (host !== "convex-project.abrdns.com" && host !== "www.convex-project.abrdns.com") return null;
   // Published Project Sites always live under /sites/view/<public-name-or-id>.
-  const match = url.pathname.match(/^\\/sites\\/view\\/([^/]+)\\/?$/i);
+  const match = url.pathname.match(/^\/sites\/view\/([^/]+)\/?$/i);
   if (!match) return null;
   let path;
   try { path = decodeURIComponent(match[1]).toLowerCase(); } catch (_) { return null; }
