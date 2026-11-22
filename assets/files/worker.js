@@ -245,7 +245,7 @@ const params = new URLSearchParams(incoming.search);
     return Response.redirect(new URL("/presentation/" + match[1] + "/" + incoming.search, incoming.origin), 301);
   } else if ((match = pathname.match(/^\/presentations\/(?:new|editor)\/?$/i))) {
     return Response.redirect(new URL("/presentation/new/" + incoming.search, incoming.origin), 301);
-  }  } else if (pathname === "/forms" || pathname === "/forms/") {
+  } else if (pathname === "/forms" || pathname === "/forms/") {
     return Response.redirect(new URL("/forms/new/" + incoming.search, incoming.origin), 302);
   } else if (pathname === "/forms/new" || pathname === "/forms/new/") {
     pathname = "/forms/";
