@@ -12,8 +12,8 @@
 <body>
 <main id="status"><section class="card"><div class="pill"><span class="dot"></span> Interactive Studio publishing</div><h1>Loading your website…</h1><p>Just a moment while we fetch the published page.</p></section></main>
 <script>
-const PROJECT="interactive-studio-convexllc";
-const API_KEY="AIzaSyAHQDuRXq77XRZvnE-dDuoy8A1TLLtfSy8";
+const PROJECT="convexllc-project";
+const API_KEY="AIzaSyAU1ClFXmG9z2q4vjhrsCgcJVNJFq1Ubj0";
 const SUFFIX=".websites.is-sites.abrdns.com";
 function decode(v){if(!v||typeof v!=="object")return null;if("stringValue"in v)return v.stringValue;if("booleanValue"in v)return v.booleanValue;if("integerValue"in v)return Number(v.integerValue);if("doubleValue"in v)return Number(v.doubleValue);if("timestampValue"in v)return v.timestampValue;if("nullValue"in v)return null;if(v.arrayValue)return(v.arrayValue.values||[]).map(decode);if(v.mapValue)return fields(v.mapValue.fields||{});return null}
 function fields(obj){const out={};for(const [k,v] of Object.entries(obj||{}))out[k]=decode(v);return out}
