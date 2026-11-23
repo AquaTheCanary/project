@@ -93,63 +93,6 @@ button:active,.btn:active{transform:translateY(1px)}
 @media(prefers-reduced-motion:reduce){body:before,main{animation:none!important}.feature-card,.pricing-card,.solution-card,.contact-card,.download-card,.project-card,.dashboard-card,button,.btn{transition:none!important}}
 
 
-/* User-selectable appearance. Dark remains the default; light mode overrides shared surfaces. */
-.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:10px 12px;padding:9px 13px;border:1px solid #465064;border-radius:999px;background:#151a23;color:#eef1f5;font:600 12px/1.2 inherit;cursor:pointer}
-.theme-toggle:hover{border-color:#8b83ff}
-html[data-theme="light"]{color-scheme:light}
-html[data-theme="light"] body{background:#f7f8fc!important;color:#202431!important}
-html[data-theme="light"] .site-header,html[data-theme="light"] .home-nav,html[data-theme="light"] .app-header{background:#ffffffed!important;border-color:#e5e7ef!important}
-html[data-theme="light"] .nav-links a{color:#555d70}
-html[data-theme="light"] .nav-links a:hover,html[data-theme="light"] .nav-links a.active{color:#282b3b}
-html[data-theme="light"] .feature-card,html[data-theme="light"] .pricing-card,html[data-theme="light"] .solution-card,html[data-theme="light"] .contact-card,html[data-theme="light"] .download-card,html[data-theme="light"] .auth-container,html[data-theme="light"] .dashboard-card,html[data-theme="light"] .panel,html[data-theme="light"] .card,html[data-theme="light"] .modal-content,html[data-theme="light"] .editor-panel,html[data-theme="light"] .ai-sidebar,html[data-theme="light"] .ai-chat{background:#fff!important;color:#202431!important;border-color:#e5e7ef!important;box-shadow:0 8px 28px #2029420d}
-html[data-theme="light"] .feature-card p,html[data-theme="light"] .pricing-card p,html[data-theme="light"] .solution-card p,html[data-theme="light"] .contact-card p,html[data-theme="light"] .download-card p,html[data-theme="light"] .dashboard-card p,html[data-theme="light"] .panel p,html[data-theme="light"] .card p{color:#667085}
-html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea{background:#fff!important;color:#202431!important;border-color:#dfe3eb!important}
-html[data-theme="light"] .mobile-menu-button,html[data-theme="light"] .btn-secondary-small,html[data-theme="light"] .btn-secondary-large,html[data-theme="light"] .btn-sso{background:#fff!important;color:#202431!important;border-color:#dfe3eb!important}
-html[data-theme="light"] .site-footer,html[data-theme="light"] footer{color:#667085;border-color:#e5e7ef}
-html[data-theme="light"] .theme-toggle{background:#fff;color:#202431;border-color:#dfe3eb}
-html[data-theme="light"] body:before{opacity:.28}
-
-/* Refined motion language shared by the entire Studio, including app and auth routes. */
-@keyframes studioPageIn{from{opacity:0;transform:translateY(9px) scale(.997)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes studioCardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-body:not([data-no-motion]) main,body:not([data-no-motion]) .shell,body:not([data-no-motion]) .auth-layout,body:not([data-no-motion]) .admin-shell{animation:studioPageIn .48s cubic-bezier(.2,.7,.2,1) both}
-body:not([data-no-motion]) .panel,body:not([data-no-motion]) .card,body:not([data-no-motion]) .dashboard-card,body:not([data-no-motion]) .feature-card,body:not([data-no-motion]) .editor-panel{animation:studioCardIn .55s cubic-bezier(.2,.7,.2,1) both}
-body:not([data-no-motion]) .panel:nth-of-type(2),body:not([data-no-motion]) .card:nth-of-type(2){animation-delay:.05s}
-body:not([data-no-motion]) .panel:nth-of-type(3),body:not([data-no-motion]) .card:nth-of-type(3){animation-delay:.1s}
-body:not([data-no-motion]) .panel:nth-of-type(4),body:not([data-no-motion]) .card:nth-of-type(4){animation-delay:.15s}
-body:not([data-no-motion]) .site-header,body:not([data-no-motion]) .home-nav,body:not([data-no-motion]) .app-header{animation:studioPageIn .4s ease both}
-a,button,.btn,.toolbtn,.layer-item{ -webkit-tap-highlight-color:transparent}
-@media(prefers-reduced-motion:reduce){body:not([data-no-motion]) main,body:not([data-no-motion]) .shell,body:not([data-no-motion]) .auth-layout,body:not([data-no-motion]) .admin-shell,body:not([data-no-motion]) .panel,body:not([data-no-motion]) .card,body:not([data-no-motion]) .dashboard-card,body:not([data-no-motion]) .feature-card,body:not([data-no-motion]) .editor-panel,body:not([data-no-motion]) .site-header,body:not([data-no-motion]) .home-nav,body:not([data-no-motion]) .app-header{animation:none!important}}
-
-
-/* Clean light visual refresh */
-:root{color-scheme:light;--bg-main:#fff;--bg-subtle:#f7f8fc;--bg-ink:#f3f4f8;--text-main:#202431;--text-sub:#697386;--text-soft:#929aaa;--border-color:#e8eaf0;--surface:#fff;--shadow-sm:0 5px 22px rgba(30,40,70,.045);--shadow-lg:0 22px 65px rgba(30,40,70,.10);--brand-blue:#635bff;--brand-violet:#8b5cf6}
-html{color-scheme:light}body{background:#fff!important;color:#202431!important}
-body:before{background:radial-gradient(ellipse at 18% 12%,#635bff0b,transparent 34%),radial-gradient(ellipse at 82% 24%,#40b9d00a,transparent 30%);opacity:.7}
-.site-header,.home-nav,.app-header{background:rgba(255,255,255,.9)!important;border-color:#e8eaf0!important;box-shadow:0 3px 18px rgba(30,40,70,.035)!important}
-.nav-links a{color:#687184!important}.nav-links a:hover,.nav-links a.active{color:#282b3b!important}.brand-name{color:#202431}
-.mobile-menu-button,.btn-secondary-small,.btn-secondary-large,.btn-sso{background:#fff!important;color:#303648!important;border-color:#e3e6ed!important}
-.btn-primary-small,.btn-primary-large,.btn-submit,.btn-launch{background:#635bff!important;border-color:#635bff!important;color:#fff!important}
-.btn-primary-small:hover,.btn-primary-large:hover,.btn-submit:hover,.btn-launch:hover{background:#5148e8!important;border-color:#5148e8!important}
-.hero-badge,.eyebrow{background:#fff!important;border-color:#e8eaf0!important;color:#626b7d!important}
-.hero-title{color:#202431!important}.hero-subtitle,.hero-note{color:#697386!important}
-.app-preview-mockup{background:#fff!important;border-color:#e7e9ef!important;box-shadow:0 28px 90px rgba(34,43,76,.10)!important}
-.mockup-header{background:#fafbfe!important;border-color:#e8eaf0!important}.mockup-title{color:#858d9d!important}
-.mockup-body{background:radial-gradient(ellipse at 50% 0%,#eeedff 0,transparent 58%),linear-gradient(135deg,#fff,#f7f8fd)!important}
-.content-container{color:#202431!important}
-.feature-card,.pricing-card,.solution-card,.contact-card,.download-card,.auth-container,.dashboard-card,.panel,.card,.modal-content,.editor-panel,.ai-sidebar,.ai-chat{background:#fff!important;color:#202431!important;border-color:#e8eaf0!important;box-shadow:0 5px 22px rgba(30,40,70,.045)!important}
-.feature-card p,.pricing-card p,.solution-card p,.contact-card p,.download-card p,.dashboard-card p,.panel p,.card p{color:#697386!important}
-.auth-page{background:radial-gradient(ellipse at 15% 15%,#eeecff 0,transparent 42%),#f7f8fc!important}
-.auth-container{background:#fff!important;border-color:#e8eaf0!important;box-shadow:0 24px 80px rgba(35,31,80,.09)!important}
-input,select,textarea,.auth-container input,.auth-container select,.auth-container textarea{background:#fff!important;color:#202431!important;border-color:#dfe3eb!important}
-input::placeholder,textarea::placeholder{color:#929aaa!important}
-.site-footer,footer{border-color:#e8eaf0!important;color:#818a9a!important}footer a{color:#635bff!important}
-table th{background:#f7f8fc!important;color:#40485a!important}table td{border-color:#e8eaf0!important}hr{border-color:#e8eaf0!important}
-.theme-toggle{background:#fff!important;color:#303648!important;border-color:#e3e6ed!important}
-@media(max-width:760px){.nav-links{background:#fff!important;border-color:#e8eaf0!important}}
-.feature-card:hover,.pricing-card:hover,.solution-card:hover,.contact-card:hover,.download-card:hover,.project-card:hover,.dashboard-card:hover{border-color:#d8d9f5!important;box-shadow:0 18px 48px rgba(42,43,90,.10)!important}
-
-
 /* Interactive Studio appearance system — one source of truth for every route. */
 :root{
   color-scheme:light;
@@ -159,14 +102,7 @@ table th{background:#f7f8fc!important;color:#40485a!important}table td{border-co
   --shadow-card:0 2px 10px rgba(20,25,35,.035);
   --shadow-float:0 18px 50px rgba(20,25,35,.09);
 }
-html[data-theme="dark"]{
-  color-scheme:dark;
-  --page:#111318;--surface:#191c23;--surface-2:#20242d;--surface-3:#292e39;
-  --ink:#f2f3f5;--muted:#a5adba;--soft:#7f8998;--line:#303642;
-  --accent:#a5a2ff;--accent-hover:#c0bdff;--accent-wash:#292944;
-  --shadow-card:0 2px 12px rgba(0,0,0,.16);
-  --shadow-float:0 20px 55px rgba(0,0,0,.32);
-}
+
 html,body{background:var(--page)!important;color:var(--ink)!important}
 body{font-family:Inter,'DM Sans',system-ui,sans-serif;line-height:1.65}
 body:before{display:none!important}
@@ -217,7 +153,7 @@ footer a:hover{color:var(--accent)!important}
 .filter,.search,.tool-content textarea,.tool-content input,.tool-content select,.tool-item{background:var(--surface)!important;color:var(--ink)!important;border-color:var(--line)!important}
 .filter{color:var(--muted)!important}.filter.active,.filter:hover{background:var(--accent-wash)!important;color:var(--accent)!important;border-color:var(--accent)!important}
 .tool-item{background:var(--surface-2)!important}
-html[data-theme="dark"] [style*="background:#fff"],html[data-theme="dark"] [style*="background: #fff"],html[data-theme="dark"] [style*="background:white"]{background:var(--surface)!important;color:var(--ink)!important;border-color:var(--line)!important}
+
 html[data-theme="dark"] [style*="color:#202"],html[data-theme="dark"] [style*="color:#303"],html[data-theme="dark"] [style*="color:#171"]{color:var(--ink)!important}
 
 
