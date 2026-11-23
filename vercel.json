@@ -39,6 +39,62 @@
   ],
   "rewrites": [
     {
+      "source": "/forms/new",
+      "destination": "/forms/index.html?create=1"
+    },
+    {
+      "source": "/forms/new/",
+      "destination": "/forms/index.html?create=1"
+    },
+    {
+      "source": "/forms/take/:id",
+      "destination": "/forms/respond/index.html?id=:id"
+    },
+    {
+      "source": "/forms/take/:id/",
+      "destination": "/forms/respond/index.html?id=:id"
+    },
+    {
+      "source": "/forms/:id/submitted",
+      "destination": "/forms/submitted/index.html?id=:id"
+    },
+    {
+      "source": "/forms/:id/submitted/",
+      "destination": "/forms/submitted/index.html?id=:id"
+    },
+    {
+      "source": "/forms/:id/results",
+      "destination": "/forms/index.html?id=:id&view=results"
+    },
+    {
+      "source": "/forms/:id/results/",
+      "destination": "/forms/index.html?id=:id&view=results"
+    },
+    {
+      "source": "/forms/:id",
+      "destination": "/forms/index.html?id=:id"
+    },
+    {
+      "source": "/forms/:id/",
+      "destination": "/forms/index.html?id=:id"
+    },
+    {
+      "source": "/sites/new",
+      "destination": "/websites/index.html?create=1"
+    },
+    {
+      "source": "/sites/new/",
+      "destination": "/websites/index.html?create=1"
+    },
+    {
+      "source": "/sites/:id",
+      "destination": "/websites/index.html?id=:id"
+    },
+    {
+      "source": "/sites/:id/",
+      "destination": "/websites/index.html?id=:id"
+    },
+    {
       "source": "/guest/canvas",
       "destination": "/canvas/?guest=1"
     },
