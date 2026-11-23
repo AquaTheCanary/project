@@ -52,6 +52,7 @@ const required = [
   ["dashboard/index.html", 'responses.where("formId","==",item.id).where("ownerUid","==",user.uid)', "Deleting a form must clean up its responses."],
   ["assets/files/firebase-rooms.js", 'appPath("/assets/files/auth-config.js")', "Live presentation auth loader must use the case-sensitive asset path."],
   ["assets/files/worker.js", '"https://www.convex-project.abrdns.com"', "Worker CORS must allow the active Project origin."],
+  ["websites/index.html", 'PLATFORM="www.convex-project.abrdns.com"', "Published Sites must use the canonical CNAME host."],
   ["assets/files/firestore.rules", "allow list: if false;", "Private presentation rooms must not be enumerable."]
 ];
 for (const [path, needle, message] of required) {
