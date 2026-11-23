@@ -10,9 +10,46 @@
       "source": "/home/",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/presentation",
+      "destination": "/present/",
+      "permanent": true
+    },
+    {
+      "source": "/presentation/",
+      "destination": "/present/",
+      "permanent": true
+    },
+    {
+      "source": "/presentations",
+      "destination": "/present/new/",
+      "permanent": true
+    },
+    {
+      "source": "/presentations/",
+      "destination": "/present/new/",
+      "permanent": true
+    },
+    {
+      "source": "/presentations/new/",
+      "destination": "/present/new/",
+      "permanent": true
     }
   ],
   "rewrites": [
+    {
+      "source": "/present/:id/host",
+      "destination": "/present/view/host/?id=:id"
+    },
+    {
+      "source": "/present/:id/audience",
+      "destination": "/present/view/audience/?id=:id"
+    },
+    {
+      "source": "/present/:id",
+      "destination": "/present/editor/?id=:id"
+    },
     {
       "source": "/present/:id/host/",
       "destination": "/present/view/host/?id=:id"
