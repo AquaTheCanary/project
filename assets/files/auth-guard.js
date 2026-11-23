@@ -3,8 +3,9 @@
   const current = location.pathname + location.search + location.hash;
   const safeReturn = current.startsWith("/") && !current.startsWith("//") && !current.startsWith("/auth/");
   const routePath = location.pathname.replace(window.APP_BASE_PATH || "", "") || "/";
-  const product = routePath.startsWith("/canvas") ? "canvas" : routePath.startsWith("/ready") ? "ready" : (routePath.startsWith("/sites")||routePath.startsWith("/websites")) ? "sites" : routePath.startsWith("/forms") ? "forms" : routePath.startsWith("/present")||routePath.startsWith("/presentation") ? "present" : null;
-  const guestMode = new URLSearchParams(location.search).get("guest") === "1";
+  const guestRoute=routePath.match(/^\/guest\/(canvas|ready|sites|forms|present)(?:\/|$)/);
+  const product = guestRoute ? guestRoute[1] : routePath.startsWith("/canvas") ? "canvas" : routePath.startsWith("/ready") ? "ready" : (routePath.startsWith("/sites")||routePath.startsWith("/websites")) ? "sites" : routePath.startsWith("/forms") ? "forms" : routePath.startsWith("/present")||routePath.startsWith("/presentation") ? "present" : null;
+  const guestMode = new URLSearchParams(location.search).get("guest") === "1" || routePath.startsWith("/guest/");
   document.documentElement.style.visibility = "hidden";
   const goToLogin = () => {
     if (safeReturn) {
