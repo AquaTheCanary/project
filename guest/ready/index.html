@@ -1,1 +1,24 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guest · Project Ready</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f5f6f8;color:#20212a;font:14px system-ui}.load{padding:22px;border:1px solid #e4e6eb;border-radius:14px;background:white}</style></head><body><div class="load">Opening guest Project Ready…</div><script>(async()=>{try{const base=location.pathname.startsWith("/project/")?"/project":"",product="ready",response=await fetch(base+"/"+product+"/index.html",{cache:"no-store"});if(!response.ok)throw new Error("Product could not be loaded");let html=await response.text();const appBase=base?base+"/":"/";if(html.toLowerCase().includes("<base "))html=html.replace(/<base[^>]*>/i,'<base href="'+appBase+'">');else html=html.replace(/<head[^>]*>/i,'let html=await response.text();if(html.toLowerCase().includes("<base "))html=html.replace(/<base[^>]*>/i,'<base href="../">');else html=html.replace(/<head[^>]*>/i,'$&<base href="../">');<base href="'+appBase+'">');const params=new URLSearchParams(location.search);params.set("guest","1");history.replaceState(null,"",location.pathname+"?"+params.toString()+location.hash);document.open();document.write(html);document.close()}catch(e){document.querySelector(".load").textContent="Could not open guest mode: "+e.message}})();</script></body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guest · Project Ready</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f5f2ec;color:#292722;font:14px system-ui}.load{padding:22px;border:1px solid #ded9cf;border-radius:8px;background:#fffefa}</style></head>
+<body><div class="load">Opening guest Project Ready…</div>
+<script>
+(async()=>{
+ try{
+  const base=location.pathname.startsWith("/project/")?"/project":"";
+  const response=await fetch(base+"/ready/index.html",{cache:"no-store"});
+  if(!response.ok)throw new Error("Product could not be loaded ("+response.status+").");
+  let html=await response.text();
+  const appBase=base?base+"/":"/";
+  const baseTag='<base href="'+appBase+'">';
+  if(/<base\b/i.test(html))html=html.replace(/<base\b[^>]*>/i,baseTag);
+  else html=html.replace(/<head\b[^>]*>/i,"$&"+baseTag);
+  const params=new URLSearchParams(location.search);
+  params.set("guest","1");
+  history.replaceState(null,"",location.pathname+"?"+params.toString()+location.hash);
+  document.open();document.write(html);document.close();
+ }catch(error){
+  document.querySelector(".load").textContent="Could not open guest mode: "+error.message;
+ }
+})();
+</script></body></html>
