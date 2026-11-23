@@ -52,7 +52,7 @@ const required = [
   ["canvas/index.html", "project-cloud.js", "Canvas must load cloud persistence."],
   ["ready/index.html", "project-cloud.js", "Ready must load cloud persistence."],
   ["present/editor/index.html", "project-cloud.js", "Present must load cloud persistence."],
-  ["communities/design/index.html", "shareCopy", "Community imports must support copying shared projects."],
+  ["communities/design/index.html", "publicCopy", "Community detail must load a shared design before copying it."],
   ["assets/files/firestore.rules", "'forms', 'sites'", "Community sharing rules must allow Forms and Sites."],
   ["dashboard/index.html", "projectCloud.list", "The workspace must load cloud-saved projects."],
   ["dashboard/index.html", 'responses.where("formId","==",item.id).where("ownerUid","==",user.uid)', "Deleting a form must clean up its responses."],
