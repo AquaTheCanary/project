@@ -140,7 +140,7 @@ body:has(#fields) .field{padding:14px!important;margin-top:10px!important;border
 body:has(#fields) .field input,body:has(#fields) .field select,body:has(#fields) .field textarea{min-height:36px!important;border-radius:6px!important;font-size:11px!important}
 body:has(#fields) .responses .response{border:1px solid var(--p-line)!important;border-radius:6px!important;background:#fff!important}
 /* Sites builder: neutral editor chrome; preserve the white page preview */
-body[data-website-page="editor"]{background:#f5f6f8!important;color:var(--p-ink)!important}
+html body.page-body[data-website-page="editor"]{background:#f5f6f8!important;color:var(--p-ink)!important}
 body[data-website-page="editor"]>.home-nav{flex:0 0 56px!important;height:56px!important;min-height:56px!important;padding-inline:18px!important;background:#fff!important;border-bottom:1px solid var(--p-line)!important}
 body[data-website-page="editor"] .shell{background:#f5f6f8!important;color:var(--p-ink)!important}
 body[data-website-page="editor"] .head{background:#fff!important;color:var(--p-ink)!important;border-color:var(--p-line)!important}
