@@ -23,8 +23,11 @@
     async list(type){
       const u=await user();let q=db().collection("users").doc(u.uid).collection("projects");
       if(type)q=q.where("type","==",type);
-      const snap=await q.orderBy("updatedAt","desc").limit(100).get();
-      return snap.docs.map(d=>({...d.data(),id:d.id}));
+      // Avoid a composite-index dependency for type + updatedAt.
+      const snap=await q.limit(100).get();
+      const rows=snap.docs.map(d=>({...d.data(),id:d.id}));
+      const stamp=v=>v&&typeof v.toMillis==="function"?v.toMillis():v&&v.seconds?v.seconds*1000:0;
+      return rows.sort((a,b)=>stamp(b.updatedAt)-stamp(a.updatedAt));
     },
     async remove(id){const u=await user();await projectRef(u.uid,id).delete();},
     async shareCopy(type,title,content,description){
