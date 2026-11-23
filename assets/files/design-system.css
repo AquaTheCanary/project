@@ -211,3 +211,48 @@ body[data-website-page=editor] .design-toolbar{margin-top:20px!important;border-
  body.page-body .bar{align-items:flex-start!important}
  body.page-body .layout:has(>.side):has(>.stage){display:flex!important;flex-direction:column!important}
 }
+
+
+/* Project visual direction — editorial warmth, confident typography, quiet detail.
+   Inspired by the craft of Firework Studios, adapted for a focused product workspace. */
+:root{
+  --is-ink:#292722;--is-muted:#716d65;--is-subtle:#969087;
+  --is-line:#ded9cf;--is-surface:#fffefa;--is-page:#f5f2ec;--is-soft:#eeeae2;
+  --is-accent:#e8754f;--is-accent-hover:#cf5f3d;--is-accent-soft:#f8e8df;
+  --is-radius:5px;--is-radius-lg:8px;--is-shadow:0 12px 34px rgba(43,37,29,.07);
+  --project-paper:#f5f2ec;--project-paper-deep:#ebe6dc;--project-orange:#e8754f;
+  --project-purple:#8e79aa;--project-green:#b8c7a5;--project-ink:#292722;
+}
+html{background:var(--is-page);font-family:"DM Sans",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{background:var(--is-page);color:var(--is-ink);font-family:"DM Sans",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+h1,h2,h3,h4{letter-spacing:-.055em}
+::selection{background:#f4c9b7;color:#292722}
+.site-header,.home-nav,.app-header,.marketing-nav{
+ background:rgba(245,242,236,.94)!important;border-bottom:1px solid var(--is-line)!important;
+ backdrop-filter:blur(16px)!important;
+}
+.nav-links a:hover,.marketing-navlinks a:hover{background:#eee9e0!important}
+.nav-links a.active,.marketing-navlinks a.active{background:#f8e8df!important;color:#b65336!important}
+.marketing-cta,.btn-launch,.btn-primary-large,.btn-primary-small,.btn-launch-small{
+ background:var(--is-ink)!important;border-color:var(--is-ink)!important;border-radius:4px!important;
+ letter-spacing:.005em!important;box-shadow:none!important
+}
+.marketing-cta:hover,.btn-launch:hover,.btn-primary-large:hover,.btn-primary-small:hover,.btn-launch-small:hover{
+ background:var(--is-accent)!important;border-color:var(--is-accent)!important;transform:translateY(-1px)
+}
+.btn-secondary-small,.btn-secondary,.btn-outline,.toolbtn{
+ border-radius:4px!important;border-color:#d8d1c6!important;background:#fffefa!important
+}
+.btn-secondary-small:hover,.btn-secondary:hover,.btn-outline:hover,.toolbtn:hover{background:#f0ece4!important;border-color:#bdb4a7!important}
+.card,.panel,.settings-card,.app-card,.project-card,.dashboard-card,.stat-card,.feature-card,.pricing-card,.resource-card,.form-card{
+ border-radius:7px!important;box-shadow:none!important;border-color:var(--is-line)!important;background:#fffefa!important
+}
+input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{
+ border-radius:4px!important;border-color:#d8d1c6!important;background:#fffefa!important
+}
+input:focus,select:focus,textarea:focus{border-color:#e8754f!important;box-shadow:0 0 0 3px rgba(232,117,79,.13)!important}
+.section-kicker{color:#bd6042!important}
+footer{background:var(--is-page)!important;border-color:var(--is-line)!important}
+@media(prefers-reduced-motion:no-preference){
+ .card,.app-card,.project-card,.feature-card,.btn-primary-small,.btn-primary-large,.marketing-cta{transition:transform .22s ease,border-color .22s ease,background .22s ease!important}
+}
