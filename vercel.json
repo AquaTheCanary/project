@@ -39,6 +39,54 @@
   ],
   "rewrites": [
     {
+      "source": "/guest/canvas",
+      "destination": "/canvas/?guest=1"
+    },
+    {
+      "source": "/guest/canvas/",
+      "destination": "/canvas/?guest=1"
+    },
+    {
+      "source": "/guest/ready",
+      "destination": "/ready/?guest=1"
+    },
+    {
+      "source": "/guest/ready/",
+      "destination": "/ready/?guest=1"
+    },
+    {
+      "source": "/guest/present",
+      "destination": "/present/?guest=1"
+    },
+    {
+      "source": "/guest/present/",
+      "destination": "/present/?guest=1"
+    },
+    {
+      "source": "/guest/sites",
+      "destination": "/sites/?guest=1"
+    },
+    {
+      "source": "/guest/sites/",
+      "destination": "/sites/?guest=1"
+    },
+    {
+      "source": "/guest/forms",
+      "destination": "/forms/?guest=1"
+    },
+    {
+      "source": "/guest/forms/",
+      "destination": "/forms/?guest=1"
+    },
+    {
+      "source": "/communities/profiles/:handle/update",
+      "destination": "/communities/profiles/update/index.html?handle=:handle"
+    },
+    {
+      "source": "/communities/profiles/:handle/update/",
+      "destination": "/communities/profiles/update/index.html?handle=:handle"
+    },
+    {
       "source": "/present/:id/host",
       "destination": "/present/view/host/?id=:id"
     },
