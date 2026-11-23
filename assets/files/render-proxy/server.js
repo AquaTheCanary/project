@@ -30,7 +30,7 @@ const server = http.createServer(async (req, res) => {
   // but send visitors to the main Interactive Studio website.
   if (isPlatformRoot) {
     res.writeHead(302, {
-      location: "https://interactivestudio.abrdns.com" + req.url,
+      location: "https://www.convex-project.abrdns.com" + req.url,
       "cache-control": "no-store"
     });
     return res.end();
@@ -68,4 +68,4 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, "0.0.0.0", () => console.log("Interactive Studio sites proxy listening on " + PORT));
+server.listen(PORT, "0.0.0.0", () => console.log("Project sites proxy listening on " + PORT));
