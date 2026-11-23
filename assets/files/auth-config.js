@@ -47,8 +47,6 @@ const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
 };
 if (!window.firebase) throw new Error("Load Firebase App and Auth compat SDK before auth-config.js.");
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-try { const savedTheme=localStorage.getItem("project_theme"); if(savedTheme) document.documentElement.dataset.projectTheme=savedTheme; } catch (_) {}
-
 (function () {
   const auth = firebase.auth();
   const freeDomains = new Set([
@@ -75,15 +73,6 @@ try { const savedTheme=localStorage.getItem("project_theme"); if(savedTheme) doc
         resolve(auth.currentUser || null);
       }, 8000))
     ]));
-
-  // Pull the account preference after auth restores, so appearance follows the user across devices.
-  auth.onAuthStateChanged(user => {
-    if (!user || !firebase.firestore) return;
-    firebase.firestore().collection("userSettings").doc(user.uid).get().then(snapshot => {
-      const theme=snapshot.exists && snapshot.data().theme ? snapshot.data().theme : "system";
-      if (["system","light","dark"].includes(theme)) { document.documentElement.dataset.projectTheme=theme; try { localStorage.setItem("project_theme",theme); } catch (_) {} }
-    }).catch(error => console.warn("Could not sync account preferences:",error));
-  });
 
   // Firebase LOCAL persistence keeps the account signed in across navigation,
   // tab closure and browser restarts. Only the explicit Sign out action clears it.
