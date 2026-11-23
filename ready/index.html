@@ -114,7 +114,8 @@ const templates={
 "main.py":'def main():\n    print("Hello from Python!")\n\nif __name__ == "__main__":\n    main()'
 };
 const languageByExt={html:"HTML",htm:"HTML",css:"CSS",js:"JavaScript",mjs:"JavaScript",cjs:"JavaScript",py:"Python",ts:"TypeScript",tsx:"TypeScript",jsx:"JavaScript JSX",json:"JSON",md:"Markdown",sql:"SQL",java:"Java",c:"C",h:"C/C++ Header",cpp:"C++",cc:"C++",cs:"C#",go:"Go",rs:"Rust",php:"PHP",rb:"Ruby",swift:"Swift",kt:"Kotlin",kts:"Kotlin",sh:"Shell",bash:"Shell",yaml:"YAML",yml:"YAML",xml:"XML",toml:"TOML",vue:"Vue",svelte:"Svelte",dart:"Dart",r:"R",lua:"Lua",pl:"Perl",scala:"Scala",ex:"Elixir",exs:"Elixir",hs:"Haskell",elm:"Elm",ipynb:"Jupyter Notebook"};
-let files={...templates},active="index.html",user=null,projectId="",saveTimer=null,pyodide=null;\nconst makeProjectId=()=>String(Math.floor(100000+Math.random()*900000));
+let files={...templates},active="index.html",user=null,projectId="",saveTimer=null,pyodide=null;
+const makeProjectId=()=>String(Math.floor(100000+Math.random()*900000));
 const ext=name=>(name.split(".").pop()||"txt").toLowerCase(),lang=name=>languageByExt[ext(name)]||ext(name).toUpperCase();
 function output(value){$("output").textContent=String(value)}
 function renderFiles(){const list=$("file-list");list.innerHTML="";Object.keys(files).forEach(name=>{const b=document.createElement("button");b.className="file"+(name===active?" active":"");b.textContent=name;b.title=name;b.onclick=()=>switchFile(name);list.appendChild(b)})}
