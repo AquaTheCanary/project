@@ -14,6 +14,18 @@
   ],
   "rewrites": [
     {
+      "source": "/present/:id/host/",
+      "destination": "/present/view/host/?id=:id"
+    },
+    {
+      "source": "/present/:id/audience/",
+      "destination": "/present/view/audience/?id=:id"
+    },
+    {
+      "source": "/present/:id/",
+      "destination": "/present/editor/?id=:id"
+    },
+    {
       "source": "/",
       "destination": "/home/index.html"
     }
