@@ -92,7 +92,9 @@ service cloud.firestore {
       // Response queries must include ownerUid == request.auth.uid so Firestore
       // can prove access for every returned document without a cross-document query.
       allow read: if signedIn() && resource.data.ownerUid == request.auth.uid;
-      allow update, delete: if false;
+      allow update: if false;
+      // Form owners may permanently delete the responses attached to their own forms.
+      allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
     }
 
     match /websites/{slug} {
