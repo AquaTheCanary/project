@@ -318,12 +318,13 @@ service cloud.firestore {
 
     // Private project documents shared by Canvas, Ready and Present.
     match /users/{uid}/projects/{projectId} {
-      allow read, create, update, delete: if signedIn() && request.auth.uid == uid
-        && (request.method == 'delete' || request.resource.data.ownerUid == request.auth.uid)
-        && (request.method == 'delete' || request.resource.data.type in ['canvas', 'ready', 'present'])
-        && (request.method == 'delete' || request.resource.data.content is map)
-        && (request.method == 'delete' || request.resource.data.title is string)
-        && (request.method == 'delete' || request.resource.data.title.size() <= 160);
+      allow read, delete: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.type in ['canvas', 'ready', 'present']
+        && request.resource.data.content is map
+        && request.resource.data.title is string
+        && request.resource.data.title.size() <= 160;
     }
 
     // User preferences are private and account-scoped.
