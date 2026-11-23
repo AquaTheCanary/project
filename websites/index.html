@@ -435,7 +435,7 @@ body[data-website-page=editor]{background:#f7f7fa!important;color:#20212a!import
   </div>
 </div><script>
 (function(){
-const $=id=>document.getElementById(id),API="https://interactive-studio.convexllc.workers.dev",PLATFORM="convex-project.abrdns.com";
+const $=id=>document.getElementById(id),API="https://interactive-studio.convexllc.workers.dev",PLATFORM="www.convex-project.abrdns.com";
 let user=null,db=null,active=null,domains={},sections=[],selectedSection=0,dragSection=-1,profileHandle="",guest=new URLSearchParams(location.search).get("guest")==="1";
 const ids=["site-name","description","eyebrow","headline","subheadline","body-copy","button-label","button-url","accent","background"];
 function msg(id,text,type){$(id).textContent=text;$(id).className="message"+(type?" "+type:"")}
