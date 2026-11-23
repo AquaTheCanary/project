@@ -1,5 +1,7 @@
 const ALLOWED_ORIGINS = new Set([
   "https://aquathecanary.github.io",
+  "https://convex-project.abrdns.com",
+  "https://www.convex-project.abrdns.com",
   "https://interactivestudio.abrdns.com",
   "https://www.interactivestudio.abrdns.com",
   "https://is-sites.abrdns.com",
