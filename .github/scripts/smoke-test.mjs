@@ -72,7 +72,7 @@ for (const [path, needle, message] of required) {
 for (const path of ["assets/files/auth-config.js", "assets/files/auth-guard.js", "assets/files/project-cloud.js", "assets/files/firebase-rooms.js", "assets/files/render-proxy/server.js"]) {
   try { new Function(read(path)); } catch (error) { failures.push(path + ": " + error.message); }
 }
-try { new Function(read("assets/files/worker.js").replace(/export\\s+default\\s*\\{[\\s\\S]*$/, "")); }
+try { new Function(read("assets/files/worker.js").replace("export default", "const worker =") + "; return worker;"); }
 catch (error) { failures.push("assets/files/worker.js: " + error.message); }
 
 if (failures.length) {
