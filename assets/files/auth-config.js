@@ -369,24 +369,9 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     async sendVerificationEmail(user) {
       const activeUser = user || await studioAuth.currentUser();
       if (!activeUser) throw new Error("Sign in before requesting a verification email.");
-      try {
-        const token = await activeUser.getIdToken(true);
-        const response = await fetch("https://api.convexllc.org/api/send-verification", {
-          method: "POST",
-          headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
-          body: "{}"
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok) throw new Error(result.error || "The custom verification email could not be sent.");
-        return true;
-      } catch (customError) {
-        // Keep account creation and verification usable while the custom Vercel
-        // sender is being configured. Firebase's built-in template is the fallback.
-        console.warn("Custom email sender unavailable; using Firebase's default verification email.", customError);
-        const returnUrl = window.location.origin + appUrl("/auth/personal/login/");
-        await activeUser.sendEmailVerification({ url: returnUrl, handleCodeInApp: false });
-        return true;
-      }
+      const returnUrl = window.location.origin + appUrl("/auth/personal/login/");
+      await activeUser.sendEmailVerification({ url: returnUrl, handleCodeInApp: false });
+      return true;
     },
     async resetPassword(email) {
       if (!email) throw new Error("Enter your email address first.");
