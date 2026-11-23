@@ -159,3 +159,18 @@ body[data-website-page="editor"] .builder-block.selected{border-color:#7866d8!im
 body[data-website-page="editor"] .toolbtn.compact{background:#fff!important;color:#353044!important;border-color:#ddd6ee!important}
 body[data-website-page="editor"] .layer-item.active{background:#eeeafb!important;color:#493c9e!important;border-color:#d7cff2!important}
 @media(prefers-reduced-motion:reduce){body:not(.marketing) *{transition:none!important}}
+
+
+/* Website builder: compact workspace layout without flattening its original colour accents. */
+body[data-website-page="editor"]{height:100dvh;min-height:0;overflow:hidden}
+body[data-website-page="editor"] .shell{height:calc(100dvh - 66px);max-width:100%!important;min-height:0;padding:14px clamp(10px,1.5vw,22px)!important;display:flex;flex-direction:column;overflow:hidden}
+body[data-website-page="editor"] .head{flex:0 0 auto;margin:0 0 10px!important;padding:12px 16px!important}
+body[data-website-page="editor"] .layout{flex:1 1 auto;min-height:0;grid-template-columns:190px minmax(0,1fr)!important;gap:10px!important;overflow:hidden}
+body[data-website-page="editor"] .list{position:static!important;max-height:100%;min-height:0;overflow:auto}
+body[data-website-page="editor"] .main{min-width:0;min-height:0;padding:10px!important;overflow:auto}
+body[data-website-page="editor"] .design-toolbar{position:static!important;margin:0!important}
+body[data-website-page="editor"] .builder{height:calc(100dvh - 230px);min-height:340px!important;max-height:calc(100dvh - 150px);grid-template-columns:160px minmax(0,1fr) 220px!important;overflow:hidden!important}
+body[data-website-page="editor"] .builder-tools,body[data-website-page="editor"] .builder-properties{min-height:0;max-height:100%;overflow:auto;padding:10px!important}
+body[data-website-page="editor"] .builder-stage{min-height:0!important;height:100%;overflow:auto;padding:12px!important}
+body[data-website-page="editor"] .builder-canvas{min-height:100%!important;max-width:100%!important}
+@media(max-width:900px){body[data-website-page="editor"]{height:auto;min-height:100dvh;overflow:auto}body[data-website-page="editor"] .shell{height:auto;min-height:calc(100dvh - 60px);overflow:visible}body[data-website-page="editor"] .layout{display:grid;grid-template-columns:1fr!important;overflow:visible}body[data-website-page="editor"] .list{max-height:130px}body[data-website-page="editor"] .builder{height:auto;max-height:none;min-height:0;grid-template-columns:1fr!important;overflow:visible}body[data-website-page="editor"] .builder-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;border:0;border-bottom:1px solid var(--project-line)}body[data-website-page="editor"] .builder-stage{min-height:420px;height:60vh}body[data-website-page="editor"] .builder-properties{max-height:none;border:0;border-top:1px solid var(--project-line)}}
