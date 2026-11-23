@@ -47,6 +47,7 @@ const firebaseConfig = firebaseProduct ? firebaseApps[firebaseProduct] : {
 };
 if (!window.firebase) throw new Error("Load Firebase App and Auth compat SDK before auth-config.js.");
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+try { const savedTheme=localStorage.getItem("project_theme"); if(savedTheme) document.documentElement.dataset.projectTheme=savedTheme; } catch (_) {}
 
 (function () {
   const auth = firebase.auth();
@@ -75,7 +76,7 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       }, 8000))
     ]));
 
-  // Firebase LOCAL persistence keeps the account signed in across navigation,
+  // Pull the account preference after auth restores, so appearance follows the user across devices.\n  auth.onAuthStateChanged(user => {\n    if (!user || !firebase.firestore) return;\n    firebase.firestore().collection("userSettings").doc(user.uid).get().then(snapshot => {\n      const theme=snapshot.exists && snapshot.data().theme ? snapshot.data().theme : "system";\n      if (["system","light","dark"].includes(theme)) { document.documentElement.dataset.projectTheme=theme; try { localStorage.setItem("project_theme",theme); } catch (_) {} }\n    }).catch(error => console.warn("Could not sync account preferences:",error));\n  });\n\n  // Firebase LOCAL persistence keeps the account signed in across navigation,
   // tab closure and browser restarts. Only the explicit Sign out action clears it.
   const SESSION_KEY = "interactive_studio_session_v4";
   let sessionEnding = false;
