@@ -7,7 +7,7 @@
 <script src="../assets/files/router.js" defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script src="../assets/files/auth-config.js?v=20261123-2"></script><script src="../assets/files/project-cloud.js?v=20261123-4"></script>
-<link rel="stylesheet" href="/assets/files/studio-polish.css?v=20261124-1">
+<link rel="stylesheet" href="/assets/files/studio-polish.css?v=20261124-2">
 <style>
 :root{color-scheme:light;--ink:#111;--line:#dedede;--paper:#fff;--soft:#f6f6f6}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff!important;color:#000!important;font-family:Arial,sans-serif}
@@ -33,6 +33,35 @@
 [hidden]{display:none!important}
 @media(max-width:900px){.workspace{grid-template-columns:155px minmax(0,1fr)}.inspect-panel{grid-column:1/-1;max-height:180px;border-left:0;border-top:1px solid var(--line)}.editor-area{grid-template-rows:38px minmax(220px,1fr) 95px}.preview-panel{grid-column:2;grid-row:1}.workspace{grid-template-rows:minmax(0,1fr) 42vh}.files-panel{grid-row:1/3}.editor-area{grid-column:2;grid-row:1}.preview-panel{grid-column:2;grid-row:2}.inspect-panel{display:none}}
 @media(max-width:600px){.ready-app{grid-template-rows:auto minmax(0,1fr) 25px}.topbar{min-height:52px;flex-wrap:wrap;padding:7px;gap:6px}.brand span,.status{display:none}.name{width:100px}.topbar .btn{padding:7px;font-size:10px}.workspace{grid-template-columns:1fr;grid-template-rows:auto minmax(240px,1fr) minmax(200px,.8fr);overflow:auto}.files-panel{grid-row:auto;max-height:92px;border-right:0;border-bottom:1px solid var(--line);padding:7px}.files-panel .kicker{display:none}.file-list{display:flex;overflow-x:auto}.file{width:auto;min-width:95px}.add-file{margin-top:5px}.editor-area{grid-column:1;grid-row:2;grid-template-rows:34px minmax(160px,1fr) 75px}.preview-panel{grid-column:1;grid-row:3}.inspect-panel{display:none}.editor{padding:10px;font-size:11px}}
+
+/* Warm, colourful Ready workspace — keep the compact responsive editor layout. */
+:root{color-scheme:light;--ink:#292637;--line:#e5e0ed;--paper:#fbfaff;--accent:#7866d8}
+html,body{background:#fbfaff!important;color:#292637!important}
+.ready-app{background:#fbfaff;color:#292637}
+.topbar{background:#fff;border-bottom:1px solid #e5e0ed}
+.brand{color:#5144a0}.brand img{border-radius:7px}
+.name{background:#fbfaff;border:1px solid #e5e0ed;color:#292637}
+.btn{background:#fff;color:#5144a0;border:1px solid #d9d2ee;border-radius:7px}
+.btn:hover{background:#f1edff;border-color:#a99be5}
+.btn.primary{background:#7866d8;color:#fff;border-color:#7866d8}
+.btn.primary:hover{background:#6654c6}
+.workspace{background:#fbfaff}
+.files-panel,.inspect-panel{background:#fff}
+.files-panel{border-right:1px solid #e5e0ed}.inspect-panel{border-left:1px solid #e5e0ed}
+.kicker{color:#7866d8}
+.file{color:#494458;border-radius:6px}
+.file.active{background:#f0edff;border-color:#d5cdf4;color:#5144a0}
+.add-file select{background:#fff;border:1px solid #e5e0ed;color:#292637;border-radius:6px}
+.editor-area{background:#fff}
+.editor-head,.output-head{background:#fbfaff;border-color:#e5e0ed;color:#514b60}
+.editor{background:#fff;color:#292637;caret-color:#7866d8}
+.output{border-color:#e5e0ed}.output pre{background:#f8f6fc;color:#383345}
+.preview-panel{background:#f1edfa}.preview-head{background:#fff;color:#514b60;border-color:#e5e0ed}
+.inspect-panel p,.checklist{color:#514b60}
+.checklist input{accent-color:#7866d8}
+.footer{background:#fff;border-color:#e5e0ed;color:#777185}
+body{color-scheme:light}
+@media(max-width:900px){.workspace{grid-template-columns:155px minmax(0,1fr)}}
 </style>
 </head>
 <body>
