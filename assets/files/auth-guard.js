@@ -2,6 +2,9 @@
 (function () {
   const current = location.pathname + location.search + location.hash;
   const safeReturn = current.startsWith("/") && !current.startsWith("//") && !current.startsWith("/auth/");
+  const routePath = location.pathname.replace(window.APP_BASE_PATH || "", "") || "/";
+  const product = routePath.startsWith("/canvas") ? "canvas" : routePath.startsWith("/ready") ? "ready" : (routePath.startsWith("/sites")||routePath.startsWith("/websites")) ? "sites" : routePath.startsWith("/forms") ? "forms" : routePath.startsWith("/present")||routePath.startsWith("/presentation") ? "present" : null;
+  const guestMode = new URLSearchParams(location.search).get("guest") === "1";
   document.documentElement.style.visibility = "hidden";
   const goToLogin = () => {
     if (safeReturn) {
@@ -20,7 +23,19 @@
         document.documentElement.dataset.authCheckTimeout = "true";
         return;
       }
-      if (!user) { goToLogin(); return; }
+      if (!user) {
+        if (guestMode && product) {
+          window.PROJECT_GUEST_MODE = true;
+          document.documentElement.style.visibility = "";
+          document.documentElement.dataset.guest = "true";
+          const productNames={canvas:"Product Canvas",ready:"Project Ready",sites:"Project Sites",forms:"Project Forms",present:"Project Present"};
+          const banner=()=>{if(document.getElementById("project-guest-banner"))return;const el=document.createElement("div");el.id="project-guest-banner";el.style.cssText="position:relative;z-index:9999;padding:12px 18px;background:#fff4d9;color:#654b10;font:12px/1.5 system-ui,sans-serif;border-bottom:1px solid #f0dca8";el.innerHTML="Welcome to "+productNames[product]+"! Keep in mind you’re in the guest version, so you can’t save or share your projects. <a href=\\""+(window.getAppUrl?window.getAppUrl("/register/"):"/register/")+"\\" style=\\"font-weight:700;color:inherit\\">Create an account</a> or <a href=\\""+(window.getAppUrl?window.getAppUrl("/login/"):"/login/")+"\\" style=\\"font-weight:700;color:inherit\\">sign in</a> to access these features.";document.body.prepend(el);};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",banner,{once:true});else banner();
+          try{const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(/studio_deck_|project_canvas|project_ready|project_form|project_site|studio_projects_|canvas_cloud_project_|ready_cloud_project_/i.test(String(k)))return;return original.call(this,k,v)}}catch(_){}
+          return;
+        }
+        if(product){const guestPath="/guest/"+product+"/";location.replace(window.getAppUrl?window.getAppUrl(guestPath):guestPath);return;}
+        goToLogin(); return;
+      }
       const accountType = window.studioAuth && studioAuth.getAccountType
         ? await studioAuth.getAccountType(user) : null;
       if (accountType !== "personal" && accountType !== "organisation") {
