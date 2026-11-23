@@ -58,14 +58,4 @@
     }))).observe(document.documentElement, { childList: true, subtree: true });
   } catch (_) {}
 
-  function enforceLightAppearance() {
-    const root = document.documentElement;
-    if (root.dataset.theme !== "light") root.dataset.theme = "light";
-    if (root.style.colorScheme !== "light") root.style.colorScheme = "light";
-    try { if (localStorage.getItem("is-theme") !== "light") localStorage.setItem("is-theme", "light"); } catch (_) {}
-  }
-  enforceLightAppearance();
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", enforceLightAppearance, { once: true });
-  try { new MutationObserver(enforceLightAppearance).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "style"] }); } catch (_) {}
-  window.addEventListener("storage", event => { if (event.key === "is-theme" && event.newValue !== "light") enforceLightAppearance(); });
 })();
