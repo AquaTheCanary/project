@@ -12,7 +12,7 @@
   window.projectCloud={
     async save(id,type,title,content,metadata={}){
       const u=await user();
-      const data={id:String(id),ownerUid:u.uid,type,title:String(title||"Untitled project").slice(0,160),content,metadata,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+      const data={id:String(id),ownerUid:u.uid,type,title:String(title||"Untitled project").slice(0,160),content,metadata:metadata&&typeof metadata==="object"?metadata:{},updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
       await projectRef(u.uid,id).set(data,{merge:true});
       return data;
     },
