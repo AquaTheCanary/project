@@ -37,7 +37,7 @@
       await loadScript("https://www.gstatic.com/firebasejs/" + SDK_VERSION + "/firebase-firestore-compat.js");
     }
     if (!window.studioAuth) {
-      await loadScript(appPath("/assets/Files/auth-config.js"));
+      await loadScript(appPath("/assets/files/auth-config.js"));
     }
     if (!window.studioAuth) throw new Error("Interactive Studio authentication did not initialise.");
     // Resolve Firebase persistence and redirect sign-in before choosing an identity.
