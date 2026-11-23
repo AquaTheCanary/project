@@ -315,6 +315,36 @@ service cloud.firestore {
       }
     }
 
+
+    // Private project documents shared by Canvas, Ready and Present.
+    match /users/{uid}/projects/{projectId} {
+      allow read, create, update, delete: if signedIn() && request.auth.uid == uid
+        && (request.method == 'delete' || request.resource.data.ownerUid == request.auth.uid)
+        && (request.method == 'delete' || request.resource.data.type in ['canvas', 'ready', 'present'])
+        && (request.method == 'delete' || request.resource.data.content is map)
+        && (request.method == 'delete' || request.resource.data.title is string)
+        && (request.method == 'delete' || request.resource.data.title.size() <= 160);
+    }
+
+    // User preferences are private and account-scoped.
+    match /userSettings/{uid} {
+      allow read, create, update, delete: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Public community entries are immutable copies of a user's work.
+    match /communityDesigns/{designId} {
+      allow get, list: if resource.data.visibility == 'public';
+      allow create: if signedIn()
+        && request.resource.data.copyOwnerUid == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() <= 160
+        && request.resource.data.product in ['canvas', 'ready', 'present']
+        && request.resource.data.content is map
+        && request.resource.data.visibility == 'public';
+      allow update: if false;
+      allow delete: if signedIn() && resource.data.copyOwnerUid == request.auth.uid;
+    }
+
     // Cloudbase file metadata. File bytes live in Firebase Storage.
     match /cloudbaseFiles/{fileId} {
       allow create: if signedIn()
