@@ -69,6 +69,12 @@ for (const [path, needle, message] of required) {
   if (!read(path).includes(needle)) failures.push(path + ": " + message);
 }
 
+for (const path of ["assets/files/auth-config.js", "assets/files/auth-guard.js", "assets/files/project-cloud.js", "assets/files/firebase-rooms.js", "assets/files/render-proxy/server.js"]) {
+  try { new Function(read(path)); } catch (error) { failures.push(path + ": " + error.message); }
+}
+try { new Function(read("assets/files/worker.js").replace(/export\\s+default\\s*\\{[\\s\\S]*$/, "")); }
+catch (error) { failures.push("assets/files/worker.js: " + error.message); }
+
 if (failures.length) {
   console.error("Project smoke checks failed:");
   for (const failure of failures) console.error(" - " + failure);
