@@ -99,7 +99,7 @@ try { new Function(read("assets/files/worker.js").replace("export default", "con
 catch (error) { failures.push("assets/files/worker.js: " + error.message); }
 
 const routerSource = read("assets/files/router.js");
-for (const destination of ["/auth/personal/login/", "/auth/organisation/login/", "/auth/personal/register/", "/auth/organisation/register/", "/forms/"]) {
+for (const destination of ["/auth/personal/login/", "/auth/organisation/login/", "/auth/personal/register/", "/auth/organisation/register/", "/forms/new/"]) {
   if (!routerSource.includes('"' + destination + '"')) failures.push("assets/files/router.js: missing valid route destination " + destination);
 }
 if (!read("register/index.html").includes('href="/register/personal/"')) failures.push("register/index.html: personal account chooser must use the public registration alias.");
