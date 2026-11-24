@@ -45,7 +45,7 @@
   // One canonical screenshot-led UI stylesheet. Remove legacy layers that were
   // competing with each other and append the reference layer after page styles.
   function enforceReferenceTheme() {
-    const legacy = /(?:design-system|production-ui|product-quality|product-experience|studio-polish)\\.css(?:[?#]|$)/i;
+    const legacy = /(?:design-system|production-ui|product-quality|product-experience|studio-polish)\.css(?:[?#]|$)/i;
     document.querySelectorAll('link[rel~="stylesheet"]').forEach(link => {
       if (legacy.test(link.href || "")) link.remove();
     });
