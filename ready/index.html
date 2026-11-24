@@ -92,6 +92,17 @@ html,body{background:var(--ready-bg)!important;color:#17171c!important;font-fami
 </style>
 <link rel="stylesheet" href="/assets/files/production-ui.css?v=20261124-2">
 <link rel="stylesheet" href="../assets/files/project-reference-ui.css?v=20261124-7">
+<style id="ready-layout-fix">
+body .ready-app.ready-app{grid-template-rows:auto 54px minmax(0,1fr) 27px!important}
+body .ready-app #guest-banner{grid-row:1!important}
+body .ready-app .topbar{grid-row:2!important;height:54px!important}
+body .ready-app .workspace{grid-row:3!important;grid-template-columns:220px minmax(0,1.1fr) minmax(300px,.9fr) 260px!important;grid-template-rows:minmax(0,1fr)!important;grid-auto-rows:minmax(0,1fr)!important;min-height:0!important}
+body .ready-app .files-panel,body .ready-app .editor-area,body .ready-app .preview-panel,body .ready-app .inspect-panel{grid-row:auto!important;min-height:0!important;height:100%!important}
+body .ready-app .files-panel{grid-column:1!important}body .ready-app .editor-area{grid-column:2!important}body .ready-app .preview-panel{grid-column:3!important}body .ready-app .inspect-panel{grid-column:4!important}
+body .ready-app .footer{grid-row:4!important}
+@media(max-width:1050px){body .ready-app .workspace{grid-template-columns:190px minmax(0,1fr) minmax(250px,.8fr)!important}body .ready-app .inspect-panel{display:none!important}}
+@media(max-width:620px){body .ready-app.ready-app{grid-template-rows:auto 58px minmax(0,1fr) 28px!important}body .ready-app .workspace{grid-template-columns:1fr!important;grid-template-rows:minmax(320px,1fr) minmax(240px,.8fr)!important;overflow:auto!important}body .ready-app .files-panel{display:none!important}body .ready-app .editor-area{grid-column:1!important;grid-row:1!important}body .ready-app .preview-panel{grid-column:1!important;grid-row:2!important}body .ready-app .inspect-panel{display:none!important}}
+</style>
 </head>
 <body>
 <div class="ready-app">
