@@ -211,3 +211,19 @@ body.project-app-fullscreen .ready-app{width:100%!important;max-width:none!impor
 body.project-app-fullscreen .ready-app .workspace{height:calc(100dvh - 125px)!important;min-height:560px!important}
 @media(max-width:1000px){body.project-app-fullscreen .builder{grid-template-columns:190px minmax(0,1fr)!important}body.project-app-fullscreen .builder-properties{grid-column:1/-1!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}}
 @media(max-width:700px){body.project-app-fullscreen :where(.shell,.content-container,.settings-shell,.workspace-shell,.app-shell,.product-shell,.main-shell,.page-shell){padding:14px 12px 24px!important}body.project-app-fullscreen .builder{display:flex!important;flex-direction:column!important;min-height:auto!important}body.project-app-fullscreen .builder-stage{min-height:65dvh!important}body.project-app-fullscreen .builder-properties{display:flex!important;flex-direction:column!important}body.project-app-fullscreen .ready-app .workspace{height:auto!important;min-height:0!important}}
+
+/* Fill the viewport consistently for the major product workspaces */
+body.project-app-fullscreen :where(.canvas-app,.ready-app,.work,.main,.content-container,.settings-shell,.shell){width:100%!important;max-width:none!important}
+body.project-app-fullscreen .canvas-app{height:100dvh!important;min-height:100dvh!important}
+body.project-app-fullscreen .canvas-app .main{width:100%!important;min-height:0!important;grid-template-columns:220px minmax(0,1fr) 270px!important}
+body.project-app-fullscreen .ready-app{height:100dvh!important;min-height:100dvh!important}
+body.project-app-fullscreen .work{flex:1 1 auto!important;width:100%!important;max-width:none!important;margin:0!important;padding:0 var(--pr-gutter) 16px!important;min-height:calc(100dvh - 68px)!important}
+body.project-app-fullscreen .work .layout{min-height:0!important;height:calc(100dvh - 150px)!important}
+body.project-app-fullscreen .m365-dashboard{min-height:calc(100dvh - 70px)!important}
+body.project-app-fullscreen .settings-shell{padding:28px var(--pr-gutter) 40px!important}
+body.project-app-fullscreen .shell{padding:24px var(--pr-gutter) 32px!important}
+body.project-app-fullscreen :where(.topbar,.home-nav,.nav,.app-header){min-height:56px!important;padding-inline:var(--pr-gutter)!important}
+body.project-app-fullscreen button{background:#fff!important;color:var(--pr-ink)!important;border:1px solid var(--pr-line)!important}
+body.project-app-fullscreen :where(button.primary,.btn.primary,.btn-primary,.primary-button,.btn-main,[data-variant="primary"]){background:linear-gradient(115deg,#7962d8,#9b83e7)!important;border:1px solid #7962d8!important;color:#fff!important}
+@media(max-width:900px){body.project-app-fullscreen .canvas-app .main{grid-template-columns:190px minmax(0,1fr)!important}body.project-app-fullscreen .canvas-app .panel.right{grid-column:1/-1!important;max-height:260px!important}}
+@media(max-width:620px){body.project-app-fullscreen .canvas-app .main{grid-template-columns:1fr!important;overflow:auto!important}body.project-app-fullscreen .canvas-app .panel{max-height:220px!important;border:0!important;border-bottom:1px solid var(--pr-line)!important}body.project-app-fullscreen .work .layout{height:auto!important;min-height:70dvh!important}}

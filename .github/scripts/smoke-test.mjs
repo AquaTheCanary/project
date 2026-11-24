@@ -74,7 +74,7 @@ const appHtmlFiles = htmlFiles.filter(file => relative(root, file) !== "assets/f
 for (const file of appHtmlFiles) {
   const html = readFileSync(file, "utf8");
   const path = relative(root, file);
-  if (!html.includes("project-reference-ui.css?v=20261124-7")) failures.push(path + ": missing canonical screenshot reference stylesheet.");
+  if (!html.includes("project-reference-ui.css?v=20261124-8")) failures.push(path + ": missing canonical screenshot reference stylesheet.");
   if (/(?:design-system|production-ui|studio-polish|product-quality|product-experience|product-studio-interfaces)\.css/.test(html)) failures.push(path + ": competing legacy stylesheet remains.");
   if (/theme-toggle|pref-theme|project_theme|data-theme=["']dark/i.test(html)) failures.push(path + ": obsolete appearance toggle remains.");
 }
@@ -91,7 +91,7 @@ catch (error) { failures.push("assets/files/worker.js: " + error.message); }
 
 const routerSource = read("assets/files/router.js");
 if (!routerSource.includes("enforceReferenceTheme")) failures.push("assets/files/router.js: canonical reference theme loader is missing.");
-if (!routerSource.includes("project-reference-ui.css?v=20261124-7")) failures.push("assets/files/router.js: canonical reference stylesheet version is stale.");
+if (!routerSource.includes("project-reference-ui.css?v=20261124-8")) failures.push("assets/files/router.js: canonical reference stylesheet version is stale.");
 for (const destination of ["/auth/personal/login/", "/auth/organisation/login/", "/auth/personal/register/", "/auth/organisation/register/", "/forms/new/"]) {
   if (!routerSource.includes('"' + destination + '"')) failures.push("assets/files/router.js: missing valid route destination " + destination);
 }
