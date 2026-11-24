@@ -98,6 +98,17 @@ for (const path of ["assets/files/auth-config.js", "assets/files/auth-guard.js",
 try { new Function(read("assets/files/worker.js").replace("export default", "const worker =") + "; return worker;"); }
 catch (error) { failures.push("assets/files/worker.js: " + error.message); }
 
+const routerSource = read("assets/files/router.js");
+for (const destination of ["/auth/personal/login/", "/auth/organisation/login/", "/auth/personal/register/", "/auth/organisation/register/", "/forms/"]) {
+  if (!routerSource.includes('"' + destination + '"')) failures.push("assets/files/router.js: missing valid route destination " + destination);
+}
+if (read("register/index.html").includes('href="/register/personal/"')) failures.push("register/index.html: personal account chooser points to a missing route.");
+if (read("register/index.html").includes('href="/register/organisation/"')) failures.push("register/index.html: organisation account chooser points to a missing route.");
+if (read("help/index.html").includes("help.interactivestudio.abrdns.com")) failures.push("help/index.html: stale Help Centre redirect remains.");
+for (const path of ["legal/privacy-policy/index.html", "legal/terms-of-service/index.html"]) {
+  if (read(path).includes("assets/Files/design-system.css")) failures.push(path + ": case-sensitive stylesheet path is invalid.");
+}
+
 if (failures.length) {
   console.error("Project smoke checks failed:");
   for (const failure of failures) console.error(" - " + failure);
