@@ -102,8 +102,9 @@ const routerSource = read("assets/files/router.js");
 for (const destination of ["/auth/personal/login/", "/auth/organisation/login/", "/auth/personal/register/", "/auth/organisation/register/", "/forms/"]) {
   if (!routerSource.includes('"' + destination + '"')) failures.push("assets/files/router.js: missing valid route destination " + destination);
 }
-if (read("register/index.html").includes('href="/register/personal/"')) failures.push("register/index.html: personal account chooser points to a missing route.");
-if (read("register/index.html").includes('href="/register/organisation/"')) failures.push("register/index.html: organisation account chooser points to a missing route.");
+if (!read("register/index.html").includes('href="/register/personal/"')) failures.push("register/index.html: personal account chooser must use the public registration alias.");
+if (!read("register/index.html").includes('href="/register/organisation/"')) failures.push("register/index.html: organisation account chooser must use the public registration alias.");
+if (!read(".github/workflows/pages.yml").includes("cp register/index.html _site/register/index.html")) failures.push(".github/workflows/pages.yml: GitHub Pages must publish the styled registration chooser.");
 if (read("help/index.html").includes("help.interactivestudio.abrdns.com")) failures.push("help/index.html: stale Help Centre redirect remains.");
 for (const path of ["legal/privacy-policy/index.html", "legal/terms-of-service/index.html"]) {
   if (read(path).includes("assets/Files/design-system.css")) failures.push(path + ": case-sensitive stylesheet path is invalid.");
