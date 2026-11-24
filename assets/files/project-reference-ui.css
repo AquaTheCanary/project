@@ -115,3 +115,33 @@ body:has(.community-shell) .design:hover{transform:translateY(-2px)!important}
  .canvas-app .panel:not(.right){display:none!important}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Actual markup refinements for the individual product shells */
+body:has(.canvas-wrap){background:#f4f1eb!important}
+body:has(.canvas-wrap)>.home-nav,body:has(.canvas-wrap)>.product-app-nav{background:#fff!important;border-bottom:1px solid #e4ded5!important}
+body:has(.canvas-wrap) .stage{background:#f1eee8!important;background-image:radial-gradient(#d8d0c5 .8px,transparent .8px)!important;background-size:18px 18px!important;border:0!important}
+body:has(.canvas-wrap) .canvas-wrap{background:transparent!important}
+body:has(.canvas-wrap) .canvas{background:#fff!important;border:1px solid #e3ddd4!important;border-radius:4px!important;box-shadow:0 12px 36px #29231c12!important}
+body:has(.canvas-wrap) .panel,body:has(.canvas-wrap) .slide-list,body:has(.canvas-wrap) .properties-panel{background:#fff!important;border-color:#e5dfd6!important}
+body:has(.canvas-wrap) .toolbar button,body:has(.canvas-wrap) .product-app-nav button{border-radius:7px!important}
+body:has(.canvas-wrap) .product-app-nav .btn-primary-small,body:has(.canvas-wrap) .product-app-nav .btn-launch{background:#292720!important;color:#fff!important}
+body:has(.canvas-wrap) .stage{min-width:0!important;min-height:0!important;overflow:auto!important}
+body:has(.canvas-wrap) .canvas-wrap{min-width:0!important;min-height:0!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:28px!important}
+body:has(.canvas-wrap) .canvas{flex:0 0 auto!important}
+body:has(.layout) .shell{max-width:1240px!important;width:min(1240px,calc(100% - 40px))!important;margin:32px auto 64px!important}
+body:has(.layout) .layout{grid-template-columns:minmax(210px,260px) minmax(0,1fr)!important;gap:14px!important;align-items:start!important}
+body:has(.layout) .hero{padding:clamp(22px,3vw,34px)!important;border-radius:12px!important;background:linear-gradient(110deg,#f0eafd,#fff 76%)!important;border-color:#e5dff3!important}
+body:has(.layout) .panel{border-radius:10px!important;padding:clamp(15px,2vw,22px)!important}
+body:has(.grid) .shell{max-width:1220px!important;width:min(1220px,calc(100% - 40px))!important;padding:42px 0 72px!important}
+body:has(.grid) .hero{background:linear-gradient(110deg,#f0eafd,#fff 76%)!important;border-color:#e5dff3!important;border-radius:12px!important}
+body:has(.grid) .grid{gap:14px!important}
+body:has(.grid) .design{border-radius:10px!important;background:#fff!important;border-color:#e4ded5!important}
+body:has(.settings-shell) .settings-shell{padding-top:36px!important}
+body:has(.settings-shell) .settings-head{padding-bottom:22px!important;border-bottom:1px solid #e4ded5!important}
+body:has(.settings-shell) .settings-card{margin:14px 0!important}
+body:has(.settings-shell) .settings-field input{max-width:100%!important}
+@media(max-width:800px){
+ body:has(.layout) .layout{grid-template-columns:1fr!important}
+ body:has(.grid) .shell{width:calc(100% - 28px)!important;padding-top:24px!important}
+ body:has(.canvas-wrap) .canvas-wrap{padding:12px!important}
+}
