@@ -74,7 +74,7 @@ service cloud.firestore {
         && request.resource.data.title.size() <= 160
         && request.resource.data.fields is list
         && request.resource.data.fields.size() <= 40;
-      allow get: if resource.data.get('published', false) == true || owns(resource.data);
+      allow get: if resource == null || resource.data.get('published', false) == true || owns(resource.data);
       allow list: if signedIn() && resource.data.get('ownerUid', '') == request.auth.uid;
       allow update: if owns(resource.data)
         && request.resource.data.ownerUid == request.auth.uid

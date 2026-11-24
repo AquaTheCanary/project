@@ -52,7 +52,7 @@
     document.querySelectorAll('link[rel~="stylesheet"]').forEach(link => {
       if (legacy.test(link.href || "")) link.remove();
     });
-    const href = window.getAppUrl("/assets/files/project-reference-ui.css?v=20261124-6");
+    const href = window.getAppUrl("/assets/files/project-reference-ui.css?v=20261124-7");
     let link = document.querySelector('link[data-project-reference-theme]');
     if (!link) {
       link = document.querySelector('link[rel~="stylesheet"][href*="project-reference-ui.css"]');

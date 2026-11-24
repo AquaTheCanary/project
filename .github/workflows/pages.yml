@@ -109,7 +109,7 @@ jobs:
           # Dynamic app routes are resolved here so GitHub Pages can serve clean URLs.
           cat > _site/404.html <<'EOF'
           <!doctype html>
-          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#ffffff"><title>Project — Page not found</title><link rel="stylesheet" href="/assets/files/project-reference-ui.css?v=20261124-6"></head>
+          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#ffffff"><title>Project — Page not found</title><link rel="stylesheet" href="/assets/files/project-reference-ui.css?v=20261124-7"></head>
           <body><script>
           (function(){
             var p=decodeURIComponent(location.pathname),m,t=null,q=location.search,h=location.hash;
