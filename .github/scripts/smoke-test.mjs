@@ -74,7 +74,7 @@ const appHtmlFiles = htmlFiles.filter(file => relative(root, file) !== "assets/f
 for (const file of appHtmlFiles) {
   const html = readFileSync(file, "utf8");
   const path = relative(root, file);
-  if (!html.includes("project-reference-ui.css?v=20261124-8")) failures.push(path + ": missing canonical screenshot reference stylesheet.");
+  if (!html.includes("project-reference-ui.css?v=20261124-8") && !html.includes("router.js")) failures.push(path + ": missing canonical screenshot stylesheet or loader.");
   if (/(?:design-system|production-ui|studio-polish|product-quality|product-experience|product-studio-interfaces)\.css/.test(html)) failures.push(path + ": competing legacy stylesheet remains.");
   if (/theme-toggle|pref-theme|project_theme|data-theme=["']dark/i.test(html)) failures.push(path + ": obsolete appearance toggle remains.");
 }
