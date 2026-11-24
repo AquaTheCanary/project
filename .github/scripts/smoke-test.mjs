@@ -83,8 +83,8 @@ const appHtmlFiles = htmlFiles.filter(file => relative(root, file) !== "assets/f
 for (const file of appHtmlFiles) {
   const html = readFileSync(file, "utf8");
   const path = relative(root, file);
-  if (!html.includes("production-ui.css")) failures.push(path + ": missing shared production UI stylesheet.");
-  if (/studio-polish\\.css|product-quality\\.css/.test(html)) failures.push(path + ": conflicting legacy stylesheet remains.");
+  if (!html.includes("production-ui.css?v=20261124-2")) failures.push(path + ": missing current shared production UI stylesheet.");
+  if (/studio-polish\\.css|product-quality\\.css|product-experience\\.css|product-studio-interfaces\\.css/.test(html)) failures.push(path + ": conflicting legacy stylesheet remains.");
   if (/theme-toggle|pref-theme|project_theme|data-theme=["']dark/i.test(html)) failures.push(path + ": obsolete appearance toggle remains.");
 }
 for (const path of ["assets/files/style.css", "assets/files/production-ui.css"]) {
