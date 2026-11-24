@@ -110,10 +110,38 @@ for (const path of ["legal/privacy-policy/index.html", "legal/terms-of-service/i
   if (read(path).includes("assets/Files/design-system.css")) failures.push(path + ": case-sensitive stylesheet path is invalid.");
 }
 
+try {
+  const fakeDocument = { readyState: "complete", querySelectorAll: () => [], documentElement: { querySelectorAll: () => [] } };
+  const resolverFor = hostname => {
+    const fakeWindow = {};
+    new Function("window", "location", "document", "MutationObserver", read("assets/files/router.js"))(
+      fakeWindow, { hostname }, fakeDocument, undefined
+    );
+    return fakeWindow.getAppUrl;
+  };
+  const vercelUrl = resolverFor("project.example").bind(null);
+  const ghUrl = resolverFor("aquathecanary.github.io").bind(null);
+  const routeChecks = [
+    [vercelUrl, "/auth/personal/login/", "/auth/personal/login/"],
+    [vercelUrl, "/login/personal/", "/auth/personal/login/"],
+    [vercelUrl, "/websites/", "/websites/"],
+    [vercelUrl, "/sites/", "/websites/"],
+    [vercelUrl, "/forms/", "/forms/new/"],
+    [ghUrl, "/auth/personal/login/", "/project/login/personal/"],
+    [ghUrl, "/websites/", "/project/sites/"],
+    [ghUrl, "/forms/", "/project/forms/new/"]
+  ];
+  for (const [resolve, input, expected] of routeChecks) {
+    if (resolve(input) !== expected) failures.push("assets/files/router.js: route " + input + " should resolve to " + expected);
+  }
+} catch (error) {
+  failures.push("assets/files/router.js route checks: " + error.message);
+}
+
 if (failures.length) {
   console.error("Project smoke checks failed:");
   for (const failure of failures) console.error(" - " + failure);
   process.exitCode = 1;
 } else {
-  console.log("Project smoke checks passed: " + htmlFiles.length + " HTML pages and " + scriptsChecked + " inline scripts checked.");
+  console.log("Project smoke checks passed: " + appHtmlFiles.length + " app HTML pages, " + scriptsChecked + " inline scripts and canonical route checks.");
 }
