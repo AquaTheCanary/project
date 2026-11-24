@@ -46,6 +46,8 @@
   // competing with each other and append the reference layer after page styles.
   function enforceReferenceTheme() {
     if (!document || !document.head || !document.querySelectorAll || !document.createElement) return;
+    const appRoute = /^\/(dashboard|canvas|ready|present|forms|websites|sites|communities|settings|profile|account|admin|login|register|auth)(?:\/|$)/i.test(location.pathname);
+    if (appRoute && document.body) document.body.classList.add("project-app-fullscreen");
     const legacy = /(?:design-system|production-ui|product-quality|product-experience|studio-polish)\.css(?:[?#]|$)/i;
     document.querySelectorAll('link[rel~="stylesheet"]').forEach(link => {
       if (legacy.test(link.href || "")) link.remove();
