@@ -49,9 +49,9 @@ jobs:
 
           # Confirm that the stylesheets referenced by the homepage are included.
           test -s _site/assets/files/style.css
-          test -s _site/assets/files/design-system.css
+          test -s _site/assets/files/project-reference-ui.css
           grep -q '/assets/files/style.css' _site/index.html
-          grep -q '/assets/files/design-system.css' _site/index.html
+          grep -q '/assets/files/project-reference-ui.css' _site/index.html
 
           # Canonical public route structure. App implementations remain in their
           # existing source folders; these checks ensure their entry points ship.
@@ -109,7 +109,7 @@ jobs:
           # Dynamic app routes are resolved here so GitHub Pages can serve clean URLs.
           cat > _site/404.html <<'EOF'
           <!doctype html>
-          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#ffffff"><title>Project — Page not found</title><link rel="stylesheet" href="/assets/files/production-ui.css?v=20261124-2"></head>
+          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="theme-color" content="#ffffff"><title>Project — Page not found</title><link rel="stylesheet" href="/assets/files/project-reference-ui.css?v=20261124-6"></head>
           <body><script>
           (function(){
             var p=decodeURIComponent(location.pathname),m,t=null,q=location.search,h=location.hash;
