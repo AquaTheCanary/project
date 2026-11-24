@@ -5,29 +5,28 @@
   const repositoryBase = isGitHubPages ? "/project" : "";
   window.APP_BASE_PATH = repositoryBase;
   const routeMap = [
-    [/^\/home\/?$/, "/"],
-    [/^\/auth\/personal\/login\/?$/, "/auth/personal/login/"],
-    [/^\/auth\/organisation\/login\/?$/, "/auth/organisation/login/"],
-    [/^\/auth\/personal\/register\/?$/, "/auth/personal/register/"],
-    [/^\/auth\/organisation\/register\/?$/, "/auth/organisation/register/"],
-    [/^\/login\/personal\/?$/, "/auth/personal/login/"],
-    [/^\/login\/organisation\/?$/, "/auth/organisation/login/"],
-    [/^\/register\/personal\/?$/, "/auth/personal/register/"],
-    [/^\/register\/organisation\/?$/, "/auth/organisation/register/"],
-    [/^\/websites\/?$/, "/websites/"],
-    [/^\/websites\/new\/?$/, "/websites/"],
-    [/^\/websites\/editor\/?$/, "/websites/"],
-    [/^\/sites\/new\/?$/, "/websites/"],
-    [/^\/sites\/?$/, "/websites/"],
-    [/^\/presentation\/?$/, "/present/"],
-    [/^\/presentation\/new\/?$/, "/present/new/"],
-    [/^\/presentations\/?$/, "/present/new/"],
-    [/^\/presentations\/new\/?$/, "/present/new/"],
-    [/^\/presentations\/editor\/?$/, "/present/"],
-    [/^\/forms\/?$/, "/forms/"],
-    [/^\/forms\/new\/?$/, "/forms/"]
-  ];
-  window.getAppUrl = function (path) {
+    [/^\\/home\\/?$/, "/"],
+    [/^\\/auth\\/personal\\/login\\/?$/, isGitHubPages ? "/login/personal/" : "/auth/personal/login/"],
+    [/^\\/auth\\/organisation\\/login\\/?$/, isGitHubPages ? "/login/organisation/" : "/auth/organisation/login/"],
+    [/^\\/auth\\/personal\\/register\\/?$/, isGitHubPages ? "/register/personal/" : "/auth/personal/register/"],
+    [/^\\/auth\\/organisation\\/register\\/?$/, isGitHubPages ? "/register/organisation/" : "/auth/organisation/register/"],
+    [/^\\/login\\/personal\\/?$/, isGitHubPages ? "/login/personal/" : "/auth/personal/login/"],
+    [/^\\/login\\/organisation\\/?$/, isGitHubPages ? "/login/organisation/" : "/auth/organisation/login/"],
+    [/^\\/register\\/personal\\/?$/, isGitHubPages ? "/register/personal/" : "/auth/personal/register/"],
+    [/^\\/register\\/organisation\\/?$/, isGitHubPages ? "/register/organisation/" : "/auth/organisation/register/"],
+    [/^\\/websites\\/?$/, "/sites/"],
+    [/^\\/websites\\/new\\/?$/, "/sites/new/"],
+    [/^\\/websites\\/editor\\/?$/, "/sites/new/"],
+    [/^\\/sites\\/new\\/?$/, "/sites/new/"],
+    [/^\\/sites\\/?$/, "/sites/"],
+    [/^\\/presentation\\/?$/, "/present/"],
+    [/^\\/presentation\\/new\\/?$/, "/present/new/"],
+    [/^\\/presentations\\/?$/, "/present/new/"],
+    [/^\\/presentations\\/new\\/?$/, "/present/new/"],
+    [/^\\/presentations\\/editor\\/?$/, "/present/"],
+    [/^\\/forms\\/?$/, "/forms/new/"],
+    [/^\\/forms\\/new\\/?$/, "/forms/new/"]
+  ];  window.getAppUrl = function (path) {
     const value = String(path || "/").trim();
     let clean = "/" + value.replace(/^\/+/, "");
     for (const [pattern, target] of routeMap) {
