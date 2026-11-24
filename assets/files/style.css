@@ -137,8 +137,8 @@ table td{border-color:var(--line)!important;color:var(--muted)}
 .site-footer,footer{background:var(--page)!important;color:var(--muted)!important;border-color:var(--line)!important}
 footer a{color:var(--muted)!important}
 footer a:hover{color:var(--accent)!important}
-.theme-toggle{margin:0 0 0 14px!important;padding:8px 11px!important;border:1px solid var(--line)!important;border-radius:9px!important;background:var(--surface)!important;color:var(--muted)!important;font:600 12px Inter,system-ui,sans-serif!important;box-shadow:none!important}
-.theme-toggle:hover{color:var(--ink)!important;border-color:var(--accent)!important}
+
+
 @media(max-width:760px){.nav-links{background:var(--surface)!important;border-color:var(--line)!important}.footer-inner{gap:14px;flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
@@ -154,15 +154,15 @@ footer a:hover{color:var(--accent)!important}
 .filter{color:var(--muted)!important}.filter.active,.filter:hover{background:var(--accent-wash)!important;color:var(--accent)!important;border-color:var(--accent)!important}
 .tool-item{background:var(--surface-2)!important}
 
-html[data-theme="dark"] [style*="color:#202"],html[data-theme="dark"] [style*="color:#303"],html[data-theme="dark"] [style*="color:#171"]{color:var(--ink)!important}
+
 
 
 /* ── Minimal light workspace system (website + presentation editors) ── */
 :root{color-scheme:light!important;--page:#fff;--surface:#fff;--surface-2:#f8f9fb;--surface-3:#f1f3f6;--ink:#17191f;--muted:#687080;--soft:#9299a5;--line:#e8eaee;--accent:#625bf6;--accent-hover:#5149e7;--accent-wash:#f1f0ff;--shadow-card:0 1px 3px rgba(20,25,35,.035);--shadow-float:0 12px 34px rgba(20,25,35,.075)}
-html,html[data-theme="dark"],body,body.page-body{color-scheme:light!important;background:#fff!important;color:#191b22!important}
+html,html,body,body.page-body{color-scheme:light!important;background:#fff!important;color:#191b22!important}
 body:before{display:none!important}
 .site-header,.home-nav,.app-header{background:rgba(255,255,255,.94)!important;border-color:#eceef2!important;box-shadow:none!important}
-.theme-toggle{display:none!important}
+
 .work{height:calc(100vh - 64px)!important;min-height:650px!important;background:#f7f8fa!important;color:#20232b!important;border-top:1px solid #eceef1}
 .work .bar,.work .tools,.work .side,.work .foot{background:#fff!important;color:#252833!important;border-color:#e9ebef!important;box-shadow:none!important}
 .work .bar{padding:11px 18px!important}
@@ -226,7 +226,7 @@ body:before{display:none!important}
    INTERACTIVE STUDIO — unified light design system
    This is the final shared layer: every route uses these tokens.
    ========================================================= */
-:root,html[data-theme="light"],html[data-theme="dark"]{
+:root,html,html{
  color-scheme:light!important;
  --page:#f7f8fa!important;--surface:#fff!important;--surface-2:#f5f6f8!important;
  --surface-3:#eef0f3!important;--ink:#20232b!important;--muted:#697180!important;
@@ -235,7 +235,7 @@ body:before{display:none!important}
  --shadow-card:0 1px 3px rgba(20,25,35,.035)!important;
  --shadow-float:0 12px 34px rgba(20,25,35,.075)!important;
 }
-html,html[data-theme="dark"],body,body.page-body{
+html,html,body,body.page-body{
  color-scheme:light!important;background:var(--page)!important;color:var(--ink)!important;
 }
 body{font-family:Inter,'DM Sans',system-ui,sans-serif!important}
@@ -271,7 +271,7 @@ button,.btn,.toolbtn,.thumb{box-shadow:none}
 .panel p,.muted,.settings-card>p,.settings-head p,.head p{color:var(--muted)!important}
 footer,.site-footer{background:#fff!important;color:var(--muted)!important;border-color:var(--line)!important}
 footer a{color:var(--accent)!important}
-.theme-toggle{display:none!important}
+
 @media(max-width:760px){.nav-links{background:#fff!important;border-color:var(--line)!important}}
 /* Presentation editor */
 body:has(.work) .work{background:#f5f6f8!important;color:var(--ink)!important}
