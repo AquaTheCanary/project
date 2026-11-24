@@ -41,6 +41,33 @@
     });
   }
   window.applyStudioRoutes = applyRoutes;
+
+  // One canonical screenshot-led UI stylesheet. Remove legacy layers that were
+  // competing with each other and append the reference layer after page styles.
+  function enforceReferenceTheme() {
+    const legacy = /(?:design-system|production-ui|product-quality|product-experience|studio-polish)\\.css(?:[?#]|$)/i;
+    document.querySelectorAll('link[rel~="stylesheet"]').forEach(link => {
+      if (legacy.test(link.href || "")) link.remove();
+    });
+    const href = window.getAppUrl("/assets/files/project-reference-ui.css?v=20261124-6");
+    let link = document.querySelector('link[data-project-reference-theme]');
+    if (!link) {
+      link = document.querySelector('link[rel~="stylesheet"][href*="project-reference-ui.css"]');
+    }
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    }
+    link.dataset.projectReferenceTheme = "true";
+    if (link.href !== new URL(href, location.href).href) link.href = href;
+    // Keep it last in the cascade so inline legacy page CSS cannot fragment
+    // the shared shell. Product layout rules remain product-specific.
+    document.head.appendChild(link);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", enforceReferenceTheme);
+  else enforceReferenceTheme();
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => applyRoutes());
   else applyRoutes();
 
