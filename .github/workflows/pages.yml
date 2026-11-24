@@ -119,7 +119,7 @@ jobs:
               history.replaceState(null,"",p+(params.toString()?"?"+params.toString():"")+h);
               fetch("https://raw.githubusercontent.com/AquaTheCanary/project/main/"+source).then(r=>{if(!r.ok)throw Error("not found");return r.text()}).then(html=>{if(!/<base\b/i.test(html))html=html.replace("<head>","<head><base href='/'>");document.open();document.write(html);document.close()}).catch(()=>{document.body.innerHTML="<main><h1>Page could not be loaded</h1><a href='/'>Back to Project</a></main>";});
             }
-            if((m=p.match(/^\/sites\/view\/([0-9]{6})\/?$/))) { serve("assets/files/published-sites-static/index.html",{preview:m[1]}); return; }
+            if((m=p.match(/^\/sites\/view\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/))) { serve("assets/files/published-sites-static/index.html",{preview:m[1]}); return; }
             else if((m=p.match(/^\/sites\/([0-9]{6})\/?$/))) { serve("websites/index.html",{id:m[1]}); return; }
             else if((m=p.match(/^\/forms\/take\/([^/]+)\/?$/))) { serve("forms/respond/index.html",{id:m[1]}); return; }
             else if((m=p.match(/^\/forms\/([^/]+)\/?$/))) { serve("forms/index.html",{id:m[1]}); return; }

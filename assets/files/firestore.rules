@@ -118,22 +118,24 @@ service cloud.firestore {
       allow delete: if owns(resource.data);
     }
     match /websitePaths/{publicSlug} {
-      allow get: if resource == null
-        || resource.data.get('status', '') == 'published'
-        || owns(resource.data);
+      // Public slugs are non-secret routing metadata used by the published viewer.
+      allow get: if true;
       allow list: if signedIn() && resource.data.get('ownerUid', '') == request.auth.uid;
       allow create: if signedIn()
         && request.resource.data.ownerUid == request.auth.uid
         && request.resource.data.publicSlug == publicSlug
         && request.resource.data.websiteSlug is string
         && request.resource.data.status in ['draft', 'published'];
-      allow update: if owns(resource.data)
+      allow update: if signedIn()
         && request.resource.data.ownerUid == request.auth.uid
         && request.resource.data.publicSlug == publicSlug
         && request.resource.data.websiteSlug == resource.data.websiteSlug
+        && owns(get(/databases/$(database)/documents/websites/$(resource.data.websiteSlug)).data)
         && request.resource.data.status in ['draft', 'published'];
-      allow delete: if owns(resource.data);
+      allow delete: if owns(resource.data)
+        || owns(get(/databases/$(database)/documents/websites/$(resource.data.websiteSlug)).data);
     }
+
     match /websiteHosts/{hostname} {
       allow create: if signedIn()
         && request.resource.data.ownerUid == request.auth.uid

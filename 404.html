@@ -4,6 +4,7 @@ var guest=route.match(/^\/guest\/(canvas|ready|present|sites|forms)\/?$/);if(gue
 var profile=route.match(/^\/communities\/profiles\/([a-z0-9-]+)\/update\/?$/i);if(profile){render(base+"/communities/profiles/update/index.html");return;}
 if(/^\/presentation\/?$/.test(route)){location.replace(base+"/present/"+location.search+location.hash);return;}
 if(/^\/presentations\/?$/.test(route)||/^\/presentations\/new\/?$/.test(route)){location.replace(base+"/present/new/"+location.search+location.hash);return;}
+var siteView=route.match(/^\/sites\/view\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/);if(siteView){var siteParams=new URLSearchParams(location.search);siteParams.set("preview",siteView[1]);render(base+"/assets/files/published-sites-static/index.html?"+siteParams.toString());return;}
 var m=route.match(/^\/present\/(\d{6})(?:\/(host|audience))?\/?$/);if(m){var id=m[1],mode=m[2],target=mode==="host"?"/present/view/host/":mode==="audience"?"/present/view/audience/":"/present/editor/",p=new URLSearchParams(location.search);p.set("id",id);location.replace(base+target+"?"+p.toString());return;}
 document.getElementById("message").textContent="We couldn't find that Project page.";
 })();</script></body></html>

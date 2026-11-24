@@ -281,7 +281,7 @@ body[data-website-page=editor]{background:#f7f7fa!important;color:#20212a!import
     <label class="field"><span>Publish destination</span><select id="publish-target"><option value="builtin">Free Project address</option><option value="custom">A custom domain I own</option></select></label>
     <div id="builtin-publish-fields">
       <label class="field"><span>Public website name</span><input id="publish-subdomain" maxlength="40" placeholder="my-business" autocomplete="off"></label>
-      <p class="muted">Your free address will be <strong>convex-project.abrdns.com/your-site</strong>. Your six-digit website ID will also redirect here.</p>
+      <p class="muted">Your free address will be <strong>convex-project.abrdns.com/sites/view/your-site</strong>. Your six-digit website ID will also redirect here.</p>
     </div>
     <div id="custom-publish-fields" class="hidden">
       <div class="domainbox"><h4>Connect a domain you own</h4><p class="muted">Enter a hostname such as www.example.com. If it is in your connected ClouDNS account, Project will create the exact CNAME and certificate-validation records automatically. Otherwise, the DNS records you need will be shown here. Free Project addresses use wildcard DNS and HTTPS, so they are ready without per-site setup. Custom domains are separate: connect a domain you own, point its CNAME to the target shown, and complete the DNS verification records. Automatic HTTPS for custom domains requires the platform custom-hostname service to be configured.</p>
@@ -500,8 +500,10 @@ $("confirm-publish").onclick=async()=>{
   address();
   msg("save-message","Website published at your Project address.","success");
  }catch(e){
-  msg("save-message",e.message,"error");
-  $("publish-status").textContent=e.message;
+  const denied=e.code==="permission-denied"||/missing or insufficient permissions/i.test(e.message||"");
+  const message=denied?"Firestore denied a publish write. Publish the updated Firestore rules in Firebase Console, then retry. "+(e.message||""):e.message;
+  msg("save-message",message,"error");
+  $("publish-status").textContent=message;
  }finally{
   if(button.textContent!=="Published ✓"){button.disabled=false;button.textContent="Publish website ↗";}
  }
