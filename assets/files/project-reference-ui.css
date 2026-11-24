@@ -45,8 +45,8 @@ body:has(.canvas-app),body:has(.ready-app),body:has(.present-editor),body:has(.b
 :where(.canvas-app,.ready-app,.present-editor) :where(.artboard,.slide,.builder-canvas,.page-canvas,.preview-frame){background:#fff!important;border:1px solid #e3ddd4!important;border-radius:4px!important;box-shadow:0 12px 36px #29231c12!important}
 :where(.canvas-app,.ready-app,.present-editor) :where(.status,.save-status){color:#7a746c!important}
 /* Ready editor: readable code, crisp split panes and steady controls */
-.ready-app{grid-template-rows:auto 54px minmax(0,1fr) 27px!important}.ready-app #guest-banner{grid-row:1!important}.ready-app .topbar{grid-row:2!important}.ready-app .workspace{grid-row:3!important}.ready-app .footer{grid-row:4!important}
-.ready-app .workspace{grid-template-columns:220px minmax(0,1.1fr) minmax(300px,.9fr) 260px!important;grid-template-rows:minmax(0,1fr)!important;align-items:stretch!important}
+body .ready-app.ready-app{grid-template-rows:auto 54px minmax(0,1fr) 27px!important}body .ready-app #guest-banner{grid-row:1!important}body .ready-app .topbar{grid-row:2!important}body .ready-app .workspace{grid-row:3!important;grid-auto-rows:minmax(0,1fr)!important}body .ready-app .footer{grid-row:4!important}
+body .ready-app .workspace{grid-template-columns:220px minmax(0,1.1fr) minmax(300px,.9fr) 260px!important;grid-template-rows:minmax(0,1fr)!important;align-items:stretch!important}
 .ready-app .editor,.ready-app .code-editor,.ready-app textarea,.ready-app pre,.ready-app .CodeMirror,.ready-app .monaco-editor{background:#fff!important;color:#171717!important;-webkit-text-fill-color:#171717!important}
 .ready-app .editor textarea,.ready-app textarea{caret-color:#171717!important}
 .ready-app .files-panel,.ready-app .inspect-panel{padding:16px!important}
