@@ -45,7 +45,7 @@ body:has(.canvas-app),body:has(.ready-app),body:has(.present-editor),body:has(.b
 :where(.canvas-app,.ready-app,.present-editor) :where(.artboard,.slide,.builder-canvas,.page-canvas,.preview-frame){background:#fff!important;border:1px solid #e3ddd4!important;border-radius:4px!important;box-shadow:0 12px 36px #29231c12!important}
 :where(.canvas-app,.ready-app,.present-editor) :where(.status,.save-status){color:#7a746c!important}
 /* Ready editor: readable code, crisp split panes and steady controls */
-.ready-app .workspace{grid-template-columns:220px minmax(0,1fr) 300px!important}
+.ready-app .workspace{grid-template-columns:220px minmax(0,1.1fr) minmax(300px,.9fr) 260px!important;grid-template-rows:minmax(0,1fr)!important;align-items:stretch!important}
 .ready-app .editor,.ready-app .code-editor,.ready-app textarea,.ready-app pre,.ready-app .CodeMirror,.ready-app .monaco-editor{background:#fff!important;color:#171717!important;-webkit-text-fill-color:#171717!important}
 .ready-app .editor textarea,.ready-app textarea{caret-color:#171717!important}
 .ready-app .files-panel,.ready-app .inspect-panel{padding:16px!important}
@@ -95,21 +95,21 @@ body:has(.community-shell) .design:hover{transform:translateY(-2px)!important}
 /* No jarring motion; use small, predictable feedback */
 :where(.feature-card,.pricing-card,.solution-card,.contact-card,.download-card,.project-card,.product-tile,.design,.btn,.toolbtn){transition:background-color .14s ease,border-color .14s ease,color .14s ease,box-shadow .14s ease,transform .14s ease!important}
 @media(max-width:1000px){
- .ready-app .workspace{grid-template-columns:190px minmax(0,1fr)!important}
+ .ready-app .workspace{grid-template-columns:190px minmax(0,1fr) minmax(250px,.8fr)!important;grid-template-rows:minmax(0,1fr)!important}.ready-app .inspect-panel{display:none!important}
  .ready-app .inspect-panel{display:none!important}
  .canvas-app .main{grid-template-columns:190px minmax(0,1fr)!important}
  .canvas-app .panel.right{display:none!important}
 }
 @media(max-width:760px){
  :where(.canvas-app,.ready-app,.present-editor) :where(.topbar,.home-nav){padding-inline:10px!important;gap:7px!important}
- .ready-app .workspace{grid-template-columns:148px minmax(0,1fr)!important}
+ .ready-app .workspace{grid-template-columns:150px minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr) minmax(220px,.55fr)!important}.ready-app .files-panel{grid-row:1 / span 2}.ready-app .editor-area{grid-column:2;grid-row:1}.ready-app .preview-panel{grid-column:2;grid-row:2}.ready-app .inspect-panel{display:none!important}
  .canvas-app .main{grid-template-columns:150px minmax(0,1fr)!important}
  .ready-app .files-panel,.canvas-app .panel{padding:9px!important}
  body:has(.design-toolbar) .builder{grid-template-columns:150px minmax(0,1fr)!important}
  body:has(.design-toolbar) .builder-properties{display:none!important}
 }
 @media(max-width:520px){
- .ready-app .workspace{grid-template-columns:1fr!important}
+ .ready-app .workspace{grid-template-columns:1fr!important;grid-template-rows:minmax(280px,1fr) minmax(240px,.75fr)!important}.ready-app .editor-area{grid-column:1;grid-row:1}.ready-app .preview-panel{grid-column:1;grid-row:2}
  .ready-app .files-panel{display:none!important}
  .canvas-app .main{grid-template-columns:1fr!important}
  .canvas-app .panel:not(.right){display:none!important}
