@@ -6,19 +6,26 @@
   window.APP_BASE_PATH = repositoryBase;
   const routeMap = [
     [/^\/home\/?$/, "/"],
-    [/^\/auth\/personal\/login\/?$/, "/login/personal/"],
-    [/^\/auth\/organisation\/login\/?$/, "/login/organisation/"],
-    [/^\/auth\/personal\/register\/?$/, "/register/personal/"],
-    [/^\/auth\/organisation\/register\/?$/, "/register/organisation/"],
-    [/^\/websites\/?$/, "/sites/"],
-    [/^\/websites\/new\/?$/, "/sites/new/"],
-    [/^\/websites\/editor\/?$/, "/sites/new/"],
+    [/^\/auth\/personal\/login\/?$/, "/auth/personal/login/"],
+    [/^\/auth\/organisation\/login\/?$/, "/auth/organisation/login/"],
+    [/^\/auth\/personal\/register\/?$/, "/auth/personal/register/"],
+    [/^\/auth\/organisation\/register\/?$/, "/auth/organisation/register/"],
+    [/^\/login\/personal\/?$/, "/auth/personal/login/"],
+    [/^\/login\/organisation\/?$/, "/auth/organisation/login/"],
+    [/^\/register\/personal\/?$/, "/auth/personal/register/"],
+    [/^\/register\/organisation\/?$/, "/auth/organisation/register/"],
+    [/^\/websites\/?$/, "/websites/"],
+    [/^\/websites\/new\/?$/, "/websites/"],
+    [/^\/websites\/editor\/?$/, "/websites/"],
+    [/^\/sites\/new\/?$/, "/websites/"],
+    [/^\/sites\/?$/, "/websites/"],
     [/^\/presentation\/?$/, "/present/"],
     [/^\/presentation\/new\/?$/, "/present/new/"],
     [/^\/presentations\/?$/, "/present/new/"],
     [/^\/presentations\/new\/?$/, "/present/new/"],
     [/^\/presentations\/editor\/?$/, "/present/"],
-    [/^\/forms\/?$/, "/forms/new/"]
+    [/^\/forms\/?$/, "/forms/"],
+    [/^\/forms\/new\/?$/, "/forms/"]
   ];
   window.getAppUrl = function (path) {
     const value = String(path || "/").trim();
