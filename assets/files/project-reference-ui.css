@@ -1,0 +1,117 @@
+/* Project — screenshot-led product system, v1 */
+:root{
+ --pr-paper:#f5f1e9;--pr-white:#fff;--pr-ink:#24221f;--pr-muted:#77736d;--pr-line:#e4ded5;
+ --pr-purple:#7d66db;--pr-purple-deep:#5b4bb7;--pr-lilac:#eee9fb;--pr-coral:#e87965;--pr-mint:#b9d7c8;
+ --pr-radius:12px;--pr-shadow:0 16px 48px rgba(36,31,55,.07);
+ color-scheme:light;
+}
+html{background:var(--pr-paper);color:var(--pr-ink);scroll-behavior:smooth}
+body{font-family:"DM Sans",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--pr-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+:where(button,a,input,select,textarea){font-family:inherit}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #8a78e34d!important;outline-offset:2px!important}
+::selection{background:#ddd4fa;color:#2d2459}
+:where(.site-header,.home-nav,.app-header,.nav,.m365-topbar,.marketing-nav){background:var(--pr-paper)!important;color:var(--pr-ink)!important;border-bottom:1px solid var(--pr-line)!important;box-shadow:none!important;backdrop-filter:none!important}
+:where(.site-header,.home-nav,.app-header,.nav,.m365-topbar,.marketing-nav) a{color:inherit}
+:where(.btn-primary-small,.btn-primary-large,.btn-submit,.btn-launch,.btn-launch-small,.marketing-cta,.btn.primary){background:#26241f!important;border-color:#26241f!important;color:#fff!important;border-radius:8px!important;box-shadow:none!important;font-weight:650!important}
+:where(.btn-primary-small,.btn-primary-large,.btn-submit,.btn-launch,.btn-launch-small,.marketing-cta,.btn.primary):hover{background:#4b4640!important;border-color:#4b4640!important;transform:translateY(-1px)}
+:where(.btn-secondary-small,.btn-secondary,.btn-outline,.btn-secondary-large,.toolbtn){border:1px solid var(--pr-line)!important;background:#fff!important;color:#35312c!important;border-radius:8px!important;box-shadow:none!important}
+:where(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){border:1px solid #ddd7ce!important;border-radius:8px!important;background:#fff!important;color:#24221f!important;box-shadow:none!important}
+:where(input,select,textarea):focus{border-color:#9c8be3!important;box-shadow:0 0 0 3px #8a78e31a!important;outline:none!important}
+:where(.card,.panel,.settings-card,.app-card,.project-card,.dashboard-card,.stat-card,.feature-card,.pricing-card,.resource-card,.form-card,.design,.overall,.service-row){border-color:var(--pr-line)!important;border-radius:var(--pr-radius)!important;box-shadow:none!important}
+:where(.card,.panel,.settings-card,.app-card,.project-card,.dashboard-card,.stat-card,.feature-card,.pricing-card,.resource-card,.form-card,.design):hover{transform:none!important;box-shadow:0 8px 24px #29231c0b!important;border-color:#d5cbe9!important}
+:where(.eyebrow,.section-kicker,.section-label,.toolbar-label){color:var(--pr-purple-deep)!important;letter-spacing:.12em!important}
+footer{background:var(--pr-paper)!important;border-color:var(--pr-line)!important;color:var(--pr-muted)!important}
+/* Marketing homepage: preserve its custom composition, align palette with the supplied reference */
+body.marketing{background:#fff!important;color:#24221f!important}
+body.marketing .announcement{background:linear-gradient(100deg,#30234f,#51408a)!important;color:#f9f5ff!important}
+body.marketing .marketing-nav,body.marketing .home-nav{background:var(--pr-paper)!important}
+body.marketing .hero-badge,body.marketing .eyebrow{background:#f0eafd!important;border-color:#e1d8f7!important;color:#7b68c8!important}
+body.marketing .hero-title,body.marketing .hero h1{color:#242033!important}
+body.marketing .highlight-text,body.marketing .hero .highlight-text{background:linear-gradient(105deg,#8c72dc 0%,#c26ab2 58%,#e87965 100%)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important}
+body.marketing .hero p{color:#716d78!important}
+body.marketing .marketing-cta,body.marketing .btn-launch{background:#292720!important;border-color:#292720!important}
+body.marketing .section-muted{background:#f6f2eb!important}
+/* Product workspaces: coherent Figma-like frame, calmer toolbars and clearer panels */
+body:has(.canvas-app),body:has(.ready-app),body:has(.present-editor),body:has(.builder),body:has(.design-toolbar){background:#f4f1eb!important}
+:where(.canvas-app,.ready-app,.present-editor){background:#f4f1eb!important;color:#24221f!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.topbar,.home-nav,.editor-toolbar,.toolbar){background:#fff!important;border-color:#e5dfd6!important;box-shadow:none!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.topbar,.home-nav) input{background:#fbfaf8!important;border-color:#e5dfd6!important;border-radius:7px!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.panel,.files-panel,.inspect-panel,.left-panel,.right-panel,.sidebar){background:#fff!important;border-color:#e5dfd6!important;color:#28251f!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.eyebrow,.panel-title,.section-label){color:#8b8278!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.btn,.toolbtn){background:#fff!important;border-color:#e3ddd4!important;color:#49443e!important;border-radius:7px!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.btn.primary,.toolbtn.active,.btn.active){background:#eee8fb!important;border-color:#d8cdf4!important;color:#5d4bb5!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.btn.primary){background:#28251f!important;color:#fff!important;border-color:#28251f!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.workspace,.main,.editor-main,.stage,.canvas-stage,.builder-stage){background-color:#f1eee8!important;background-image:radial-gradient(#d8d0c5 .8px,transparent .8px)!important;background-size:18px 18px!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.artboard,.slide,.builder-canvas,.page-canvas,.preview-frame){background:#fff!important;border:1px solid #e3ddd4!important;border-radius:4px!important;box-shadow:0 12px 36px #29231c12!important}
+:where(.canvas-app,.ready-app,.present-editor) :where(.status,.save-status){color:#7a746c!important}
+/* Ready editor: readable code, crisp split panes and steady controls */
+.ready-app .workspace{grid-template-columns:220px minmax(0,1fr) 300px!important}
+.ready-app .editor,.ready-app .code-editor,.ready-app textarea,.ready-app pre,.ready-app .CodeMirror,.ready-app .monaco-editor{background:#fff!important;color:#171717!important;-webkit-text-fill-color:#171717!important}
+.ready-app .editor textarea,.ready-app textarea{caret-color:#171717!important}
+.ready-app .files-panel,.ready-app .inspect-panel{padding:16px!important}
+.ready-app .workspace{gap:0!important}
+.ready-app .files-panel{border-right:1px solid #e5dfd6!important}
+.ready-app .inspect-panel{border-left:1px solid #e5dfd6!important}
+.ready-app .editor-shell{border:1px solid #e5dfd6!important;border-radius:8px!important;overflow:hidden!important}
+.ready-app .btn.primary{background:#292720!important;color:#fff!important}
+/* Canvas and presentation: give the actual working surface priority */
+.canvas-app .main{grid-template-columns:220px minmax(0,1fr) 260px!important}
+.canvas-app .panel{padding:15px!important}
+.canvas-app .canvas-area,.canvas-app .board-wrap{min-width:0!important;overflow:auto!important}
+.present-editor .editor-layout{gap:0!important}
+.present-editor .slide-list,.present-editor .properties-panel{background:#fff!important;border-color:#e5dfd6!important}
+.present-editor .slide-stage,.present-editor .presentation-stage{background:#f1eee8!important}
+/* Sites and Forms: remove dark mismatched bars and over-rounded blocks */
+body:has(.design-toolbar) .design-toolbar{background:#fff!important;color:#34312b!important;border:1px solid #e4ded5!important;border-radius:9px 9px 0 0!important}
+body:has(.design-toolbar) .toolbar-label,body:has(.design-toolbar) .stage-top{color:#81786f!important}
+body:has(.design-toolbar) .toolbar-divider{background:#e4ded5!important}
+body:has(.design-toolbar) .toolbtn.compact{background:#fff!important;color:#49443e!important;border-color:#e4ded5!important;border-radius:7px!important}
+body:has(.design-toolbar) .toolbtn.compact.active{background:#eee8fb!important;color:#5d4bb5!important;border-color:#d8cdf4!important}
+body:has(.design-toolbar) .builder{border-color:#e4ded5!important;border-radius:0 0 9px 9px!important;box-shadow:none!important}
+body:has(.design-toolbar) .builder-tools,body:has(.design-toolbar) .builder-properties{background:#fff!important;border-color:#e4ded5!important}
+body:has(.design-toolbar) .builder-stage{background-color:#f1eee8!important;background-image:radial-gradient(#d8d0c5 .8px,transparent .8px)!important;background-size:18px 18px!important}
+body:has(.design-toolbar) .builder-canvas{border:1px solid #e4ded5!important;border-radius:4px!important;box-shadow:0 12px 36px #29231c12!important}
+body:has(.design-toolbar) .builder-tools .toolbtn{border-color:transparent!important;border-radius:7px!important}
+body:has(.design-toolbar) .builder-tools .toolbtn:hover{background:#f3effb!important}
+body:has(.design-toolbar) .builder-tools .toolbtn.active{background:#eee8fb!important;color:#5d4bb5!important}
+body:has(.design-toolbar) .builder-properties input,body:has(.design-toolbar) .builder-properties textarea,body:has(.design-toolbar) .builder-properties select{border-radius:7px!important}
+/* Dashboard, community and settings: aligned editorial rhythm */
+.m365-topbar{background:var(--pr-paper)!important;border-color:var(--pr-line)!important}
+.m365-dashboard{background:#fff!important}
+.workspace-rail{background:#fbf9f5!important;border-color:var(--pr-line)!important}
+.rail-link{border-radius:7px!important;color:#615c55!important}
+.rail-link.active{background:#eee8fb!important;color:#5d4bb5!important}
+.workspace-content{background:#fff!important}
+.m365-welcome{background:linear-gradient(115deg,#f5f0ff,#fff 70%)!important;border:1px solid #e6def4!important;border-radius:14px!important;box-shadow:none!important}
+.product-tile{border-radius:11px!important;box-shadow:none!important}
+.product-tile:hover{transform:translateY(-2px)!important}
+body:has(.settings-shell),body:has(.community-shell),body:has(.grid .design){background:#f4f1eb!important}
+.settings-shell,body:has(.community-shell) .shell{max-width:1220px!important}
+.settings-card{border-radius:10px!important;padding:clamp(18px,2.5vw,28px)!important}
+.settings-section-nav a{border-radius:7px!important}
+body:has(.community-shell) .hero{background:linear-gradient(110deg,#f0eafd,#fff 75%)!important;border-color:#e5dff3!important;border-radius:12px!important}
+body:has(.community-shell) .design{border-radius:10px!important;background:#fff!important}
+body:has(.community-shell) .design:hover{transform:translateY(-2px)!important}
+/* No jarring motion; use small, predictable feedback */
+:where(.feature-card,.pricing-card,.solution-card,.contact-card,.download-card,.project-card,.product-tile,.design,.btn,.toolbtn){transition:background-color .14s ease,border-color .14s ease,color .14s ease,box-shadow .14s ease,transform .14s ease!important}
+@media(max-width:1000px){
+ .ready-app .workspace{grid-template-columns:190px minmax(0,1fr)!important}
+ .ready-app .inspect-panel{display:none!important}
+ .canvas-app .main{grid-template-columns:190px minmax(0,1fr)!important}
+ .canvas-app .panel.right{display:none!important}
+}
+@media(max-width:760px){
+ :where(.canvas-app,.ready-app,.present-editor) :where(.topbar,.home-nav){padding-inline:10px!important;gap:7px!important}
+ .ready-app .workspace{grid-template-columns:148px minmax(0,1fr)!important}
+ .canvas-app .main{grid-template-columns:150px minmax(0,1fr)!important}
+ .ready-app .files-panel,.canvas-app .panel{padding:9px!important}
+ body:has(.design-toolbar) .builder{grid-template-columns:150px minmax(0,1fr)!important}
+ body:has(.design-toolbar) .builder-properties{display:none!important}
+}
+@media(max-width:520px){
+ .ready-app .workspace{grid-template-columns:1fr!important}
+ .ready-app .files-panel{display:none!important}
+ .canvas-app .main{grid-template-columns:1fr!important}
+ .canvas-app .panel:not(.right){display:none!important}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
