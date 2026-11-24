@@ -261,3 +261,89 @@ body:has(.load){background:#f5f6f8!important;color:#20232d!important}
 body:has(.load) .load{padding:26px 30px!important;border:1px solid #e3e6ec!important;border-radius:9px!important;background:#fff!important;color:#4e5564!important;box-shadow:0 8px 28px #17192308!important}
 /* Mobile consistency */
 @media(max-width:700px){:where(.page-shell,.page-container,.content-wrap){width:calc(100% - 28px)}:where(.page-header){padding:24px 0 18px}:where(.toolbar){max-width:100%;overflow-x:auto}:where(table){display:block;overflow-x:auto;white-space:nowrap}}
+
+/* Route-level finishing details */
+body:has(.date){background:#f5f6f8!important;color:#20232d!important}
+body:has(.date) header{position:sticky;top:0;z-index:10;background:#fff!important;color:#20232d!important;border-bottom:1px solid #e5e7ec!important;padding:18px max(20px,calc((100% - 960px)/2))!important}
+body:has(.date) header a{color:#343849!important}
+body:has(.date) main{max-width:960px!important;margin:38px auto!important;padding:0 24px 72px!important}
+body:has(.date) h1{font-size:clamp(32px,5vw,46px)!important;letter-spacing:-.055em!important;color:#20232d!important}
+body:has(.date) h2{font-size:21px!important;letter-spacing:-.035em!important;color:#20232d!important;margin-top:34px!important}
+body:has(.date) h3{color:#343849!important}
+body:has(.date) p,body:has(.date) li{color:#5f6675!important}
+body:has(.date) .date{color:#858b98!important}
+body:has(.date) .notice,body:has(.date) .contents{background:#fff!important;color:#424958!important;border:1px solid #e3e6ec!important;border-radius:9px!important;box-shadow:none!important}
+body:has(.date) .notice strong,body:has(.date) .contents strong{color:#20232d!important}
+body:has(.date) .contents a,body:has(.date) a{color:#514bc5!important}
+body:has(.date) .data-table th{background:#f5f6f8!important;color:#343849!important;border-color:#e3e6ec!important}
+body:has(.date) .data-table td{background:#fff!important;color:#5f6675!important;border-color:#e3e6ec!important}
+body:has(.date) footer{background:#fff!important;color:#858b98!important;border-top:1px solid #e5e7ec!important}
+/* Help Centre: bright, calm, searchable documentation */
+body:has(.pulse){background:#fff!important;color:#20232d!important}
+body:has(.pulse) .top{height:64px!important;background:#fff!important;border-bottom:1px solid #e5e7ec!important;color:#20232d!important;backdrop-filter:none!important}
+body:has(.pulse) .brand{color:#20232d!important}
+body:has(.pulse) .brand span{color:#5b55d6!important}
+body:has(.pulse) .top a:last-child{background:#fff!important;color:#514bc5!important;border-color:#dcdfea!important;border-radius:7px!important}
+body:has(.pulse) .hero{max-width:none!important;padding:72px 22px 50px!important;background:#f6f5ff!important;border-bottom:1px solid #e8e6fa!important}
+body:has(.pulse) .badge{background:#fff!important;border:1px solid #e5e3f6!important;color:#5b55d6!important;border-radius:5px!important}
+body:has(.pulse) .pulse{background:#17866d!important;box-shadow:0 0 0 4px #17866d18!important}
+body:has(.pulse) .hero h1{color:#202033!important;font-size:clamp(36px,6vw,62px)!important;letter-spacing:-.065em!important}
+body:has(.pulse) .grad{background:none!important;color:#5b55d6!important}
+body:has(.pulse) .hero p{color:#646b7b!important;font-size:15px!important}
+body:has(.pulse) .search input{background:#fff!important;color:#20232d!important;border:1px solid #dfe2ea!important;border-radius:8px!important;box-shadow:none!important}
+body:has(.pulse) .search input::placeholder{color:#8a90a0!important}
+body:has(.pulse) .search:before{color:#7b75d9!important}
+body:has(.pulse) .wrap{max-width:1160px!important;padding:30px 22px 70px!important}
+body:has(.pulse) .section-head h2{color:#20232d!important;font-size:20px!important}
+body:has(.pulse) .section-head p{color:#737a89!important}
+body:has(.pulse) .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+body:has(.pulse) .card{min-height:175px!important;padding:21px!important;background:#fff!important;border:1px solid #e3e6ec!important;border-radius:9px!important;box-shadow:none!important}
+body:has(.pulse) .card:before{display:none!important}
+body:has(.pulse) .card:hover{transform:translateY(-2px)!important;border-color:#c7c3ef!important;box-shadow:0 8px 22px #1719230a!important}
+body:has(.pulse) .card h3{color:#20232d!important}
+body:has(.pulse) .card p{color:#687080!important}
+body:has(.pulse) .card small{color:#514bc5!important}
+body:has(.pulse) .icon{background:#f0efff!important;color:#514bc5!important;border-radius:8px!important}
+body:has(.pulse) .faq details{background:#fff!important;border:1px solid #e3e6ec!important;border-radius:8px!important}
+body:has(.pulse) .faq summary{color:#343849!important}
+body:has(.pulse) .faq details p{color:#687080!important}
+body:has(.pulse) .contact,body:has(.pulse) .foot{color:#737a89!important;border-color:#e5e7ec!important}
+body:has(.pulse) .contact a{color:#514bc5!important}
+@media(max-width:800px){body:has(.pulse) .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}body:has(.pulse) .faq{grid-template-columns:1fr!important}}
+@media(max-width:520px){body:has(.pulse) .grid{grid-template-columns:1fr!important}body:has(.pulse) .hero{padding:46px 18px 34px!important}}
+/* Shared marketing subpages: resource and solution directories */
+body.page-body:not(.marketing) .page-hero{background:#f6f5ff!important;border-bottom:1px solid #e8e6fa!important}
+body.page-body:not(.marketing) .hero-title{color:#202033!important;letter-spacing:-.06em!important}
+body.page-body:not(.marketing) .highlight-text{color:#5b55d6!important}
+body.page-body:not(.marketing) .hero-subtitle{color:#646b7b!important}
+body.page-body:not(.marketing) .feature-card,body.page-body:not(.marketing) .solution-card{background:#fff!important;border:1px solid #e3e6ec!important;border-radius:9px!important;box-shadow:none!important}
+body.page-body:not(.marketing) .feature-card:hover,body.page-body:not(.marketing) .solution-card:hover{border-color:#c7c3ef!important;box-shadow:0 8px 24px #1719230a!important;transform:translateY(-2px)}
+body.page-body:not(.marketing) .feature-card h3,body.page-body:not(.marketing) .solution-card h3{color:#20232d!important}
+body.page-body:not(.marketing) .feature-card p,body.page-body:not(.marketing) .solution-card p{color:#687080!important}
+body.page-body:not(.marketing) .feature-icon{background:#f0efff!important;color:#514bc5!important;border-radius:8px!important}
+body.page-body:not(.marketing) .section-muted{background:#f6f7f9!important}
+body.page-body:not(.marketing) .faq-list details{background:#fff!important;border:1px solid #e3e6ec!important;border-radius:8px!important}
+body.page-body:not(.marketing) .faq-list summary{color:#343849!important}
+body.page-body:not(.marketing) .faq-list p{color:#687080!important}
+/* Form responder and profile forms */
+body:has(#card) .wrap{width:min(760px,calc(100% - 32px))!important;margin:38px auto 64px!important}
+body:has(#card) .card{padding:clamp(22px,4vw,38px)!important;border:1px solid #e3e6ec!important;border-radius:10px!important;background:#fff!important;box-shadow:none!important}
+body:has(#card) .card h1{font-size:clamp(28px,4vw,38px)!important;letter-spacing:-.05em!important;color:#20232d!important}
+body:has(#card) .card p{color:#687080!important}
+body:has(#card) .answer input,body:has(#card) .answer textarea,body:has(#card) .answer select{border-color:#d9dce4!important;border-radius:7px!important;background:#fff!important;color:#20232d!important}
+body:has(.checks) .shell{width:min(760px,calc(100% - 32px))!important;padding:34px 0 64px!important}
+body:has(.checks) .head h1{font-size:clamp(30px,4vw,42px)!important;letter-spacing:-.055em!important}
+body:has(.checks) .card{border:1px solid #e3e6ec!important;border-radius:10px!important;background:#fff!important;box-shadow:none!important}
+body:has(.checks) .field input,body:has(.checks) .field textarea,body:has(.checks) .field select{border-color:#d9dce4!important;border-radius:7px!important}
+body:has(.checks) .actions .btn{border-radius:7px!important}
+/* System status */
+body:has(.status-shell){background:#f5f6f8!important;color:#20232d!important}
+body:has(.status-shell) .status-nav{background:#fff!important;border-bottom:1px solid #e5e7ec!important}
+body:has(.status-shell) .status-brand{color:#20232d!important}
+body:has(.status-shell) .status-shell{width:min(900px,calc(100% - 40px))!important;padding:38px 0 64px!important}
+body:has(.status-shell) .status-heading{font-size:clamp(30px,4vw,42px)!important;letter-spacing:-.055em!important;color:#20232d!important}
+body:has(.status-shell) .overall{background:#fff!important;border:1px solid #e3e6ec!important;border-radius:9px!important;box-shadow:none!important}
+body:has(.status-shell) .service-row,body:has(.status-shell) .loading-state{border:1px solid #e3e6ec!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important}
+body:has(.status-shell) .status-note{background:#f0efff!important;color:#62627b!important;border:1px solid #e4e1fa!important;border-radius:8px!important}
+body:has(.status-shell) .status-footer{border-color:#e5e7ec!important;color:#858b98!important}
+@media(max-width:760px){body:has(.status-shell) .status-shell{width:calc(100% - 28px)!important;padding-top:26px!important}}
