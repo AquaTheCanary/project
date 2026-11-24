@@ -79,6 +79,19 @@ for (const [path, needle, message] of required) {
   if (!read(path).includes(needle)) failures.push(path + ": " + message);
 }
 
+const appHtmlFiles = htmlFiles.filter(file => relative(root, file) !== "assets/files/published-sites-static/index.html");
+for (const file of appHtmlFiles) {
+  const html = readFileSync(file, "utf8");
+  const path = relative(root, file);
+  if (!html.includes("production-ui.css")) failures.push(path + ": missing shared production UI stylesheet.");
+  if (/studio-polish\\.css|product-quality\\.css/.test(html)) failures.push(path + ": conflicting legacy stylesheet remains.");
+  if (/theme-toggle|pref-theme|project_theme|data-theme=["']dark/i.test(html)) failures.push(path + ": obsolete appearance toggle remains.");
+}
+for (const path of ["assets/files/style.css", "assets/files/production-ui.css"]) {
+  const css = read(path);
+  if (/theme-toggle|data-theme=["']dark/i.test(css)) failures.push(path + ": obsolete dark/light theme CSS remains.");
+}
+
 for (const path of ["assets/files/auth-config.js", "assets/files/auth-guard.js", "assets/files/project-cloud.js", "assets/files/firebase-rooms.js", "assets/files/render-proxy/server.js"]) {
   try { new Function(read(path)); } catch (error) { failures.push(path + ": " + error.message); }
 }
